@@ -42,8 +42,8 @@ app.use(
 app.use(flash());
 //passport
 const passport = require("./config/passport");
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 //overwrite
 const methodOverride = require("method-override");
 app.use(methodOverride("_method"));

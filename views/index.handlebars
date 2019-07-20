@@ -1,0 +1,19 @@
+<div class="index col-10">
+  <img src="https://blog.payoneer.com/wp-content/uploads/2014/10/Amazon-Buy-Box.png" style="width:1000px;" alt="image">
+
+  <div class="row mt-5 ml-5">
+    {{#each categories}}
+    <div class="col-6 mb-5">
+      <div class="mb-4 shadow-sm">
+        <a href="/product/:id={{this.id}}">
+          <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="320px" height="220px">
+        </a>
+      </div>
+
+      <p class="card-text" style="text-align:center;">
+        <a href="/product/:id={{this.id}}" style="color: black; text-decoration:none;">{{this.name}}</a>
+      </p>
+    </div>
+    {{/each}}
+  </div>
+</div>
