@@ -7,6 +7,10 @@ body {
   font-family: 'DFKai-sb';
 }
 
-.nav-link {
+.productName, .categoryName {
   color: black;
+}
+
+.shop-setting {
+  height: 40px;
 }

@@ -1,0 +1,68 @@
+<div class="row ml-5 mt-5">
+  <div class="col-2">
+    <div class="nav flex-column">
+      <a class="navbar-brand mb-5" id="logo" href="/">E-commerce website</a>
+      <div class="list-group">
+        <a class="list-group-item list-group-item-action" href="/">首頁</a>
+      </div>
+      {{#each categories}}
+      <div class="list-group">
+        <a class="list-group-item list-group-item-action" href="/Category/{{this.id}}">{{this.name}}</a>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="index col-10 mb-5">
+    <img src="https://blog.payoneer.com/wp-content/uploads/2014/10/Amazon-Buy-Box.png" style="width:1100px;"
+      alt="image">
+  </div>
+</div>
+
+<div class="row ml-5 mt-5">
+  <div class="col-9 ml-5">
+    <h3>{{category.name}}</h3>
+  </div>
+
+  <div class="col-2">
+    <select class="shop-setting ng-pristine ng-valid ng-touched" ng-model="sortQuery">
+      <option value='' selected='' disabled="">商品排序</option>
+      <option value="created_at_desc">上架時間: 由新到舊</option>
+      <option value="created_at_asc">上架時間: 由舊到新</option>
+      <option value="price_desc">價格: 由高至低</option>
+      <option value="price_asc">價格: 由低至高</option>
+    </select>
+  </div>
+</div>
+
+<div class="row mt-5">
+  <div class="col-2"></div>
+
+  <div class="col-8">
+    <div class="row">
+      {{#each product}}
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="320px" height="180px">
+          <div class="card-body">
+            <h6 class="card-text" style="text-align: center;">
+              <a class="productName" style="text-decoration: none;" href="/product/{{this.id}}">
+                {{this.name}}
+              </a>
+            </h6>
+            <div class="badgeBox" style="text-align: center;">
+              <span class="badge badge-primary">NT $ {{this.price}}</span>
+            </div>
+            <small class="card-text">{{this.description}}</small>
+            <div class="cartBtn mt-2" style="text-align: center;">
+              <form action="/cart" method="POST">
+                <button type="submit" class="btn btn-success">加入購物車</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>

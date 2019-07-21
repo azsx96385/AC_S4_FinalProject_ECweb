@@ -10,12 +10,12 @@ module.exports = {
             name: item,
             image: 'https://blog.payoneer.com/wp-content/uploads/2014/10/Amazon-Buy-Box.png',
             createdAt: new Date(),
-            updatedAt: new Date()
+            updatedAt: new Date(),
           })
         ), {})
   },
 
   down: (queryInterface, Sequelize) => {
-    queryInterface.bulkDelete('Product_categories', null, {})
+    return queryInterface.bulkDelete('Product_categories', null, {});
   }
 };
