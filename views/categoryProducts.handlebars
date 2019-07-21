@@ -40,10 +40,12 @@
 
   <div class="col-8">
     <div class="row">
-      {{#each product}}
+      {{#each products}}
       <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
-          <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="320px" height="180px">
+          <a href="/product/{{this.id}}">
+            <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="320px" height="180px">
+          </a>
           <div class="card-body">
             <h6 class="card-text" style="text-align: center;">
               <a class="productName" style="text-decoration: none;" href="/product/{{this.id}}">
