@@ -1,8 +1,12 @@
-'use strict';
+"use strict";
 module.exports = (sequelize, DataTypes) => {
-  const Shipment_type = sequelize.define('Shipment_type', {
-    shipment_type: DataTypes.STRING
-  }, {});
+  const Shipment_type = sequelize.define(
+    "Shipment_type",
+    {
+      shipmentType: DataTypes.STRING
+    },
+    {}
+  );
   Shipment_type.associate = function(models) {
     // associations can be defined here
   };

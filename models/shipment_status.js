@@ -1,8 +1,12 @@
-'use strict';
+"use strict";
 module.exports = (sequelize, DataTypes) => {
-  const Shipment_status = sequelize.define('Shipment_status', {
-    shipment_status: DataTypes.STRING
-  }, {});
+  const Shipment_status = sequelize.define(
+    "Shipment_status",
+    {
+      shipmentStatus: DataTypes.STRING
+    },
+    {}
+  );
   Shipment_status.associate = function(models) {
     // associations can be defined here
   };
