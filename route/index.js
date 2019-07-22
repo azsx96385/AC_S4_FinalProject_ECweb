@@ -1,9 +1,8 @@
 let routes = require('./routes')
 
 
-module.exports = (app) => {
-  module.exports = (app) => {
-    app.use('/', routes);
 
-  }
+module.exports = (app) => {
+  app.use('/', routes);
+
 }

@@ -1,7 +1,7 @@
 //引入lin & strategy &model
 const passport = require("passport");
 const localStrategy = require("passport-local");
-const bcrypt = require("bcrypt-nodejs");
+const bcrypt = require("bcrypt");
 //model
 const db = require("../models");
 const User = db.User;
