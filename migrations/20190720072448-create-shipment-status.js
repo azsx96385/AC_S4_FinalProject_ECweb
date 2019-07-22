@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Shipment_statuses', {
+    return queryInterface.createTable("Shipment_statuses", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      shipment_status: {
+      shipmentStatus: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -22,6 +22,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Shipment_statuses');
+    return queryInterface.dropTable("Shipment_statuses");
   }
 };

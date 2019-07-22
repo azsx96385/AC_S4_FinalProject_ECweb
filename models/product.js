@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define('Product', {
     ProductCategoryId: DataTypes.INTEGER,
