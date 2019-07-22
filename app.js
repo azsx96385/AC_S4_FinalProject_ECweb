@@ -59,5 +59,5 @@ app.use((req, res, next) => {
   next();
 });
 
-require("./route/index")(app, passport);
+require("./route")(app);
 module.exports = app;
