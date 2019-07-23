@@ -4,7 +4,7 @@ const faker = require('faker')
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('Cart_items',
+    return queryInterface.bulkInsert('CartItems',
       Array.from({ length: 20 }).map((item, index) =>
         ({
           CartId: Math.floor(Math.random() * 3) + 1,

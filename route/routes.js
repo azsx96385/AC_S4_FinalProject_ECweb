@@ -7,6 +7,7 @@ const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 const userController = require('../controllers/userController')
 const productController = require('../controllers/productController')
+const cartController = require('../controllers/cartController')
 
 
 
@@ -41,6 +42,10 @@ router.get("/users/logOut", userController.logOut);
 
 //商品頁面
 router.get('/products', productController.getProducts)
+//購物車頁面
+router.get('/cart', cartController.getCart)
+//加入購物車
+router.post('/cart', cartController.postCart)
 
 
 module.exports = router

@@ -11,8 +11,25 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Product.associate = function(models) {
+  Product.associate = function (models) {
     // associations can be defined here
+    Product.belongsToMany(models.Cart, {
+      as: 'carts',
+      through: {
+        model: models.CartItem, unique: false
+      },
+      foreignKey: 'ProductId'
+    });
+    Product.belongsToMany(models.Order, {
+      as: 'orders',
+      through: {
+        model: models.Order_item, unique: false
+      },
+      foreignKey: 'ProductId'
+    });
+    Product.hasMany(models.Comment);
+    Product.hasMany(models.CartItem);
+
   };
   return Product;
 };
