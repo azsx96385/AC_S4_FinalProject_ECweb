@@ -11,18 +11,6 @@ module.exports = {
       UserId: {
         type: Sequelize.INTEGER
       },
-      PaymentStatusId: {
-        type: Sequelize.INTEGER
-      },
-      PaymentTypeId: {
-        type: Sequelize.INTEGER
-      },
-      ShipmentStatusId: {
-        type: Sequelize.INTEGER
-      },
-      ShipmentTypeId: {
-        type: Sequelize.INTEGER
-      },
       name: {
         type: Sequelize.STRING
       },
