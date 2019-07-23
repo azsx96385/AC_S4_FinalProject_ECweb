@@ -46,6 +46,13 @@ router.get('/products', productController.getProducts)
 router.get('/cart', cartController.getCart)
 //加入購物車
 router.post('/cart', cartController.postCart)
+//購物車內 增加購買商品數量
+router.post('/cartItem/:id/add', cartController.addCartItem)
+//購物車內 減少購買商品數量
+router.post('/cartItem/:id/sub', cartController.subCartItem)
+//刪除購物車的商品
+router.delete('/cartItem/:id', cartController.deleteCartItem)
+
 
 
 module.exports = router

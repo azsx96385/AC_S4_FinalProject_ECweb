@@ -17,9 +17,9 @@ const cartController = {
     })
   },
   postCart: (req, res) => {
-    return Cart.findOrCreate({
+    return Cart.findOrCreate({//找到或創造visitor的cart
       where: {
-        id: req.session.cartId || 0,
+        id: req.session.cartId || 0,//沒有，則預設為0
       }
     }).spread((cart, created) => {
       return CartItem.findOrCreate({
@@ -43,6 +43,52 @@ const cartController = {
       })
     }
     )
+  },
+  addCartItem: (req, res) => {
+    return CartItem.findByPk(req.params.id).then(cartItem => {
+      cartItem.update({
+        quantity: cartItem.quantity + 1,
+      })
+      return res.redirect('back')
+    })
+  },
+  subCartItem: (req, res) => {
+    return CartItem.findByPk(req.params.id).then(cartItem => {
+      cartItem.update({
+        quantity: cartItem.quantity - 1
+
+      })
+      if (cartItem.quantity === 0) {
+        return CartItem.destroy({
+          where: {
+            id: req.params.id
+          }
+        }).then(
+          () => {
+            res.redirect('back')
+          }
+        )
+      }
+
+    }).then(() => {
+      return res.redirect('back')
+    })
+  },
+  deleteCartItem: (req, res) => {
+    return CartItem.destroy({
+      where: {
+        id: req.params.id
+      }
+    }).then(
+      () => {
+        return res.redirect('back')
+      }
+    )
+
+
+
+
   }
+
 }
 module.exports = cartController;
