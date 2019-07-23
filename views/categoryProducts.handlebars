@@ -25,13 +25,20 @@
   </div>
 
   <div class="col-2">
-    <select class="shop-setting ng-pristine ng-valid ng-touched" ng-model="sortQuery">
-      <option value='' selected='' disabled="">商品排序</option>
-      <option value="created_at_desc">上架時間: 由新到舊</option>
-      <option value="created_at_asc">上架時間: 由舊到新</option>
-      <option value="price_desc">價格: 由高至低</option>
-      <option value="price_asc">價格: 由低至高</option>
-    </select>
+    <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{#if sort}}
+      {{sort}}
+      {{else}}
+      商品排序
+      {{/if}}
+    </a>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+      <a class="dropdown-item" href="/Category/{{category.id}}/?key=createdAt&value=desc">上架時間: 由新到舊</a>
+      <a class="dropdown-item" href="/Category/{{category.id}}/?key=createdAt&value=asc">上架時間: 由舊到新</a>
+      <a class="dropdown-item" href="/Category/{{category.id}}/?key=price&value=desc">價格: 由高至低</a>
+      <a class="dropdown-item" href="/Category/{{category.id}}/?key=price&value=asc">價格: 由低至高</a>
+    </div>
   </div>
 </div>
 
