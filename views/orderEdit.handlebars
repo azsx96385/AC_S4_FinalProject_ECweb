@@ -56,21 +56,37 @@
         </td>
         <td></td>
       </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td>
-          <a href="/orderEdit" class="btn btn-primary">
-            去買單
-          </a></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </tbody>
-    {{else}}
-    <div class="alert alert-secondary" role="alert">
-      你的購物車還是空的!! </div>
+      {{else}}
+      <div class="alert alert-secondary" role="alert">
+        你的購物車還是空的!! </div>
 
-    {{/if}}
+      {{/if}}
+
+    </tbody>
   </table>
+  <form action="/order" method="post">
+    <h1>運送資訊</h1>
+    <div class="form_group row mt-4">
+      <label class="col-2 ">名字:</label>
+      <div class="col-10">
+        <input type="text" class="form-control" value="{{user.name}}">
+      </div>
+    </div>
+    <div class="form-group row mt-4">
+      <label class="col-2 ">email:</label>
+      <div class="col-10">
+        <input type="email" class="form-control" value="{{user.email}}">
+      </div>
+    </div>
+    <div class="form-group row mt-4">
+      <label class="col-2 ">地址:</label>
+      <div class="col-10">
+        <input type="address" class="form-control" value="{{user.address}}">
+      </div>
+    </div>
+    <div class="form-group d-flex  justify-content-between mt-4">
+      <button type="submit" class='btn btn-primary'>結帳</button>
+      <a href="/">取消訂單</a>
+    </div>
+  </form>
 </div>

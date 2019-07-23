@@ -8,6 +8,7 @@ const upload = multer({ dest: 'temp/' })
 const userController = require('../controllers/userController')
 const productController = require('../controllers/productController')
 const cartController = require('../controllers/cartController')
+const orderController = require('../controllers/orderController')
 
 
 
@@ -17,13 +18,13 @@ const authenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next()
   }
-  res.redirect('/signin')
+  res.redirect('/users/login')
 }
 
 
 //[使用者 登入 | 登出 | 註冊]==========================
 router.get("/", (req, res) => {
-  res.redirect("/users/logIn");
+  res.redirect("/products");
 });
 router.get("/users/signUp", userController.signUpPage);
 router.post("/users/signUp", userController.signUp);
@@ -52,7 +53,8 @@ router.post('/cartItem/:id/add', cartController.addCartItem)
 router.post('/cartItem/:id/sub', cartController.subCartItem)
 //刪除購物車的商品
 router.delete('/cartItem/:id', cartController.deleteCartItem)
-
+//訂單編輯畫面
+router.get('/orderEdit', authenticated, orderController.getOrderEdit)
 
 
 module.exports = router
