@@ -15,7 +15,6 @@ const productController = {
   getCategoryProducts: (req, res) => {
     let key = req.query.key
     let value = req.query.value
-
     let sort = ''
 
     Product_category.findByPk(req.params.category_id, {
@@ -72,6 +71,25 @@ const productController = {
 
       Product_category.findAll().then(categories => {
         res.render('product', { product, categories, productsFilter })
+      })
+    })
+  },
+
+  searchProduct: (req, res) => {
+    const keyword = req.query.keyword
+
+    Product.findAll().then(products => {
+      let search = products.filter(product => {
+        return product.name.toLowerCase().includes(keyword.toLowerCase())
+      })
+
+      search = search.map(r => ({
+        ...r.dataValues,
+        description: r.dataValues.description.substring(0, 34),
+      }))
+
+      Product_category.findAll().then(categories => {
+        res.render('search', { products: search, keyword, categories })
       })
     })
   }

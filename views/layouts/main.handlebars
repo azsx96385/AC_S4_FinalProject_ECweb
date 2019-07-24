@@ -14,11 +14,18 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-white">
     <a class="navbar-brand" href="/">E-commerce website</a>
     <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
       </ul>
+      <form action="/ESHOP/search">
+        <div class="search">
+          <i class="fas fa-search"></i>
+          <input type="text" class="search-field" name="keyword" value="{{keyword}}" placeholder="Search Products">
+          <ul class="suggestions"></ul>
+        </div>
+      </form>
       <div>
 
       </div>

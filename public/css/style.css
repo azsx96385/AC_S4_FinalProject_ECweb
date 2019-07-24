@@ -1,4 +1,4 @@
-#logo {
+#logo, .navbar-brand {
   font-family: 'Pacifico','Noto Sans TC', sans-serif;
   color: black;
 }
@@ -58,4 +58,24 @@ hr {
   margin-bottom: 20px;
   border: 0;
   border-top: 1px solid gray;
+}
+
+.search {
+  margin-right: 30px;
+  margin-top: 10px;
+}
+.search > input {
+  border: none;
+  background-color: transparent;
+  border: 1px solid gray;
+  padding-left: 32px;
+  color: gray;
+}
+
+.search > i {
+  background-color: transparent;
+  padding: 5px;
+  margin-left: -2px;
+  color: #81969f;
+  position: absolute;
 }
