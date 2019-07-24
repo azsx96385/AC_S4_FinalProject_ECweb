@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container admin_layout">
+        <div class="row">
+            {{!-- 左側-功能選單欄位 --}}
+            <div class="col-3 d-flex flex-column">
+                {{!-- 店主頭貼 --}}
+                <div class="store_logo">
+                    <a href="">
+                        <img src="" alt="" id="storelogo">
+                        <p id="storename"></p>
+                    </a>
+                </div>
+                {{!-- 後台功能頁 --}}
+                <div class="store_nav">
+                    <ul>
+                        <li class="nav_item"></li>
+                    </ul>
+                </div>
+            </div>
+            {{!-- 右側-功能變動內容 --}}
+            <div class="col-9 d-flex flex-column">
+                {{!-- 店家設定區塊 --}}
+                <div class="admin_setting">
+                    <ul>
+                        <li class="setting_item"></li>
+                    </ul>
+                </div>
+                {{!-- 功能變動區塊 --}}
+                <div class="admin_fuctionBlock">
+                    {{{body}}}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
