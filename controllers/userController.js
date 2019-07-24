@@ -3,6 +3,8 @@
 const bcrypt = require("bcrypt");
 const db = require("../models");
 const User = db.User
+const Order = db.Order
+const orderItem = db.order_item
 const userController = {
   //[使用者 登入 | 登出 | 註冊]
   signUpPage: (req, res) => {
@@ -55,5 +57,8 @@ const userController = {
     req.logout();
     res.redirect("/users/logIn");
   },
+  getUserProfile: (req, res) => {
+
+  }
 }
 module.exports = userController

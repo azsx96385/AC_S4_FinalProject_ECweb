@@ -55,6 +55,10 @@ router.post('/cartItem/:id/sub', cartController.subCartItem)
 router.delete('/cartItem/:id', cartController.deleteCartItem)
 //訂單編輯畫面
 router.get('/orderEdit', authenticated, orderController.getOrderEdit)
+//訂單成立
+router.post('/order', orderController.postOrder)
+//個人資料頁面與訂單詳情
+router.get('/user/:id/profile', authenticated, userController.getUserProfile)
 
 
 module.exports = router
