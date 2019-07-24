@@ -61,8 +61,7 @@ const userController = {
   getUserProfile: (req, res) => {
     return User.findByPk(req.params.id, { include: [{ model: Order, include: [{ model: Product, as: 'items', include: [OrderItem] }] }] }).then(user => {
       //找出user 在從user中找到order 在從order中找到產品
-
-      const orderInfo = user.Orders
+      const orderInfo = user.Orders.sort((a, b) => b.id - a.id) //由id來排先後???為何createAT不管用
       console.log(orderInfo)
       return res.render('userProfile', {
         user,

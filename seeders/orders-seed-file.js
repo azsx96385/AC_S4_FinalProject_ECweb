@@ -10,8 +10,6 @@ module.exports = {
         phone: faker.phone.phoneNumber(),
         address: faker.address.streetAddress(),
         amount: faker.random.number(),
-        ShipmentStatusId: Math.floor(Math.random() * 1),
-        PaymentStatusId: Math.floor(Math.random() * 1),
         createdAt: new Date(),
         updatedAt: new Date(),
       })

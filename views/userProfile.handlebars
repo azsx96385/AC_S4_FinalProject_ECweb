@@ -28,7 +28,7 @@
 </section>
 <section class="orderInfo">
   {{#each orderInfo}}
-  <div class="card">
+  <div class="card mt-4">
     <div class="card-body">
       <h2>訂單 {{this.id}}</h2>
       <hr>
@@ -49,14 +49,20 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item">名字:{{this.name}}</li>
         <li class="list-group-item">地址{{this.address}}</li>
-        <li class="list-group-item">email:{{this.email}}</li>
         <li class="list-group-item">phone:{{this.phone}}</li>
       </ul>
       <hr>
+      <h2>出貨狀況</h2>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">payment:{{this.PaymentStatusId}}</li>
         <li class="list-group-item">shipMent:{{this.ShipmentStatusId}}</li>
       </ul>
+    </div>
+    <div class="row d-flex flex-row-reverse">
+      <div class="col">
+        <form action="/order/{{this.id}}?_method=DELETE" method="POST">
+          <button type='submit' class='btn btn-primary'>刪除訂單</button></form>
+      </div>
     </div>
 
   </div>

@@ -9,7 +9,6 @@ const orderController = {
 
   getOrderEdit: (req, res) => {
     return Cart.findByPk(req.session.cartId, { include: [{ model: Product, as: 'items', include: [CartItem] }] }).then(cart => {
-
       cart = cart || { items: [] }
       let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.CartItem.quantity).reduce((a, b) => a + b) : 0//如果cart-item沒東西，則為0
       return User.findByPk(req.user.id).then(user => {
@@ -29,11 +28,10 @@ const orderController = {
       return Order.create({
         UserId: req.user.id,
         name: req.body.name,
-        email: req.body.email,
         address: req.body.address,
-        shipping_status: req.body.shipping_status,
-        payment_status: req.body.payment_status,
+        phone: req.body.phone,
         amount: req.body.amount,
+        //還要處理payment跟shipment
       }).then(order => {
         //建立order_item
         cart.items.forEach(item => { //從購物車中的item移轉到orderItem中
@@ -50,6 +48,17 @@ const orderController = {
       })
     })
   },
+  deleteOrder: (req, res) => {
+    Order.destroy({
+      where: {
+        id: req.params.id
+      }
+    }).then(
+      () => {
+        return res.redirect('back')
+      }
+    )
+  }
 
 }
 module.exports = orderController

@@ -43,6 +43,7 @@ router.get("/users/logOut", userController.logOut);
 
 //商品頁面
 router.get('/products', productController.getProducts)
+//---------購物車-----------------------------------------------------------------------//
 //購物車頁面
 router.get('/cart', cartController.getCart)
 //加入購物車
@@ -53,12 +54,13 @@ router.post('/cartItem/:id/add', cartController.addCartItem)
 router.post('/cartItem/:id/sub', cartController.subCartItem)
 //刪除購物車的商品
 router.delete('/cartItem/:id', cartController.deleteCartItem)
+//-------------------------------------------訂單--------------------------------------//
 //訂單編輯畫面
 router.get('/orderEdit', authenticated, orderController.getOrderEdit)
 //訂單成立
 router.post('/order', orderController.postOrder)
 //個人資料頁面與訂單詳情
 router.get('/user/:id/profile', authenticated, userController.getUserProfile)
-
-
+//刪除訂單
+router.delete('/order/:id', OrderController.deleteOrder)
 module.exports = router

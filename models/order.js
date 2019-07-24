@@ -4,10 +4,6 @@ module.exports = (sequelize, DataTypes) => {
     "Order",
     {
       UserId: DataTypes.INTEGER,
-      PaymentStatusId: DataTypes.INTEGER,
-      PaymentTypeId: DataTypes.INTEGER,
-      ShipmentStatusId: DataTypes.INTEGER,
-      ShipmentTypeId: DataTypes.INTEGER,
       name: DataTypes.STRING,
       amount: DataTypes.INTEGER,
       phone: DataTypes.STRING,
