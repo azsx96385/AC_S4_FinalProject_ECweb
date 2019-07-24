@@ -44,8 +44,8 @@ const orderController = {
             quantity: item.dataValues.CartItem.quantity,
           })
         });
-        let userId = req.user.id
-        return res.redirect(`/user/${userId}}/profile`)
+        let userId = Number(req.user.id)
+        return res.redirect(`/user/${userId}/profile`)
 
       })
     })

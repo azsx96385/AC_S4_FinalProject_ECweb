@@ -4,7 +4,8 @@ const bcrypt = require("bcrypt");
 const db = require("../models");
 const User = db.User
 const Order = db.Order
-const orderItem = db.order_item
+const OrderItem = db.Order_item
+const Product = db.Product
 const userController = {
   //[使用者 登入 | 登出 | 註冊]
   signUpPage: (req, res) => {
@@ -58,7 +59,16 @@ const userController = {
     res.redirect("/users/logIn");
   },
   getUserProfile: (req, res) => {
+    return User.findByPk(req.params.id, { include: [{ model: Order, include: [{ model: Product, as: 'items', include: [OrderItem] }] }] }).then(user => {
+      //找出user 在從user中找到order 在從order中找到產品
 
+      const orderInfo = user.Orders
+      console.log(orderInfo)
+      return res.render('userProfile', {
+        user,
+        orderInfo
+      })
+    })
   }
 }
 module.exports = userController

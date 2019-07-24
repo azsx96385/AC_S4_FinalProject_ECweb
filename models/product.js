@@ -29,6 +29,8 @@ module.exports = (sequelize, DataTypes) => {
     });
     Product.hasMany(models.Comment);
     Product.hasMany(models.CartItem);
+    Product.hasMany(models.Order_item);
+
 
   };
   return Product;
