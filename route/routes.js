@@ -10,9 +10,6 @@ const productController = require('../controllers/productController')
 const cartController = require('../controllers/cartController')
 const orderController = require('../controllers/orderController')
 
-
-
-
 //加入權限驗證
 const authenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
@@ -62,5 +59,5 @@ router.post('/order', orderController.postOrder)
 //個人資料頁面與訂單詳情
 router.get('/user/:id/profile', authenticated, userController.getUserProfile)
 //刪除訂單
-router.delete('/order/:id', OrderController.deleteOrder)
+router.delete('/order/:id', orderController.deleteOrder)
 module.exports = router
