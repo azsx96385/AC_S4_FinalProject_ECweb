@@ -73,11 +73,20 @@
         <input type="tel" class="form-control" name="phone" value="{{user.phone}}">
       </div>
     </div>
-    <h1>運送方式</h1>
+    <h1>運送與付款方式</h1>
     <div class="form-group">
-      <label class="col-2">:</label>
+      <label class="col-2">運送方式:</label>
       <div class="col-10">
-        <input type="tel" class="form-control" name="phone" value="{{user.phone}}">
+        <label class="checkbox-inline"><input type="checkbox" name='shipmentType' value="1">宅配</label>
+        <label class="checkbox-inline"><input type="checkbox" name='shipmentType' value="2">超商取貨</label>
+
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-2">付款方式:</label>
+      <div class="col-10">
+        <label class="checkbox-inline"><input type="checkbox" name='paymentType' value="1">線上支付</label>
+        <label class="checkbox-inline"><input type="checkbox" name='paymentType' value="2">貨到付款</label>
       </div>
     </div>
     <div class="form-group d-flex  justify-content-between mt-4">

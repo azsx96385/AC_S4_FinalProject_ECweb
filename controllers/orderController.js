@@ -24,7 +24,8 @@ const orderController = {
   },
   postOrder: (req, res) => {
     return Cart.findByPk(req.body.cartId, { include: [{ model: Product, as: 'items', include: [CartItem] }] }).then(cart => {
-      //建立order        
+      //建立order  
+      console.log(req.body.shipmentType)
       return Order.create({
         UserId: req.user.id,
         name: req.body.name,
