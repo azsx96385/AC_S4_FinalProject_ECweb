@@ -6,35 +6,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/d17e34f2b0.js"></script>
+
 </head>
 
 <body>
-    <div class="container admin_layout">
+    <div class="container-fluid admin_layout">
+        {{!-- 主板上 --}}
+        <div class="row">
+            <div class="col-2 bg-dark">
+                <a href=""><img class="w-100 h-100"
+                        src="https://mitjobs.s3.amazonaws.com/uploads/organization/520/cover_photo/shopline-logo-white-on-blue.png"
+                        alt=""></a>
+            </div>
+            <div class="col-10 admin_setting d-flex justify-content-between py-1">
+                {{!-- 店家設定區塊 --}}
+                <div class="language_setting">
+                    <span class="br-2">中文(繁體) V</span>
+                    <span>幫助 V</span>
+                </div>
+                <div class="store_setting">
+                    <span class="mr-3"><a href=""><i class="fas fa-bell text-secondary"></i></a></span>
+                    <span class="mr-3"><a href=""><i class="fas fa-flag-checkered text-secondary"></i></a></span>
+                    <span class="mr-3"><a class="text-dark text-decoration-none" href="">進入我的店面</a></span>
+                    <span class="mr-2"><a class="text-dark text-decoration-none" href="">你好,_____ V</a></span>
+                </div>
+            </div>
+        </div>
+        {{!-- 主板下 --}}
         <div class="row">
             {{!-- 左側-功能選單欄位 --}}
-            <div class="col-3 d-flex flex-column">
-                {{!-- 店主頭貼 --}}
-                <div class="store_logo">
-                    <a href="">
-                        <img src="" alt="" id="storelogo">
-                        <p id="storename"></p>
-                    </a>
-                </div>
-                {{!-- 後台功能頁 --}}
-                <div class="store_nav">
-                    <ul>
-                        <li class="nav_item"></li>
-                    </ul>
+            <div class=" col-2 d-flex flex-column  bg-dark ">
+                <div class="row">
+                    {{!-- 店主頭貼 --}}
+                    <div class="col-12 store_logo p-auto">
+                        <a class="" href="">
+                            <img class="w-50"
+                                src="https://png.pngtree.com/element_our/png_detail/20181213/moustachehipstermovembermalemen-glyph-icon--vector-isola-png_268388.jpg"
+                                alt="" id="storelogo">
+                            <p class="text-white text-decoration-none" id="storename">螺絲瑪莉</p>
+                        </a>
+                    </div>
+
+                    {{!-- 後台功能頁 | boostrapt 摺疊 --}}
+                    <div class="w-100 store_nav d-flex flex-column flex-nowrap vh-100">
+                        {{!-- 業績模組 --}}
+                        <button class="btn btn-dark  btn-block" data-toggle="collapse" type="button"
+                            data-target="#saleModelNav">
+                            <i class="fas fa-clone"></i> 業績模組
+                        </button>
+                        <div class="collapse  bg-secondary" id="saleModelNav">
+
+                            <a class="btn btn-secondary btn-block nav_item text-white">流量分析報表</a>
+                            <a class="btn btn-secondary  btn-block nav_item text-white">商品分析報表</a>
+                        </div>
+                        {{!-- 產品模組 --}}
+                        <button class="btn btn-dark  btn-block" data-toggle="collapse" data-target="#productModelNav"><i
+                                class="fas fa-boxes"></i> 產品模組</button>
+                        <div class="collapse bg-secondary" id="productModelNav">
+
+                            <a class="btn btn-secondary btn-block nav_item text-white">產品管理</a>
+                            <a class="btn btn-secondary  btn-block nav_item text-white">訂單管理</a>
+
+                        </div>
+                        {{!-- 行銷模組 --}}
+                        <button class="btn btn-dark  btn-block" data-toggle="collapse" href="#marketingModelNav"><i
+                                class="fas fa-bullhorn"></i> 行銷模組</button>
+                        <div class="collapse  bg-secondary" id="marketingModelNav">
+                            <a class="btn btn-secondary btn-block nav_item text-white">追蹤碼設定</a>
+                            <a class="btn btn-secondary  btn-block nav_item text-white">行銷報告</a>
+                        </div>
+
+
+                    </div>
                 </div>
             </div>
             {{!-- 右側-功能變動內容 --}}
-            <div class="col-9 d-flex flex-column">
-                {{!-- 店家設定區塊 --}}
-                <div class="admin_setting">
-                    <ul>
-                        <li class="setting_item"></li>
-                    </ul>
-                </div>
+            <div class="col-10 d-flex flex-column px-0">
+
+                {{> admin_message}}
+                {{> admin_bodynav}}
                 {{!-- 功能變動區塊 --}}
                 <div class="admin_fuctionBlock">
                     {{{body}}}
@@ -42,6 +96,16 @@
             </div>
         </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
