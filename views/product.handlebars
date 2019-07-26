@@ -31,7 +31,8 @@
           {{#star ratingAve}}{{/star}}
         </span>
       </div>
-      <div class="help-block mt-3" style="text-align: center;">平均2.5分，已有{{product.Comments.length}}人評價</div>
+      <div class="help-block mt-3" style="text-align: center;">平均 {{ratingAve}}分，已有{{product.Comments.length}}人評價
+      </div>
 
       <div class="cartBtn mt-2" style="text-align: center;">
         <form action="/cart" method="POST">
