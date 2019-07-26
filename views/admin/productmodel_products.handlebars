@@ -1,13 +1,55 @@
-<div class="productmodel_products row">
+<div class="col-12 productmodel_products px-5 ">
     {{!-- 提示訊息 --}}
-    <div class="message"></div>
-    {{!-- 產品總攬 --}}
-    <div class="productsTable">
-        {{!-- 篩選器 --}}
-        <div class="function_bar">
-            <div class="filter_btns"></div>
-            <div class="search_bar"></div>
+    <div>1/無限</div>
+    <div class="card">
+        <div class="card-body">
+            你商店所有商品都在這裡顯示。你可以直接從手機或電腦上載商品，或使用Instagram匯入。如果想更改商品的排序，請到「分類管理」更改。
         </div>
+    </div>
+    {{!-- 產品總攬 --}}
+    <div class="card my-3">
+        
+        <div class="function_bar d-flex justify-content-between py-4 px-2">
+            {{!-- 篩選器 --}}
+            <div class="filter_btns">
+                {{!-- 顯示所有商品 --}}
+                <div class="dropdown d-inline">
+                    <a class="btn btn-primary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                        data-toggle="dropdown">顯示:
+                        所有商品</a>
+                    <div class="dropdown-menu">
+                        <a href="" class="dropdown-item">所有商品</a>
+                        <a href="" class="dropdown-item">已上架</a>
+                        <a href="" class="dropdown-item">已下架</a>
+                        <a href="" class="dropdown-item">預購商品</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="" class="dropdown-item">精選商品</a>
+                    </div>
+                </div>
+                {{!-- 新增產品 --}}
+                <a class="btn btn-primary btn-sm d-inline" href=""><i class="fas fa-plus-circle"></i> 增加</a>
+            </div>
+            {{!-- 搜尋欄 --}}
+            <div class="search_bar">
+                <form action="" method="post">
+                <div class="dropdown d-inline">
+                    <a href="" class="btn btn-primary btn-sm dropdown-toggle" role="button" data-toggle="dropdown">全部</a>
+                    <div class="dropdown-menu">
+                        <a href="" class="dropdown-item">全部</a>
+                        <a href="" class="dropdown-item">標籤為</a>
+                    </div>
+                </div>
+                <input type="text" placeholder="找啥?">
+                <button type="submit" class="btn btn-primary btn-sm">搜尋</button>
+            </div>
+            </form>
+        </div>
+
+
+    </div>
+    <div class="productsTable my-3 ">
+
+
         {{!-- 產品清單 --}}
         <div class="products_table"></div>
         {{!-- 分頁按鈕 --}}
