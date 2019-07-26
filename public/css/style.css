@@ -79,3 +79,27 @@ hr {
   color: #81969f;
   position: absolute;
 }
+
+.starrating > input {
+  display: none;
+}
+
+.starrating > label:before { 
+  content: "\f005";
+  margin: 2px;
+  font-size: 30px;
+  font-family: FontAwesome;
+  display: inline-block;
+}
+
+.starrating > label {
+  color: #222222;
+}
+
+.starrating > input:checked ~ label { 
+  color: #ffca08 ; 
+} 
+
+.starrating > input:hover ~ label { 
+  color: #ffca08 ;  
+} 

@@ -1,3 +1,5 @@
+const average = require('../public/javascript/average')
+
 const db = require("../models")
 const {
   Product_category,
@@ -59,6 +61,12 @@ const productController = {
         Comment
       ]
     }).then(product => {
+      const comment = product.Comments.map(r => ({
+        ...r.dataValues,
+        createdAt: Number(r.createdAt),
+        updatedAt: Number(r.updatedAt)
+      }))
+
       const category = product.Product_category
       const categoryProducts = category.Products
 
@@ -70,7 +78,9 @@ const productController = {
       productsFilter = products.slice(0, 4)
 
       Product_category.findAll().then(categories => {
-        res.render('product', { product, categories, productsFilter })
+        const ratingAve = average(comment)
+
+        res.render('product', { product, categories, productsFilter, ratingAve })
       })
     })
   },

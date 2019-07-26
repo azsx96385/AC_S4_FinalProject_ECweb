@@ -11,6 +11,7 @@ module.exports = {
           comment: faker.lorem.sentence(),
           UserId: Math.floor(Math.random() * 3) + 1,
           ProductId: i % 50 + 1,
+          rating: Math.floor(Math.random() * 5) + 1,
           createdAt: new Date(),
           updatedAt: new Date()
         })

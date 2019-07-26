@@ -1,5 +1,7 @@
 'use strict';
 
+const faker = require('faker')
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Product_categories',
@@ -8,7 +10,7 @@ module.exports = {
           ({
             id: index + 1,
             name: item,
-            image: 'https://blog.payoneer.com/wp-content/uploads/2014/10/Amazon-Buy-Box.png',
+            image: faker.image.imageUrl(),
             createdAt: new Date(),
             updatedAt: new Date(),
           })
