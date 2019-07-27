@@ -34,16 +34,23 @@ app.use(bdParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use("/upload", express.static(__dirname + "/upload"));
 
-//session
+//session and cookie_parser
 const session = require("express-session");
-app.use(
-  session({ secret: "seceret", resave: false, saveUninitialized: false })
-);
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+app.use(session({
+  secret: 'ac',
+  name: 'ac',
+  cookie: { maxAge: 80000 },
+  resave: false,
+  saveUninitialized: true,
+}));
+
 app.use(flash());
 //passport
 const passport = require("./config/passport");
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 //overwrite
 const methodOverride = require("method-override");
 app.use(methodOverride("_method"));
