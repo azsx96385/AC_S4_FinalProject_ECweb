@@ -41,23 +41,25 @@ app.use(
 );
 app.use(flash());
 //passport
+
 const passport = require("./config/passport");
 // app.use(passport.initialize());
 // app.use(passport.session());
+
+
 //overwrite
 const methodOverride = require("method-override");
 app.use(methodOverride("_method"));
-
 
 //[路由區]-------------------------------------------------------------------------------
 
 app.use((req, res, next) => {
   res.locals.success_messages = req.flash("success_messages");
   res.locals.error_messages = req.flash("error_messages");
-  // res.locals.isAuthenticated = 
-  // res.locals.adminAuthenticate = 
+  // res.locals.isAuthenticated =
+  // res.locals.adminAuthenticate =
   next();
 });
 
-require("./route/index")(app, passport);
+require("./route/water_index")(app);
 module.exports = app;
