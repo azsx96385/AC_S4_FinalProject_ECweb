@@ -65,6 +65,7 @@
             <small class="card-text">{{this.description}}</small>
             <div class="cartBtn mt-2" style="text-align: center;">
               <form action="/cart" method="POST">
+                <input type="hidden" name="productId" value="{{this.id}}">
                 <button type="submit" class="btn btn-success">加入購物車</button>
               </form>
             </div>

@@ -36,6 +36,7 @@
 
       <div class="cartBtn mt-2" style="text-align: center;">
         <form action="/cart" method="POST">
+          <input type="hidden" name="productId" value="{{this.id}}">
           <button type="submit" class="btn btn-secondary mt-5"><i class="fas fa-shopping-cart"></i> 加入購物車</button>
         </form>
       </div>

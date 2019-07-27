@@ -31,10 +31,31 @@ module.exports = (app, passport) => {
   );
   app.get("/users/logOut", userController.logOut);
 
-
+  //-------------------商品瀏覽頁面-----------------------------------------
   app.get('/', (req, res) => res.redirect('/index'))
-  app.get('/index', authenticated, productController.getIndex)
+  app.get('/index', productController.getIndex)
   app.get('/ESHOP/search', productController.searchProduct)
   app.get('/Category/:category_id', productController.getCategoryProducts)
   app.get('/product/:id', productController.getProduct)
+
+  //---------購物車-----------------------------------------------------------------------
+  //購物車頁面
+  app.get('/cart', cartController.getCart)
+  //加入購物車
+  app.post('/cart', cartController.postCart)
+  //購物車內 增加購買商品數量
+  app.post('/cartItem/:id/add', cartController.addCartItem)
+  //購物車內 減少購買商品數量
+  app.post('/cartItem/:id/sub', cartController.subCartItem)
+  //刪除購物車的商品
+  app.delete('/cartItem/:id', cartController.deleteCartItem)
+  //-------------------------------------------訂單--------------------------------------
+  //訂單編輯畫面
+  app.get('/orderEdit', authenticated, orderController.getOrderEdit)
+  //訂單成立
+  app.post('/order', authenticated, orderController.postOrder)
+  //個人資料頁面與訂單詳情
+  app.get('/user/:id/profile', authenticated, userController.getUserProfile)
+  //刪除訂單
+  app.delete('/order/:id', orderController.deleteOrder)
 }
