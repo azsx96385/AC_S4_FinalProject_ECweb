@@ -48,8 +48,7 @@ app.use(session({
 
 app.use(flash());
 //passport
-
-
+const passport = require('./config/passport')
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -68,5 +67,5 @@ app.use((req, res, next) => {
   next();
 });
 
-require("./route/water_index")(app);
+require("./route/index")(app, passport);
 module.exports = app;

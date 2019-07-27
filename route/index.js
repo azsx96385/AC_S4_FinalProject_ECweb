@@ -37,6 +37,8 @@ module.exports = (app, passport) => {
   app.get('/ESHOP/search', productController.searchProduct)
   app.get('/Category/:category_id', productController.getCategoryProducts)
   app.get('/product/:id', productController.getProduct)
+  app.post('/product/:id/rate', authenticated, productController.postProductRate)
+  app.delete('/product/:id/rate/:id', authenticated, productController.deleteProductRate)
 
   //---------購物車-----------------------------------------------------------------------
   //購物車頁面
