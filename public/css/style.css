@@ -1,0 +1,105 @@
+#logo, .navbar-brand {
+  font-family: 'Pacifico','Noto Sans TC', sans-serif;
+  color: black;
+}
+
+body {
+  font-family: 'DFKai-sb';
+}
+
+.productName, .categoryName {
+  color: black;
+}
+
+.shop-setting {
+  height: 40px;
+}
+
+.star {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.stars {
+  display: inline-block;
+  width: 50%;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.stars, .star, i.fa-star-gray {
+  color: #cbcbcb;
+}
+
+.stars, .star, i.fa-star-yellow {
+  color: #fcb040;
+}
+
+.star > .fa {
+  font-size: 25px;
+}
+
+.percent-star {
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.detail-starts .fa {
+  font-size: 20px;
+}
+
+hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid gray;
+}
+
+.search {
+  margin-right: 30px;
+  margin-top: 10px;
+}
+.search > input {
+  border: none;
+  background-color: transparent;
+  border: 1px solid gray;
+  padding-left: 32px;
+  color: gray;
+}
+
+.search > i {
+  background-color: transparent;
+  padding: 5px;
+  margin-left: -2px;
+  color: #81969f;
+  position: absolute;
+}
+
+.starrating > input {
+  display: none;
+}
+
+.starrating > label:before { 
+  content: "\f005";
+  margin: 2px;
+  font-size: 30px;
+  font-family: FontAwesome;
+  display: inline-block;
+}
+
+.starrating > label {
+  color: #222222;
+}
+
+.starrating > input:checked ~ label { 
+  color: #ffca08 ; 
+} 
+
+.starrating > input:hover ~ label { 
+  color: #ffca08 ;  
+} 
