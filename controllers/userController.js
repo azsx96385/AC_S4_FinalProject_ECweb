@@ -1,9 +1,21 @@
-//引入套件
+
+//引入套件區
 const bcrypt = require("bcrypt");
 const db = require("../models");
 const User = db.User
+const Order = db.Order
+const OrderItem = db.Order_item
+const Product = db.Product
+/*---------------------處理payment跟shipment------------------------------*/
+const Payment = db.Payment
+const Shipment = db.Shipment
+const ShipmentType = db.Shipment_type
+const PaymentType = db.Payment_type
+const ShipmentStatus = db.Shipment_status
+const PaymentStatus = db.Payment_status
 
 const userController = {
+  //[使用者 登入 | 登出 | 註冊]
   signUpPage: (req, res) => {
     return res.render("user_signIn");
   },
@@ -47,12 +59,36 @@ const userController = {
   logIn: (req, res) => {
     //使用 passport 做驗證
     req.flash("success_messages", "成功訊息|你已經成功登入");
-    res.redirect("/index");
+    res.redirect("/orderEdit");
   },
   logOut: (req, res) => {
     req.flash("success_messages", "成功訊息|你已經成功登出");
     req.logout();
     res.redirect("/users/logIn");
   },
+  getUserProfile: (req, res) => {
+    return User.findByPk(req.params.id,
+      {
+        include: [{
+          model: Order, include:
+            [{ model: Product, as: 'items', include: [OrderItem] },
+            { model: ShipmentType, as: 'ShipmentType' },
+            { model: PaymentType, as: 'PaymentType' },
+            { model: ShipmentStatus, as: 'ShipmentStatus' },
+            { model: PaymentStatus, as: 'PaymentStatus' }]
+        }]
+      }).then(user => {
+        //找出user 在從user中找到order 在從order中找到產品
+        let orderInfo = user.Orders.sort((a, b) => b.id - a.id) //由id來排先後???為何createAT不管用
+
+        //找出payment shipment的 status與type        
+        console.log(orderInfo[0].ShipmentStatus[0].dataValues.shipmentStatus)
+
+        return res.render('userProfile', {
+          user,
+          orderInfo
+        })
+      })
+  }
 }
 module.exports = userController
