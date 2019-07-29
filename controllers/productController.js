@@ -115,13 +115,13 @@ const productController = {
     })
   },
 
-  deleteProductRate: (req, res, ) => {
+  deleteProductRate: (req, res) => {
     Comment.findByPk(req.params.id).then(comment => {
       comment.destroy().then(comment => {
         res.redirect(`/product/${comment.ProductId}`)
       })
     })
-  },
+  }
 }
 
 module.exports = productController

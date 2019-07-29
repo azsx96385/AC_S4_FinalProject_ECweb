@@ -8,15 +8,17 @@ module.exports = (sequelize, DataTypes) => {
     image: DataTypes.STRING
   }, {});
   Product.associate = function (models) {
-    Product.belongsTo(models.Product_category),
-      Product.hasMany(models.Comment),
-      Product.belongsToMany(models.Cart, {
-        as: 'carts',
-        through: {
-          model: models.Cart_item, unique: false
-        },
-        foreignKey: 'ProductId'
-      });
+    Product.belongsTo(models.Product_category);
+    Product.hasMany(models.Comment);
+    Product.hasMany(models.Cart_item);
+    Product.hasMany(models.Order_item);
+    Product.belongsToMany(models.Cart, {
+      as: 'carts',
+      through: {
+        model: models.Cart_item, unique: false
+      },
+      foreignKey: 'ProductId'
+    });
     Product.belongsToMany(models.Order, {
       as: 'orders',
       through: {
@@ -24,10 +26,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       foreignKey: 'ProductId'
     });
-    Product.hasMany(models.Comment);
-    Product.hasMany(models.Cart_item);
-    Product.hasMany(models.Order_item);
-
   };
   return Product;
 };

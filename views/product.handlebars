@@ -34,10 +34,17 @@
       <div class="help-block mt-3" style="text-align: center;">平均 {{ratingAve}}分，已有{{product.Comments.length}}人評價
       </div>
 
-      <div class="cartBtn mt-2" style="text-align: center;">
+      <div class="cartBtn" style="text-align: center;">
         <form action="/cart" method="POST">
+
+          <div class="selectQty mt-5">
+            <input type="button" value='-' class='qtyMinus' field='quantity'>
+            <input type='text' name='quantity' value='0' class='qty'>
+            <input type='button' value='+' class='qtyPlus' field='quantity'>
+          </div>
+
           <input type="hidden" name="productId" value="{{product.id}}">
-          <button type="submit" class="btn btn-secondary mt-5"><i class="fas fa-shopping-cart"></i> 加入購物車</button>
+          <button type="submit" class="btn btn-secondary mt-4"><i class="fas fa-shopping-cart"></i> 加入購物車</button>
         </form>
       </div>
     </div>
@@ -149,3 +156,20 @@
 <div class="back ml-5 mb-5">
   <a class="ml-3" href="javascript:history.back()">回上一頁</a>
 </div>
+
+<script>
+
+  const qtyMinus = document.querySelector('.qtyMinus')
+  const qtyPlus = document.querySelector('.qtyPlus')
+  const qty = document.querySelector('.qty')
+
+  qtyMinus.addEventListener('click', () => {
+    if (qty.value > 0) return qty.value--
+    return qty.value === 0
+  })
+
+  qtyPlus.addEventListener('click', () => {
+    qty.value++
+  })
+
+</script>
