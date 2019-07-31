@@ -67,13 +67,14 @@
       </ul>
 
     </div>
+
     <div class="row d-flex flex-row-reverse">
       <div class="col">
-        <form action="/order/{{this.id}}?_method=DELETE" method="POST">
-          <button type='submit' class='btn btn-primary'>刪除訂單</button></form>
+        <form action="/order/{{this.id}}" method="POST">
+          <button type='submit' class='btn btn-primary'>取消訂單</button></form>
       </div>
     </div>
-
+    {{ifCond}}
   </div>
-  {{/each}}
+
 </section>

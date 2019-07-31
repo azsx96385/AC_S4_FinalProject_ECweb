@@ -8,14 +8,16 @@ const OrderItem = db.Order_item
 /*---------------------處理payment跟shipment------------------------------*/
 const Payment = db.Payment
 const Shipment = db.Shipment
+const Shipment_status = db.Shipment_status
+const Shipment_type = db.Shipment_type
 
 /*---------------nodmailer寄信----------------------*/
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: ' ',
-    pass: '',
+    user: '李尹翔',
+    pass: 'c/hc/h525',
   },
 });
 
@@ -104,16 +106,27 @@ const orderController = {
 
 
   },
-  deleteOrder: (req, res) => {
-    Order.destroy({
-      where: {
-        id: req.params.id
+  cancelOrder: (req, res) => {
+    Order.findByPk(req.params.id, { include: [{ model: Shipment_status, as: 'ShipmentStatus' }, { model: Shipment_type, as: 'ShipmentType' }] }).then(order => {
+
+      let lastOne = order.ShipmentStatus.length - 1
+      //限定shipmentStatus為 未出貨 ，才能取消
+      //取得order的shipmentStatus的最後一個
+      if (order.ShipmentStatus[lastOne].shipmentStatus === '未出貨') {
+
+        Shipment.create({
+          OrderId: req.params.id,
+          ShipmentStatusId: 3, // 取消為3
+          ShipmentTypeId: order.ShipmentType[0].id
+        })
       }
-    }).then(
-      () => {
-        return res.redirect('back')
-      }
-    )
+      return order
+
+
+
+    }).then(order => {
+      res.redirect('back')
+    })
   }
 
 }

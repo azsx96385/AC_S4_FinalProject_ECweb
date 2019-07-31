@@ -56,6 +56,6 @@ module.exports = (app, passport) => {
   app.post('/order', authenticated, orderController.postOrder)
   //個人資料頁面與訂單詳情
   app.get('/user/:id/profile', authenticated, userController.getUserProfile)
-  //刪除訂單
-  app.delete('/order/:id', orderController.deleteOrder)
+  //取消訂單
+  app.post('/order/:id', orderController.cancelOrder)
 }
