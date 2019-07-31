@@ -31,6 +31,12 @@
         <a href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
         </a>
       </div>
+      {{#if loginUser}}
+      <div class="user">
+
+        <a href="/user/{{loginUser.id}}/profile"><i class="fas fa-user"></i></a>
+      </div>
+      {{/if}}
       <div>
 
       </div>
