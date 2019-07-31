@@ -9,6 +9,15 @@ const OrderItem = db.Order_item
 const Payment = db.Payment
 const Shipment = db.Shipment
 
+/*---------------nodmailer寄信----------------------*/
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: ' ',
+    pass: '',
+  },
+});
 
 const orderController = {
 
@@ -68,13 +77,27 @@ const orderController = {
           amount: 0
         })
 
-
+        return order
       })
-        .then(
-          () => {
-            let userId = Number(req.user.id)
-            return res.redirect(`/user/${userId}/profile`)
-          }
+        .then(order => {
+          //nodemail send mail
+          var mailOptions = {
+            from: 'vuvu0130@gmail',
+            to: 'vuvu0130@gmail',
+            subject: `${order.id} 訂單成立`,
+            text: `${order.id} 訂單成立`,
+          };
+
+          transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
+          let userId = Number(req.user.id)
+          return res.redirect(`/user/${userId}/profile`)
+        }
         )
 
     })
