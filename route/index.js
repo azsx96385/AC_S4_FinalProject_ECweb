@@ -29,6 +29,20 @@ module.exports = (app, passport) => {
     }),
     userController.logIn
   );
+  //fb登入認證
+  //使用者登入fb取得授權
+  app.get(
+    '/auth/facebook',
+    passport.authenticate('facebook', { scope: ['email', 'public_profile'] })
+  )
+
+  app.get(
+    '/auth/facebook/callback',
+    passport.authenticate('facebook', {
+      successRedirect: '/orderEdit',
+      failureRedirect: '/users/login',
+    })
+  )
   app.get("/users/logOut", userController.logOut);
 
   //-------------------商品瀏覽頁面-----------------------------------------
