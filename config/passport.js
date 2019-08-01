@@ -8,7 +8,7 @@ const bcrypt = require("bcrypt");
 const db = require("../models");
 const User = db.User;
 
-//passport 設定
+
 
 //passport-local 策略設定
 passport.use(
