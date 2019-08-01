@@ -33,8 +33,7 @@ router.post(
   }),
   userController.logIn
 );
-//-------jwt登入------------------------------//
-router.post('/users/logIn', userController.logIn)
+
 //fb登入認證
 //使用者登入fb取得授權
 router.get(
