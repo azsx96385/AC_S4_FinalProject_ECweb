@@ -29,6 +29,8 @@ module.exports = (app, passport) => {
     }),
     userController.logIn
   );
+  //-------jwt登入------------------------------//
+  app.post('/users/logIn', userController.logIn)
   //fb登入認證
   //使用者登入fb取得授權
   app.get(
@@ -43,6 +45,7 @@ module.exports = (app, passport) => {
       failureRedirect: '/users/login',
     })
   )
+
   app.get("/users/logOut", userController.logOut);
 
   //-------------------商品瀏覽頁面-----------------------------------------
