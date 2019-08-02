@@ -8,7 +8,7 @@
     </div>
     {{!-- 產品總攬 --}}
     <div class="card my-3">
-        
+        {{!-- 上方功能列 --}}
         <div class="function_bar d-flex justify-content-between py-4 px-2">
             {{!-- 篩選器 --}}
             <div class="filter_btns">
@@ -32,27 +32,66 @@
             {{!-- 搜尋欄 --}}
             <div class="search_bar">
                 <form action="" method="post">
-                <div class="dropdown d-inline">
-                    <a href="" class="btn btn-primary btn-sm dropdown-toggle" role="button" data-toggle="dropdown">全部</a>
-                    <div class="dropdown-menu">
-                        <a href="" class="dropdown-item">全部</a>
-                        <a href="" class="dropdown-item">標籤為</a>
+                    <div class="dropdown d-inline">
+                        <a href="" class="btn btn-primary btn-sm dropdown-toggle" role="button"
+                            data-toggle="dropdown">全部</a>
+                        <div class="dropdown-menu">
+                            <a href="" class="dropdown-item">全部</a>
+                            <a href="" class="dropdown-item">標籤為</a>
+                        </div>
                     </div>
-                </div>
-                <input type="text" placeholder="找啥?">
-                <button type="submit" class="btn btn-primary btn-sm">搜尋</button>
+                    <input type="text" placeholder="找啥?">
+                    <button type="submit" class="btn btn-primary btn-sm">搜尋</button>
             </div>
             </form>
         </div>
+        {{!-- 下方產品清單 --}}
+        <div class="productsTable my-3 ">
+            {{!-- 產品清單 --}}
+            <div class="products_table">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">圖片</th>
+                            <th scope="col">原價格</th>
+                            <th scope="col">特價</th>
+                            <th scope="col">數量</th>
+                            <th scope="col">商品名稱</th>
+                            <th scope="col">狀態</th>
+                            <th scope="col">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
 
+                            <td>Otto</td>
+                        </tr>
 
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
     </div>
-    <div class="productsTable my-3 ">
-
-
-        {{!-- 產品清單 --}}
-        <div class="products_table"></div>
-        {{!-- 分頁按鈕 --}}
-        <div class="page"></div>
+    {{!-- 分頁按鈕 --}}
+    <div class="page">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">
+                        <<</a> </li> <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">>></a></li>
+            </ul>
+        </nav>
     </div>
+
 </div>
