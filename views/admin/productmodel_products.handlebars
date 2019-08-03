@@ -1,11 +1,7 @@
 <div class="col-12 productmodel_products px-5 ">
     {{!-- 提示訊息 --}}
     <div>1/無限</div>
-    <div class="card">
-        <div class="card-body">
-            你商店所有商品都在這裡顯示。你可以直接從手機或電腦上載商品，或使用Instagram匯入。如果想更改商品的排序，請到「分類管理」更改。
-        </div>
-    </div>
+    {{> message_products}}
     {{!-- 產品總攬 --}}
     <div class="card my-3">
         {{!-- 上方功能列 --}}
@@ -78,7 +74,6 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
     {{!-- 分頁按鈕 --}}

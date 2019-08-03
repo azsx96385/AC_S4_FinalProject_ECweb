@@ -6,7 +6,9 @@ let marketingModel = require("./admin/marketingModel");
 module.exports = app => {
   //設定路由群組
   app.get("/", (req, res) => {
-    return res.render("admin/productmodel_products", { layout: "admin_main" });
+    return res.render("admin/productmodel_editproduct", {
+      layout: "admin_main"
+    });
   });
   //admin===============================================
   //銷售模組
