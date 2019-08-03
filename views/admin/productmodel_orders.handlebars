@@ -1,0 +1,81 @@
+<div class="col-12 productmodel_orders px-5 ">
+
+
+    {{!-- 產品總攬 --}}
+    <div class="card my-3">
+        <p class="ml-2 mt-3 text-primary"> 訂單</p>
+        <hr>
+        {{!-- 訂單分頁 --}}
+        <div class="card-header order_nav">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a href="" class="nav-link active" role="tab">全部</a></li>
+                <li class="nav-item"><a href="" class="nav-link active" role="tab">訂單處理中</a></li>
+                <li class="nav-item"><a href="" class="nav-link active" role="tab">未付款</a></li>
+                <li class="nav-item"><a href="" class="nav-link active" role="tab">備貨中</a></li>
+            </ul>
+
+        </div>
+        {{!-- 訂單搜尋列 --}}
+        <div class="filiterBar input-group p-3">
+            <div class="input-group-prepend">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                    data-toggle="dropdown">搜尋關鍵字</button>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item">搜尋關鍵字</a>
+                    <a href="#" class="dropdown-item">搜尋電話號碼</a>
+                    <a href="#" class="dropdown-item">搜尋多筆訂單</a>
+                </div>
+            </div>
+            <input type="text" class="form-control">
+            <div class="input-group-append">
+                <button class="btn btn-sm btn-sm btn-outline-secondary"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+        {{!-- 訂單清單 --}}
+        <div class="ordersTable my-3 card-body">
+            {{!-- 產品清單 --}}
+            <div class="orders_table">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">訂單號碼</th>
+                            <th scope="col">訂單日期</th>
+                            <th scope="col">訂單狀態</th>
+                            <th scope="col">付款狀態</th>
+                            <th scope="col">送貨狀態</th>
+                            <th scope="col">訂購人</th>
+                            <th scope="col">合計</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">口</th>
+                            <td><a href="#">123456</a></td>
+                            <td>2019-08-01 2:10pm</td>
+                            <td><span class="badge badge-warning">處理中</span></td>
+                            <td><span class="badge badge-warning">處理中</span></td>
+                            <td><span class="badge badge-warning">處理中</span></td>
+                            <td>王曉明(azc@gmail.com)</td>
+                            <td>NT$250</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {{!-- 分頁按鈕 --}}
+    <div class="page  ">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination text-center">
+                <li class="page-item"><a class="page-link" href="#">
+                        <<</a> </li> <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">>></a></li>
+            </ul>
+        </nav>
+    </div>
+
+</div>
