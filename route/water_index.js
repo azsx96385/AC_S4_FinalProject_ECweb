@@ -6,7 +6,7 @@ let marketingModel = require("./admin/marketingModel");
 module.exports = app => {
   //設定路由群組
   app.get("/", (req, res) => {
-    return res.render("admin/productmodel_orderdetail", {
+    return res.render("admin/marketingmodel_trace_code", {
       layout: "admin_main"
     });
   });
