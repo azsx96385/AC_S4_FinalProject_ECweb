@@ -13,12 +13,29 @@ const Shipment_type = db.Shipment_type
 
 /*---------------nodmailer寄信----------------------*/
 const nodemailer = require('nodemailer');
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
+const oauth2Client = new OAuth2(
+  process.env.GMAIL_CLIENT_ID, // ClientID
+  process.env.GMAIL_CLIENT_SECRET, // Client Secret
+  process.env.GOOGLE_REDIRECT_URL, // Redirect URL
+);
+oauth2Client.setCredentials({
+  refresh_token: process.env.AUTH_REFRESH_TOKEN
+});
+const accessToken = oauth2Client.getAccessToken()
+
+
+const smtpTransport = nodemailer.createTransport({
+  service: "gmail",
   auth: {
-    user: '李尹翔',
-    pass: 'c/hc/h525',
-  },
+    type: "OAuth2",
+    user: 'vuvu0130@gmail.com',
+    clientId: process.env.GMAIL_CLIENT_ID,
+    clientSecret: process.env.GMAIL_CLIENT_SECRET,
+    refreshToken: process.env.AUTH_REFRESH_TOKEN,
+    accessToken: accessToken
+  }
 });
 
 const orderController = {
@@ -90,13 +107,10 @@ const orderController = {
             text: `${order.id} 訂單成立`,
           };
 
-          transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-              console.log(error);
-            } else {
-              console.log('Email sent: ' + info.response);
-            }
-          });
+          smtpTransport.sendMail(mailOptions, (error, response) => {
+            error ? console.log(error) : console.log(response);
+            smtpTransport.close();
+          });;
           let userId = Number(req.user.id)
           return res.redirect(`/user/${userId}/profile`)
         }
