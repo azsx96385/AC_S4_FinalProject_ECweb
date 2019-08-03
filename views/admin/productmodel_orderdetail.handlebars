@@ -1,0 +1,184 @@
+<div class="col-12 productmodel_orderdetail px-5 ">
+    {{!-- 訂單詳細-訊息框 --}}
+    {{> message_edit_product}}
+    <div class="row">
+        {{!-- 訂單詳細-左側面板 --}}
+        <div class="col">
+            {{!-- 訂單資料 --}}
+            <div class="card order-detail  my-3">
+                <div class="card-header d-flex justify-content-between">
+                    <p class="d-inline text-primary">訂單資料</p>
+                    <div class="status_btn d-flex ">
+                        <div class="dropdown ">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                data-toggle="dropdown">--更改訂單狀態--</button>
+
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item">處理中</a>
+                                <a href="#" class="dropdown-item">已確認</a>
+                                <a href="#" class="dropdown-item">已完成</a>
+                                <a href="#" class="dropdown-item">已取消</a>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm btn-primary d-inline">編輯</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {{!-- 訂單號碼 --}}
+                    <div class="order-detail-item my-1">
+                        <h6 class="font-weight-bold">訂單號碼</h6>
+                        <p>1111112222222</p>
+                    </div>
+                    {{!-- 訂單日期 --}}
+                    <div class="order-detail-item my-1">
+                        <h6 class="font-weight-bold">訂單日期</h6>
+                        <p>1111112222222</p>
+                    </div>
+                    {{!-- 訂單狀態 --}}
+                    <div class="order-detail-item my-3">
+                        <h6 class="font-weight-bold">訂單狀態</h6>
+                        <span class="badge badge-warning">處理中</span>
+                    </div>
+                    {{!-- 訂單來源 --}}
+                    <div class="order-detail-item my-1">
+                        <h6 class="font-weight-bold">訂單來源</h6>
+                        <p>前台購物網站</p>
+                    </div>
+                    {{!-- 訂單備註 --}}
+                    <div class="order-detail-item my-1">
+                        <h6 class="font-weight-bold">訂單備註</h6>
+                        <p>晚上六點後送</p>
+                    </div>
+                </div>
+            </div>
+            {{!-- 訂購人資訊 --}}
+            <div class="card order-info  my-3">
+                <div class="card-header d-flex justify-content-between">
+                    <p class="d-inline text-primary">訂購人資訊</p>
+                    <div class="status_btn d-flex ">
+                        <button class="btn btn-sm btn-primary d-inline">編輯</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {{!-- 訂購人 --}}
+                    <div class="order-info-item my-1">
+                        <h6 class="font-weight-bold">訂購人</h6>
+                        <p>王曉明</p>
+                    </div>
+                    {{!-- 訂單Email --}}
+                    <div class="order-info-item my-1">
+                        <h6 class="font-weight-bold">訂單Email</h6>
+                        <p>az55555555@gmail.com</p>
+                    </div>
+                    {{!-- 電話號碼 --}}
+                    <div class="order-info-item my-3">
+                        <h6 class="font-weight-bold">電話號碼</h6>
+                        <p>0939-11111111</p>
+                    </div>
+                    {{!-- 訂購帳號 --}}
+                    <div class="order-info-item my-1">
+                        <h6 class="font-weight-bold">訂購帳號</h6>
+                        <p>王曉明|az55555555@gmail.com</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        {{!-- 訂單詳細-右側面板 --}}
+        <div class="col">
+            {{!-- 付款資料 --}}
+            <div class="card payment-status my-3">
+                <div class="card-header d-flex justify-content-between">
+                    <p class="d-inline text-primary">訂單資料</p>
+                    <div class="status_btn d-flex ">
+                        <div class="dropdown ">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                data-toggle="dropdown">--更改訂單付款狀態--</button>
+
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item">未付款</a>
+                                <a href="#" class="dropdown-item">已付款</a>
+                                <a href="#" class="dropdown-item">退款中</a>
+                                <a href="#" class="dropdown-item">已退款</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    {{!-- 付款狀態--}}
+                    <div class="payment-status-item my-1">
+                        <h6 class="font-weight-bold">付款狀態</h6>
+                        <span class="badge badge-warning">未付款</span>
+                    </div>
+                    {{!-- 付款方法 --}}
+                    <div class="payment-status-item my-1">
+                        <h6 class="font-weight-bold">付款方法</h6>
+                        <p>貨到付款</p>
+                    </div>
+
+                </div>
+            </div>
+            {{!-- 配送/送貨資料 --}}
+            <div class="card shipment-status  my-3">
+                <div class="card-header d-flex justify-content-between">
+                    <p class="d-inline text-primary">配送/送貨資料</p>
+                    <div class="status_btn d-flex ">
+                        <div class="dropdown ">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
+                                data-toggle="dropdown">--更改訂單送貨狀態--</button>
+
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item">備貨中</a>
+                                <a href="#" class="dropdown-item">發貨中</a>
+                                <a href="#" class="dropdown-item">已發貨</a>
+                                <a href="#" class="dropdown-item">已到達</a>
+                                <a href="#" class="dropdown-item">已取貨</a>
+                                <a href="#" class="dropdown-item">已退貨</a>
+                                <a href="#" class="dropdown-item">退貨中</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    {{!-- 發貨狀態--}}
+                    <div class="shipment-status-item my-1">
+                        <h6 class="font-weight-bold">發貨狀態</h6>
+                        <span class="badge badge-warning">備貨中</span>
+                    </div>
+                    {{!-- 送貨方式--}}
+                    <div class="shipment-status-item my-1">
+                        <h6 class="font-weight-bold">送貨方法</h6>
+                        <p>貨到付款</p>
+                    </div>
+                    {{!-- 收件人 --}}
+                    <div class="shipment-status-item my-1">
+                        <h6 class="font-weight-bold">收件人</h6>
+                        <p>王曉明</p>
+                    </div>
+                    {{!-- 收件人電話號碼 --}}
+                    <div class="shipment-status-item my-1">
+                        <h6 class="font-weight-bold">收件人電話號碼</h6>
+                        <p>0931-2222222</p>
+                    </div>
+                    {{!-- 送貨費用 --}}
+                    <div class="shipment-status-item my-1">
+                        <h6 class="font-weight-bold">送貨費用</h6>
+                        <p>NT$22</p>
+                    </div>
+                    {{!-- 送貨地址 --}}
+                    <div class="shipment-status-item my-1">
+                        <h6 class="font-weight-bold">送貨地址</h6>
+                        <p>高雄市北門路5段12號</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
