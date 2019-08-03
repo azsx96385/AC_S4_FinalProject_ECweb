@@ -149,9 +149,30 @@ hr {
   width: 50px;
   height: 30px;
   text-align: center;
+  border: transparent;
 }
 
 input.qtyPlus, input.qtyMinus { 
-  width: 30px; 
+  width: 33px; 
   height: 33px;
+  background-color: transparent;
+  border: 1px solid rgb(182, 178, 178);
+  border-radius: 5px;
+}
+
+input.qtyPlus {
+  font-family: FontAwesome;
+}
+
+input.qtyPlus:hover, input.qtyMinus:hover {
+  cursor: pointer;
+  background-color: rgb(87, 112, 167);
+  transition: background-color .5s;
+  color: white;
+}
+
+input.qtyPlus:active, input.qtyMinus:active {
+  background-color: rgb(87, 112, 167);
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }

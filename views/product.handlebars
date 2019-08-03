@@ -39,8 +39,8 @@
 
           <div class="selectQty mt-5">
             <input type="button" value='-' class='qtyMinus' field='quantity'>
-            <input type='text' name='quantity' value='0' class='qty'>
-            <input type='button' value='+' class='qtyPlus' field='quantity'>
+            <input type='text' name='quantity' value='1' class='qty'>
+            <input type='button' value="+" class='qtyPlus' field='quantity'>
           </div>
 
           <input type="hidden" name="productId" value="{{product.id}}">
@@ -130,7 +130,7 @@
 
   <form action="/product/{{product.id}}/rate" method="POST">
     <div class="form-group col-11">
-      <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+      <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="登入後即可評論商品"></textarea>
     </div>
 
     <p class="mb-3 d-flex align-items-center">
@@ -164,8 +164,8 @@
   const qty = document.querySelector('.qty')
 
   qtyMinus.addEventListener('click', () => {
-    if (qty.value > 0) return qty.value--
-    return qty.value === 0
+    if (qty.value > 1) return qty.value--
+    return qty.value === 1
   })
 
   qtyPlus.addEventListener('click', () => {
