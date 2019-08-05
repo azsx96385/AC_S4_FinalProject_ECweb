@@ -35,7 +35,7 @@ const cartController = {
         }
       }).spread((cartItem, created) => {
         return cartItem.update({
-          quantity: (cartItem.quantity || 0) + 1,
+          quantity: req.body.quantity || (cartItem.quantity || 0) + 1,
         }).then((cartItem) => {
           req.session.cartId = cart.id
 
@@ -44,8 +44,7 @@ const cartController = {
           })
         })
       })
-    }
-    )
+    })
   },
   addCartItem: (req, res) => {
     return CartItem.findByPk(req.params.id).then(cartItem => {

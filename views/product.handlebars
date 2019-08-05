@@ -34,10 +34,17 @@
       <div class="help-block mt-3" style="text-align: center;">平均 {{ratingAve}}分，已有{{product.Comments.length}}人評價
       </div>
 
-      <div class="cartBtn mt-2" style="text-align: center;">
+      <div class="cartBtn" style="text-align: center;">
         <form action="/cart" method="POST">
-          <input type="hidden" name="productId" value="{{this.id}}">
-          <button type="submit" class="btn btn-secondary mt-5"><i class="fas fa-shopping-cart"></i> 加入購物車</button>
+
+          <div class="selectQty mt-5">
+            <input type="button" value='-' class='qtyMinus' field='quantity'>
+            <input type='text' name='quantity' value='1' class='qty'>
+            <input type='button' value="+" class='qtyPlus' field='quantity'>
+          </div>
+
+          <input type="hidden" name="productId" value="{{product.id}}">
+          <button type="submit" class="btn btn-secondary mt-4"><i class="fas fa-shopping-cart"></i> 加入購物車</button>
         </form>
       </div>
     </div>
@@ -82,6 +89,7 @@
           <small class="card-text">{{this.description}}</small>
           <div class="cartBtn mt-2" style="text-align: center;">
             <form action="/cart" method="POST">
+              <input type="hidden" name="productId" value="{{this.id}}">
               <button type="submit" class="btn btn-success">加入購物車</button>
             </form>
           </div>
@@ -103,9 +111,12 @@
     <div class="card">
       {{#each product.Comments}}
       <div class="card-header">
-        <small>John　－{{moment this.createdAt}}</small>
+        <small>{{this.User.name}} －{{moment this.createdAt}}</small>
       </div>
       <div class="list-group-item  list-group-item-action">
+        <form action="/product/{{Product.id}}/rate/{{this.id}}?_method=DELETE" method="POST" style="float: right;">
+          <button type="submit" class="btn btn-danger">x</button>
+        </form>
         <span class="stars d-flex mb-3 mt-2">
           {{#star this.rating}}{{/star}}
         </span>
@@ -117,9 +128,9 @@
 
   <h4 class="mt-5 mb-5">留下您的評論：</h4>
 
-  <form action="/comments" method="POST">
+  <form action="/product/{{product.id}}/rate" method="POST">
     <div class="form-group col-11">
-      <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+      <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="登入後即可評論商品"></textarea>
     </div>
 
     <p class="mb-3 d-flex align-items-center">
@@ -136,7 +147,7 @@
     </p>
 
 
-    <input type="hidden" name="productId" value="{{product.id}}" />
+    <input type="hidden" name="ProductId" value="{{product.id}}" />
     <button type="submit" class="btn btn-primary ml-3 mt-2">送出評論</button>
   </form>
 </div>
@@ -145,3 +156,20 @@
 <div class="back ml-5 mb-5">
   <a class="ml-3" href="javascript:history.back()">回上一頁</a>
 </div>
+
+<script>
+
+  const qtyMinus = document.querySelector('.qtyMinus')
+  const qtyPlus = document.querySelector('.qtyPlus')
+  const qty = document.querySelector('.qty')
+
+  qtyMinus.addEventListener('click', () => {
+    if (qty.value > 1) return qty.value--
+    return qty.value === 1
+  })
+
+  qtyPlus.addEventListener('click', () => {
+    qty.value++
+  })
+
+</script>

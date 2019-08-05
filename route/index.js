@@ -33,10 +33,18 @@ module.exports = (app, passport) => {
 
   //-------------------商品瀏覽頁面-----------------------------------------
   app.get('/', (req, res) => res.redirect('/index'))
+  // 首頁
   app.get('/index', productController.getIndex)
+  // 搜尋功能
   app.get('/ESHOP/search', productController.searchProduct)
+  // 分類產品頁面
   app.get('/Category/:category_id', productController.getCategoryProducts)
+  // 單項產品頁面
   app.get('/product/:id', productController.getProduct)
+  // 評價功能
+  app.post('/product/:id/rate', authenticated, productController.postProductRate)
+  // 刪除評價功能
+  app.delete('/product/:id/rate/:id', authenticated, productController.deleteProductRate)
 
   //---------購物車-----------------------------------------------------------------------
   //購物車頁面
