@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Comment.associate = function (models) {
     Comment.belongsTo(models.Product)
+    Comment.belongsTo(models.User)
   };
   return Comment;
 };

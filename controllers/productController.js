@@ -4,7 +4,8 @@ const db = require("../models")
 const {
   Product_category,
   Product,
-  Comment
+  Comment,
+  User
 } = db
 
 const productController = {
@@ -58,7 +59,7 @@ const productController = {
     Product.findByPk(req.params.id, {
       include: [
         { model: Product_category, include: [Product] },
-        Comment
+        { model: Comment, include: [User, Product] }
       ]
     }).then(product => {
       const comment = product.Comments.map(r => ({
@@ -66,7 +67,6 @@ const productController = {
         createdAt: Number(r.createdAt),
         updatedAt: Number(r.updatedAt)
       }))
-
       const category = product.Product_category
       const categoryProducts = category.Products
 
@@ -100,6 +100,25 @@ const productController = {
 
       Product_category.findAll().then(categories => {
         res.render('search', { products: search, keyword, categories })
+      })
+    })
+  },
+
+  postProductRate: (req, res) => {
+    Comment.create({
+      comment: req.body.comment,
+      rating: req.body.rating,
+      ProductId: req.body.ProductId,
+      UserId: req.user.id
+    }).then(() => {
+      res.redirect(`/product/${req.body.ProductId}`)
+    })
+  },
+
+  deleteProductRate: (req, res) => {
+    Comment.findByPk(req.params.id).then(comment => {
+      comment.destroy().then(comment => {
+        res.redirect(`/product/${comment.ProductId}`)
       })
     })
   }

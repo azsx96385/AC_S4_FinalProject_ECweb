@@ -65,7 +65,7 @@ const userController = {
   logIn: (req, res) => {
     //使用 passport 做驗證
     req.flash("success_messages", "成功訊息|你已經成功登入");
-    res.redirect("/orderEdit");
+    res.redirect("/");
   },
 
   logOut: (req, res) => {
