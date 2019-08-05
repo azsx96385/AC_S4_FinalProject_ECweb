@@ -8,7 +8,35 @@ const OrderItem = db.Order_item
 /*---------------------處理payment跟shipment------------------------------*/
 const Payment = db.Payment
 const Shipment = db.Shipment
+const Shipment_status = db.Shipment_status
+const Shipment_type = db.Shipment_type
 
+/*---------------nodmailer寄信----------------------*/
+const nodemailer = require('nodemailer');
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
+const oauth2Client = new OAuth2(
+  process.env.GMAIL_CLIENT_ID, // ClientID
+  process.env.GMAIL_CLIENT_SECRET, // Client Secret
+  process.env.GOOGLE_REDIRECT_URL, // Redirect URL
+);
+oauth2Client.setCredentials({
+  refresh_token: process.env.AUTH_REFRESH_TOKEN
+});
+const accessToken = oauth2Client.getAccessToken()
+
+
+const smtpTransport = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    type: "OAuth2",
+    user: 'vuvu0130@gmail.com',
+    clientId: process.env.GMAIL_CLIENT_ID,
+    clientSecret: process.env.GMAIL_CLIENT_SECRET,
+    refreshToken: process.env.AUTH_REFRESH_TOKEN,
+    accessToken: accessToken
+  }
+});
 
 const orderController = {
 
@@ -68,29 +96,51 @@ const orderController = {
           amount: 0
         })
 
-
+        return order
       })
-        .then(
-          () => {
-            let userId = Number(req.user.id)
-            return res.redirect(`/user/${userId}/profile`)
-          }
+        .then(order => {
+          //nodemail send mail
+          var mailOptions = {
+            from: 'vuvu0130@gmail',
+            to: 'vuvu0130@gmail',
+            subject: `${order.id} 訂單成立`,
+            text: `${order.id} 訂單成立`,
+          };
+
+          smtpTransport.sendMail(mailOptions, (error, response) => {
+            error ? console.log(error) : console.log(response);
+            smtpTransport.close();
+          });;
+          let userId = Number(req.user.id)
+          return res.redirect(`/user/${userId}/profile`)
+        }
         )
 
     })
 
 
   },
-  deleteOrder: (req, res) => {
-    Order.destroy({
-      where: {
-        id: req.params.id
+  cancelOrder: (req, res) => {
+    Order.findByPk(req.params.id, { include: [{ model: Shipment_status, as: 'ShipmentStatus' }, { model: Shipment_type, as: 'ShipmentType' }] }).then(order => {
+
+      let lastOne = order.ShipmentStatus.length - 1
+      //限定shipmentStatus為 未出貨 ，才能取消
+      //取得order的shipmentStatus的最後一個
+      if (order.ShipmentStatus[lastOne].shipmentStatus === '未出貨') {
+
+        Shipment.create({
+          OrderId: req.params.id,
+          ShipmentStatusId: 3, // 取消為3
+          ShipmentTypeId: order.ShipmentType[0].id
+        })
       }
-    }).then(
-      () => {
-        return res.redirect('back')
-      }
-    )
+      return order
+
+
+
+    }).then(order => {
+      res.redirect('back')
+    })
   }
 
 }

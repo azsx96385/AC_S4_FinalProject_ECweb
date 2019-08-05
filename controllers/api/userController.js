@@ -1,7 +1,6 @@
-
 //引入套件區
 const bcrypt = require("bcrypt");
-const db = require("../models");
+const db = require("../../models");
 const User = db.User
 const Order = db.Order
 const OrderItem = db.Order_item
@@ -11,13 +10,7 @@ const jwt = require('jsonwebtoken')
 const passportJWT = require('passport-jwt')
 const ExtractJwt = passportJWT.ExtractJwt
 const JwtStrategy = passportJWT.Strategy
-/*---------------------處理payment跟shipment------------------------------*/
-const Payment = db.Payment
-const Shipment = db.Shipment
-const ShipmentType = db.Shipment_type
-const PaymentType = db.Payment_type
-const ShipmentStatus = db.Shipment_status
-const PaymentStatus = db.Payment_status
+
 
 const userController = {
   //[使用者 登入 | 登出 | 註冊]
@@ -63,9 +56,31 @@ const userController = {
     return res.render("user_login");
   },
   logIn: (req, res) => {
-    //使用 passport 做驗證
-    req.flash("success_messages", "成功訊息|你已經成功登入");
-    res.redirect("/");
+    // 檢查必要資料
+    if (!req.body.email || !req.body.password) {
+      return res.json({ status: 'error', message: "required fields didn't exist" })
+    }
+    // 檢查 user 是否存在與密碼是否正確
+    let username = req.body.email
+    let password = req.body.password
+
+    User.findOne({ where: { email: username } }).then(user => {
+      if (!user) return res.status(401).json({ status: 'error', message: 'no such user found' })
+      if (!bcrypt.compareSync(password, user.password)) {
+        return res.status(401).json({ status: 'error', message: 'passwords did not match' })
+      }
+      // 簽發 token
+      var payload = { id: user.id }
+      var token = jwt.sign(payload, process.env.JWT_SECRET)
+      return res.json({
+        status: 'success',
+        message: 'ok',
+        token: token,
+        user: {
+          id: user.id, name: user.name, email: user.email, isAdmin: user.isAdmin
+        }
+      })
+    })
   },
 
   logOut: (req, res) => {
@@ -73,29 +88,5 @@ const userController = {
     req.logout();
     res.redirect("/users/logIn");
   },
-  getUserProfile: (req, res) => {
-    return User.findByPk(req.params.id,
-      {
-        include: [{
-          model: Order, include:
-            [{ model: Product, as: 'items', include: [OrderItem] },
-            { model: ShipmentType, as: 'ShipmentType' },
-            { model: PaymentType, as: 'PaymentType' },
-            { model: ShipmentStatus, as: 'ShipmentStatus' },
-            { model: PaymentStatus, as: 'PaymentStatus' }]
-        }]
-      }).then(user => {
-        //找出user 在從user中找到order 在從order中找到產品
-        let orderInfo = user.Orders.sort((a, b) => b.id - a.id) //由id來排先後???為何createAT不管用
-
-        //找出payment shipment的 status與type        
-        console.log(orderInfo[0].ShipmentStatus[0].dataValues.shipmentStatus)
-
-        return res.render('userProfile', {
-          user,
-          orderInfo
-        })
-      })
-  }
 }
 module.exports = userController

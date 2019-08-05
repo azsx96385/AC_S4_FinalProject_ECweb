@@ -51,7 +51,10 @@ const cartController = {
       cartItem.update({
         quantity: cartItem.quantity + 1,
       })
-      return res.redirect('back')
+        .then(cartItem => {
+          return res.redirect('back')
+        })
+
     })
   },
   subCartItem: (req, res) => {

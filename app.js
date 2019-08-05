@@ -67,5 +67,5 @@ app.use((req, res, next) => {
   next();
 });
 
-require("./route/index")(app, passport);
-module.exports = app;
+require("./route")(app);
+

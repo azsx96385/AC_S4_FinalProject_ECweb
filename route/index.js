@@ -1,9 +1,12 @@
+let routes = require('./routes');
+let apis = require('./apis')
 
-//引用model套件
-const productController = require('../controllers/productController')
-const userController = require('../controllers/userController')
-const cartController = require('../controllers/cartController')
-const orderController = require('../controllers/orderController')
+
+
+// addmailsender 衝突
+// module.exports = (app) => {
+//   app.use('/', routes);
+//   app.use('/api', apis)
 
 module.exports = (app, passport) => {
 
@@ -66,4 +69,5 @@ module.exports = (app, passport) => {
   app.get('/user/:id/profile', authenticated, userController.getUserProfile)
   //刪除訂單
   app.delete('/order/:id', orderController.deleteOrder)
+
 }
