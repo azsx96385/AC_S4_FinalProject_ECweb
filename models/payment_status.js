@@ -7,8 +7,16 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Payment_status.associate = function(models) {
+  Payment_status.associate = function (models) {
     // associations can be defined here
+    Payment_status.belongsToMany(models.Order,
+      {
+        through: models.Payment,
+        foreginKey: 'PaymentStatusId',
+        as: 'PaymentStatusToOrder'
+
+      })
+
   };
   return Payment_status;
 };

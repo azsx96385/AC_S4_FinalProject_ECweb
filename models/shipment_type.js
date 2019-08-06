@@ -7,8 +7,16 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Shipment_type.associate = function(models) {
+  Shipment_type.associate = function (models) {
     // associations can be defined here
+    Shipment_type.belongsToMany(models.Order,
+      {
+        through: models.Shipment,
+        foreginKey: 'ShipmentTypeId',
+        as: 'ShipmentTypeToOrder'
+
+      })
+
   };
   return Shipment_type;
 };

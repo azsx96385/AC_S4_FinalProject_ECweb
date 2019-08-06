@@ -34,17 +34,24 @@ app.use(bdParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use("/upload", express.static(__dirname + "/upload"));
 
-//session
+//session and cookie_parser
 const session = require("express-session");
-app.use(
-  session({ secret: "seceret", resave: false, saveUninitialized: false })
-);
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
+app.use(session({
+  secret: 'ac',
+  name: 'ac',
+  cookie: { maxAge: 80000 },
+  resave: false,
+  saveUninitialized: true,
+}));
+
 app.use(flash());
 //passport
-const passport = require("passport");
-//const passport = require("./config/passport");
+const passport = require('./config/passport')
 app.use(passport.initialize());
 app.use(passport.session());
+
 //overwrite
 const methodOverride = require("method-override");
 app.use(methodOverride("_method"));
@@ -54,10 +61,13 @@ app.use(methodOverride("_method"));
 app.use((req, res, next) => {
   res.locals.success_messages = req.flash("success_messages");
   res.locals.error_messages = req.flash("error_messages");
-  // res.locals.isAuthenticated =
-  // res.locals.adminAuthenticate =
+
+  res.locals.loginUser = req.user
+
   next();
 });
 
-// require("./route/water_index")(app);
-module.exports = app;
+
+require("./route")(app);
+
+
