@@ -4,6 +4,11 @@ let userController = require("../controllers/userController");
 let productController = require("../controllers/productController");
 let cartController = require("../controllers/cartController");
 let orderController = require("../controllers/orderController");
+//Admin 後台 ==路由群組====================================================
+let saleModel = require("./admin/saleModel");
+let productModel = require("./admin/productModel");
+let marketingModel = require("./admin/marketingModel");
+
 // addmailsender 衝突
 // module.exports = (app) => {
 //   app.use('/', routes);
@@ -76,4 +81,12 @@ module.exports = (app, passport) => {
   app.get("/user/:id/profile", authenticated, userController.getUserProfile);
   //刪除訂單
   //app.delete("/order/:id", orderController.deleteOrder);
+
+  //[Admin 後台管理介面]=========================================================================================
+  //銷售模組router
+  app.use("/admin/salemodel", saleModel);
+  //產品模組router
+  app.use("/admin/productmodel", productModel);
+  //行銷模組router
+  app.use("/admin/marketingmodel", marketingModel);
 };
