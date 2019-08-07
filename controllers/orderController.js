@@ -111,8 +111,8 @@ const orderController = {
             error ? console.log(error) : console.log(response);
             smtpTransport.close();
           });;
-          let userId = Number(req.user.id)
-          return res.redirect(`/user/${userId}/profile`)
+
+          return res.redirect(`order/${order.id}/payment`)
         }
         )
 
@@ -141,6 +141,24 @@ const orderController = {
     }).then(order => {
       res.redirect('back')
     })
+  },
+
+  getPayment: (req, res) => {
+    console.log('===== getPayment =====')
+    console.log(req.params.id)
+    console.log('==========')
+
+    return Order.findByPk(req.params.id).then(order => {
+      res.render('payment', { order })
+    })
+  },
+
+  spgatewayCallback: (req, res) => {
+    console.log('===== spgatewayCallback =====')
+    console.log(req.body)
+    console.log('==========')
+
+    res.redirect('back')
   }
 
 }
