@@ -1,16 +1,15 @@
 //引入套件區
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const db = require("../../models");
-const User = db.User
-const Order = db.Order
-const OrderItem = db.Order_item
-const Product = db.Product
+const User = db.User;
+const Order = db.Order;
+const OrderItem = db.Order_item;
+const Product = db.Product;
 //-------------------- JWT----------------------------------------------
-const jwt = require('jsonwebtoken')
-const passportJWT = require('passport-jwt')
-const ExtractJwt = passportJWT.ExtractJwt
-const JwtStrategy = passportJWT.Strategy
-
+const jwt = require("jsonwebtoken");
+const passportJWT = require("passport-jwt");
+const ExtractJwt = passportJWT.ExtractJwt;
+const JwtStrategy = passportJWT.Strategy;
 
 const userController = {
   //[使用者 登入 | 登出 | 註冊]
@@ -52,41 +51,51 @@ const userController = {
     //驗證密碼相同
   },
   logInPage: (req, res) => {
-
     return res.render("user_login");
   },
   logIn: (req, res) => {
     // 檢查必要資料
     if (!req.body.email || !req.body.password) {
-      return res.json({ status: 'error', message: "required fields didn't exist" })
+      return res.json({
+        status: "error",
+        message: "required fields didn't exist"
+      });
     }
     // 檢查 user 是否存在與密碼是否正確
-    let username = req.body.email
-    let password = req.body.password
+    let username = req.body.email;
+    let password = req.body.password;
 
     User.findOne({ where: { email: username } }).then(user => {
-      if (!user) return res.status(401).json({ status: 'error', message: 'no such user found' })
+      if (!user)
+        return res
+          .status(401)
+          .json({ status: "error", message: "no such user found" });
       if (!bcrypt.compareSync(password, user.password)) {
-        return res.status(401).json({ status: 'error', message: 'passwords did not match' })
+        return res
+          .status(401)
+          .json({ status: "error", message: "passwords did not match" });
       }
       // 簽發 token
-      var payload = { id: user.id }
-      var token = jwt.sign(payload, process.env.JWT_SECRET)
+      var payload = { id: user.id };
+      var token = jwt.sign(payload, process.env.JWT_SECRET);
       return res.json({
-        status: 'success',
-        message: 'ok',
+        status: "success",
+        message: "ok",
         token: token,
         user: {
-          id: user.id, name: user.name, email: user.email, isAdmin: user.isAdmin
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          isAdmin: user.isAdmin
         }
-      })
-    })
+      });
+    });
   },
 
   logOut: (req, res) => {
     req.flash("success_messages", "成功訊息|你已經成功登出");
     req.logout();
     res.redirect("/users/logIn");
-  },
-}
-module.exports = userController
+  }
+};
+module.exports = userController;

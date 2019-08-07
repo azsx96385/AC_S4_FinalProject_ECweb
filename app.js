@@ -36,19 +36,21 @@ app.use("/upload", express.static(__dirname + "/upload"));
 
 //session and cookie_parser
 const session = require("express-session");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 app.use(cookieParser());
-app.use(session({
-  secret: 'ac',
-  name: 'ac',
-  cookie: { maxAge: 80000 },
-  resave: false,
-  saveUninitialized: true,
-}));
+app.use(
+  session({
+    secret: "ac",
+    name: "ac",
+    cookie: { maxAge: 80000 },
+    resave: false,
+    saveUninitialized: true
+  })
+);
 
 app.use(flash());
 //passport
-const passport = require('./config/passport')
+const passport = require("./config/passport");
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -62,12 +64,9 @@ app.use((req, res, next) => {
   res.locals.success_messages = req.flash("success_messages");
   res.locals.error_messages = req.flash("error_messages");
 
-  res.locals.loginUser = req.user
+  res.locals.loginUser = req.user;
 
   next();
 });
 
-
-require("./route")(app);
-
-
+require("./route")(app, passport);
