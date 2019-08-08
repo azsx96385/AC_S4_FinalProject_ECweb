@@ -11,8 +11,17 @@ module.exports = {
       ProductCategoryId: {
         type: Sequelize.INTEGER
       },
+      StoreId: {
+        type: Sequelize.INTEGER
+      },
       name: {
         type: Sequelize.STRING
+      },
+      count: {
+        type: Sequelize.INTEGER
+      },
+      launched: {
+        type: Sequelize.BOOLEAN
       },
       price: {
         type: Sequelize.INTEGER

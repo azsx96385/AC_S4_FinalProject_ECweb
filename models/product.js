@@ -1,30 +1,44 @@
 "use strict";
 module.exports = (sequelize, DataTypes) => {
-  const Product = sequelize.define('Product', {
-    ProductCategoryId: DataTypes.INTEGER,
-    name: DataTypes.STRING,
-    price: DataTypes.INTEGER,
-    description: DataTypes.STRING,
-    image: DataTypes.STRING
-  }, {});
-  Product.associate = function (models) {
+  const Product = sequelize.define(
+    "Product",
+    {
+      id: {
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER
+      },
+      ProductCategoryId: DataTypes.INTEGER,
+      StoreId: DataTypes.INTEGER,
+      name: DataTypes.STRING,
+      count: DataTypes.INTEGER,
+      launched: DataTypes.BOOLEAN,
+      price: DataTypes.INTEGER,
+      description: DataTypes.STRING,
+      image: DataTypes.STRING
+    },
+    {}
+  );
+  Product.associate = function(models) {
     Product.belongsTo(models.Product_category);
     Product.hasMany(models.Comment);
     Product.hasMany(models.Cart_item);
     Product.hasMany(models.Order_item);
     Product.belongsToMany(models.Cart, {
-      as: 'carts',
+      as: "carts",
       through: {
-        model: models.Cart_item, unique: false
+        model: models.Cart_item,
+        unique: false
       },
-      foreignKey: 'ProductId'
+      foreignKey: "ProductId"
     });
     Product.belongsToMany(models.Order, {
-      as: 'orders',
+      as: "orders",
       through: {
-        model: models.Order_item, unique: false
+        model: models.Order_item,
+        unique: false
       },
-      foreignKey: 'ProductId'
+      foreignKey: "ProductId"
     });
   };
   return Product;
