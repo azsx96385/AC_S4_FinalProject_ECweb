@@ -1,10 +1,25 @@
 const db = require("../../models");
+const productCategoryModel = db.Product_category;
+const productModel = db.Product;
 const productController = {
   //  顯示產品管理頁面
   getProductManagePage: (req, res) => {
-    res.render("admin/productmodel_products", {
-      layout: "admin_main"
-    });
+    //從登入之使用者-調出所屬商店資料
+    let StoreId = 1;
+    //調出所有該商店的商品，渲染再前端頁面
+    productModel
+      .findAll({
+        where: { StoreId: 1 },
+        include: [{ model: productCategoryModel }]
+      })
+      .then(shopProducts => {
+        res.render("admin/productmodel_products", {
+          shopProductsCount: shopProducts.length,
+          shopProducts: shopProducts,
+          layout: "admin_main"
+        });
+        console.log(shopProducts.length);
+      });
   },
   //   單一 | 顯示新增單一商品頁面
   getProductCreatePage: (req, res) => {

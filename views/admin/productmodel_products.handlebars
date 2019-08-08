@@ -1,11 +1,11 @@
 <div class="col-12 productmodel_products px-5 ">
     {{!-- 提示訊息 --}}
-    <div>1/無限</div>
+    <div>{{ shopProductsCount}}/無限</div>
     {{> message_products}}
     {{!-- 產品總攬 --}}
     <div class="card my-3">
         {{!-- 上方功能列 --}}
-        <div class="function_bar d-flex justify-content-between py-4 px-2">
+        <div class="function_bar d-flex justify-content-between pt-3 px-2">
             {{!-- 篩選器 --}}
             <div class="filter_btns">
                 {{!-- 顯示所有商品 --}}
@@ -17,9 +17,6 @@
                         <a href="" class="dropdown-item">所有商品</a>
                         <a href="" class="dropdown-item">已上架</a>
                         <a href="" class="dropdown-item">已下架</a>
-                        <a href="" class="dropdown-item">預購商品</a>
-                        <div class="dropdown-divider"></div>
-                        <a href="" class="dropdown-item">精選商品</a>
                     </div>
                 </div>
                 {{!-- 新增產品 --}}
@@ -29,18 +26,23 @@
             {{!-- 搜尋欄 --}}
             <div class="search_bar">
                 <form action="" method="post">
-                    <div class="dropdown d-inline">
-                        <a href="" class="btn btn-primary btn-sm dropdown-toggle" role="button"
-                            data-toggle="dropdown">全部</a>
-                        <div class="dropdown-menu">
-                            <a href="" class="dropdown-item">全部</a>
-                            <a href="" class="dropdown-item">標籤為</a>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <a href="" class="btn btn-primary btn-sm dropdown-toggle" role="button"
+                                data-toggle="dropdown">全部</a>
+                            <div class="dropdown-menu">
+                                <a href="" class="dropdown-item">全部</a>
+                                <a href="" class="dropdown-item">標籤為</a>
+                            </div>
+                        </div>
+                        <input type="text" placeholder="找啥?">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary btn-sm">搜尋</button>
                         </div>
                     </div>
-                    <input type="text" placeholder="找啥?">
-                    <button type="submit" class="btn btn-primary btn-sm">搜尋</button>
+                </form>
             </div>
-            </form>
+
         </div>
         {{!-- 下方產品清單 --}}
         <div class="productsTable my-3 ">
@@ -51,36 +53,48 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">圖片</th>
-                            <th scope="col">原價格</th>
-                            <th scope="col">特價</th>
-                            <th scope="col">數量</th>
                             <th scope="col">商品名稱</th>
+                            <th scope="col">價格</th>
+                            <th scope="col">數量</th>
                             <th scope="col">狀態</th>
                             <th scope="col">操作</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {{#each shopProducts}}
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-
-                            <td>Otto</td>
+                            <th scope="row"><input type="checkbox" name="" id=""></th>
+                            <td style='width:10%'><img class="w-100" src="{{this.image}}" alt="產品圖片"></td>
+                            <td>{{this.name}}</td>
+                            <td>{{this.price}}</td>
+                            <td>{{this.count}}</td>
+                            <td>{{#if this.launched}}上架{{else}}下架 {{/if}}</td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-outline-secondary">編輯</button>
+                                        <button type="button"
+                                            class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                                            data-toggle="dropdown"></button>
+                                        <div class="dropdown-menu">
+                                            <a href="" class="dropdown-item">上架</a>
+                                            <a href="" class="dropdown-item">下架</a>
+                                            <a href="" class="dropdown-item">刪除</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
-
+                        {{/each}}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
     {{!-- 分頁按鈕 --}}
-    <div class="page">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
+    <div class="page w-100 m-auto   ">
+        <nav aria-label="Page navigation  d-flex ">
+            <ul class="pagination  d-flex justify-content-center">
                 <li class="page-item"><a class="page-link" href="#">
                         <<</a> </li> <li class="page-item"><a class="page-link" href="#">1</a></li>
                 <li class="page-item"><a class="page-link" href="#">2</a></li>
