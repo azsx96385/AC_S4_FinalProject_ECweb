@@ -1,26 +1,54 @@
-'use strict';
-
+"use strict";
+//假資料 - 米國電子|1位管理者|3位顧客
+const bcrypt = require("bcryptjs");
+const faker = require("faker");
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    /*
-      Add altering commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkInsert('People', [{
-        name: 'John Doe',
-        isBetaMember: false
-      }], {});
-    */
+    return queryInterface.bulkInsert("Users", [
+      {
+        StoreId: 1,
+        name: "root",
+        email: "root@example.com",
+        password: bcrypt.hashSync("12345678", bcrypt.genSaltSync(10), null),
+        address: faker.address.streetAddress(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        emailVerf: 0
+      },
+      {
+        StoreId: 1,
+        name: "user1",
+        email: "user1@example.com",
+        password: bcrypt.hashSync("12345678", bcrypt.genSaltSync(10), null),
+        address: faker.address.streetAddress(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        emailVerf: 0
+      },
+      {
+        StoreId: 1,
+        name: "user2",
+        email: "user2@example.com",
+        password: bcrypt.hashSync("12345678", bcrypt.genSaltSync(10), null),
+        address: faker.address.streetAddress(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        emailVerf: 0
+      },
+      {
+        StoreId: 1,
+        name: "user3",
+        email: "user3@example.com",
+        password: bcrypt.hashSync("12345678", bcrypt.genSaltSync(10), null),
+        address: faker.address.streetAddress(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        emailVerf: 0
+      }
+    ]);
   },
 
   down: (queryInterface, Sequelize) => {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkDelete('People', null, {});
-    */
+    return queryInterface.bulkDelete("Users", null, {});
   }
 };
