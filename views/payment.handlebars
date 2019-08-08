@@ -1,4 +1,16 @@
 <div class="container py-5">
   <h3>準備為訂單編號： {{order.id}} 付款 </h3>
-  <h4>總價 NT $ {{order.amount}} </h4>
+  <h4 class="mb-5">總價 NT $ {{order.amount}} </h4>
+
+  <form name='Spgateway' action='{{tradeInfo.PayGateWay}}' method="POST">
+    MerchantID:
+    <input class="form-control mt-2" type="text" name="MerchantID" value="{{tradeInfo.MerchantID}}"><br>
+    TradeInfo:
+    <input class="form-control mt-2" type="text" name="TradeInfo" value="{{tradeInfo.TradeInfo}}"><br>
+    TradeSha:
+    <input class="form-control mt-2" type="text" name="TradeSha" value="{{tradeInfo.TradeSha}}"><br>
+    Version:
+    <input class="form-control mt-2" type="text" name="Version" value="{{tradeInfo.Version}}"><br>
+    <button type="submit" class="btn btn-primary mt-2">Payment</button>
+  </form>
 </div>

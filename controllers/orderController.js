@@ -10,6 +10,7 @@ const Payment = db.Payment
 const Shipment = db.Shipment
 const Shipment_status = db.Shipment_status
 const Shipment_type = db.Shipment_type
+const getTradeInfo = require('../public/javascript/getTradeInfo')
 
 /*---------------nodmailer寄信----------------------*/
 const nodemailer = require('nodemailer');
@@ -148,8 +149,16 @@ const orderController = {
     console.log(req.params.id)
     console.log('==========')
 
-    return Order.findByPk(req.params.id).then(order => {
-      res.render('payment', { order })
+    Order.findByPk(req.params.id, { include: [User, { model: Product, as: 'items' }] }).then(order => {
+      const orderItem = order.items.map(d => d.name)
+      const tradeInfo = getTradeInfo(order.amount, orderItem, order.User.email)
+
+      order.update({
+        ...req.body,
+        sn: tradeInfo.MerchantOrderNo,
+      }).then(order => {
+        res.render('payment', { order, tradeInfo })
+      })
     })
   },
 
