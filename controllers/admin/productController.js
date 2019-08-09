@@ -5,20 +5,44 @@ const productController = {
   //  顯示產品管理頁面
   getProductManagePage: (req, res) => {
     //從登入之使用者-調出所屬商店資料
-    let StoreId = 1;
+    //設定預設值|offset limit wherequery--> 商店id / 上下架與否
+    let offset = 0;
+    let pageLimit = 5;
+    let whereQuery = { StoreId: 1 };
+    if (req.query.launched) {
+      whereQuery["launched"] = req.query.launched;
+    }
+    if (req.query.page) {
+      offset = (req.query.page - 1) * pageLimit;
+    }
     //調出所有該商店的商品，渲染再前端頁面
     productModel
-      .findAll({
-        where: { StoreId: 1 },
-        include: [{ model: productCategoryModel }]
+      .findAndCountAll({
+        where: whereQuery,
+        include: [{ model: productCategoryModel }],
+        offset: offset,
+        limit: pageLimit
       })
       .then(shopProducts => {
+        let page = Number(req.query.page) || 1; //初次載入獲如果沒傳入頁碼，預設0
+        let pages = Math.ceil(shopProducts.count / pageLimit); //計算需要幾頁
+        let totalPage = Array.from({ length: pages }).map(
+          (item, index) => index + 1
+        ); //創造頁碼陣列
+        //[定義上下頁頁碼]---------------- //使用三元運算子
+        let prePage = page - 1 < 1 ? 1 : page - 1;
+        let nextPage = page + 1 > page ? page : page + 1;
+
         res.render("admin/productmodel_products", {
-          shopProductsCount: shopProducts.length,
-          shopProducts: shopProducts,
+          shopProductsCount: shopProducts.count,
+          shopProducts: shopProducts.rows,
+          launched: req.query.launched,
+          page: page, // 用來讓該頁的頁碼 active and disable
+          totalPage: totalPage, //用來產生頁碼
+          prePage: prePage, //用來設定上一頁 url
+          nextPage: nextPage, //用來設定下一頁 url
           layout: "admin_main"
         });
-        console.log(shopProducts.length);
       });
   },
   //   單一 | 顯示新增單一商品頁面

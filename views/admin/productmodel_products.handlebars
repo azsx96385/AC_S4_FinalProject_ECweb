@@ -92,14 +92,26 @@
         </div>
     </div>
     {{!-- 分頁按鈕 --}}
-    <div class="page w-100 m-auto   ">
+    <div class="page w-100">
         <nav aria-label="Page navigation  d-flex ">
             <ul class="pagination  d-flex justify-content-center">
-                <li class="page-item"><a class="page-link" href="#">
-                        <<</a> </li> <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">>></a></li>
+                <li class="page-item">
+                    <a class="page-link"
+                        href="/admin/productmodel/product_mange?page={{prePage}}&launched={{launched}}">
+                        <span>
+                            <<</span> </a> </li> {{#each totalPage}} {{#ifCond this ../page  }} <li
+                                class="page-item active"><a class="page-link "
+                                    href="/admin/productmodel/product_mange?page={{this}}&launched={{../launched}}">{{this}}</a>
+                </li>
+                {{else}}
+                <li class="page-item"><a class="page-link"
+                        href="/admin/productmodel/product_mange?page={{this}}&launched={{../launched}}">{{this}}</a>
+                </li>
+                {{/ifCond}}
+                {{/each}}
+                <li class="page-item"><a class="page-link"
+                        href="/admin/productmodel/product_mange?page={{../nextPage}}&launched={{../nextPage}}"><span>>></span></a>
+                </li>
             </ul>
         </nav>
     </div>
