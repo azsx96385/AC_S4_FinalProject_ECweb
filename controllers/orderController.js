@@ -7,11 +7,12 @@ const Order = db.Order
 const OrderItem = db.Order_item
 /*---------------------處理payment跟shipment------------------------------*/
 const Payment = db.Payment
+const Payment_type = db.Payment_type
 const Shipment = db.Shipment
 const Shipment_status = db.Shipment_status
 const Shipment_type = db.Shipment_type
 const getTradeInfo = require('../public/javascript/getTradeInfo')
-
+const decryptTradeInfo = require('../public/javascript/decryptTradeInfo')
 /*---------------nodmailer寄信----------------------*/
 const nodemailer = require('nodemailer');
 const { google } = require("googleapis");
@@ -58,6 +59,7 @@ const orderController = {
   },
   postOrder: (req, res) => {
     return Cart.findByPk(req.body.cartId, { include: [{ model: Product, as: 'items', include: [CartItem] }] }).then(cart => {
+      let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.Cart_item.quantity).reduce((a, b) => a + b) : 0
       //建立order  
 
       return Order.create({
@@ -94,7 +96,7 @@ const orderController = {
           OrderId: order.id,
           PaymentStatusId: 1,//預設為1 未匯款
           PaymentTypeId: req.body.paymentType,
-          amount: 0
+          amount: totalPrice
         })
 
         return order
@@ -113,14 +115,14 @@ const orderController = {
             smtpTransport.close();
           });;
 
+          const PaymentTypeId = req.body.paymentType
+          const userId = req.user.id
+          if (PaymentTypeId === '2') return res.redirect(`/user/${userId}/profile`)
           return res.redirect(`order/${order.id}/payment`)
-        }
-        )
-
+        })
     })
-
-
   },
+
   cancelOrder: (req, res) => {
     Order.findByPk(req.params.id, { include: [{ model: Shipment_status, as: 'ShipmentStatus' }, { model: Shipment_type, as: 'ShipmentType' }] }).then(order => {
 
@@ -149,13 +151,18 @@ const orderController = {
     console.log(req.params.id)
     console.log('==========')
 
-    Order.findByPk(req.params.id, { include: [User, { model: Product, as: 'items' }] }).then(order => {
+    Order.findByPk(req.params.id, {
+      include: [
+        User,
+        { model: Product, as: 'items' }
+      ]
+    }).then(order => {
       const orderItem = order.items.map(d => d.name)
       const tradeInfo = getTradeInfo(order.amount, orderItem, order.User.email)
 
       order.update({
         ...req.body,
-        sn: tradeInfo.MerchantOrderNo,
+        memo: tradeInfo.MerchantOrderNo,
       }).then(order => {
         res.render('payment', { order, tradeInfo })
       })
@@ -163,11 +170,34 @@ const orderController = {
   },
 
   spgatewayCallback: (req, res) => {
-    console.log('===== spgatewayCallback =====')
-    console.log(req.body)
-    console.log('==========')
 
-    res.redirect('back')
+    const data = JSON.parse(decryptTradeInfo(req.body.TradeInfo))
+
+    console.log('===== spgatewayCallback: create_mpg_aes_decrypt、data =====')
+    console.log(data)
+
+    Order.findAll({
+      include: [
+        Payment,
+        User,
+        { model: Payment_type, as: 'PaymentType' }
+      ],
+      where:
+        { memo: data['Result']['MerchantOrderNo'] }
+    }).then(orders => {
+      const userId = orders[0].User.id
+
+      Payment.findOne({ where: { OrderId: orders[0].id } }).then(payment => {
+        Payment.create({
+          OrderId: orders[0].id,
+          PaymentStatusId: 2,
+          PaymentTypeId: payment.PaymentTypeId,
+          amount: payment.amount
+        }).then(() => {
+          res.redirect(`/user/${userId}/profile`)
+        })
+      })
+    })
   }
 
 }

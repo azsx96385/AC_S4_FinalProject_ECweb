@@ -1,5 +1,8 @@
 const crypto = require("crypto")
 
+const HashKey = process.env.HASH_KEY
+const HashIV = process.env.HASH_IV
+
 const create_mpg_aes_decrypt = (TradeInfo) => {
   let decrypt = crypto.createDecipheriv("aes256", HashKey, HashIV);
   decrypt.setAutoPadding(false);
