@@ -12,6 +12,7 @@ router.get("/create", productController.getProductCreatePage);
 
 // 單一 | 上傳圖片
 // 單一 | 新增產品
+router.post("/create", productController.postProduct);
 // 單一 | 刪除單一商品
 // 單一 | 顯示單一產品編輯頁面
 // 單一 | 編輯單一產品

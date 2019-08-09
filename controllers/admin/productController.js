@@ -47,12 +47,24 @@ const productController = {
   },
   //   單一 | 顯示新增單一商品頁面
   getProductCreatePage: (req, res) => {
-    return res.render("admin/productmodel_editproduct", {
-      layout: "admin_main"
+    //預設參數
+    let StoreId = 1;
+    //調出所有類別資料
+    productCategoryModel.findAll().then(categories => {
+      return res.render("admin/productmodel_editproduct", {
+        categories: categories,
+        layout: "admin_main"
+      });
     });
   },
   //   單一 | 上傳圖片
   //   單一 | 新增產品
+  postProduct: (req, res) => {
+    console.log(req.body);
+    return res.render("admin/productmodel_editproduct", {
+      layout: "admin_main"
+    });
+  },
   //   單一 | 刪除單一商品
   //   單一 | 顯示單一產品編輯頁面
   //   單一 | 編輯單一產品
