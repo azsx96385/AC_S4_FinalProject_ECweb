@@ -6,6 +6,7 @@ const productController = require('../controllers/productController')
 const userController = require('../controllers/userController')
 const cartController = require('../controllers/cartController')
 const orderController = require('../controllers/orderController')
+const couponController = require('../controllers/couponController')
 const passport = require('../config/passport')
 
 
@@ -78,6 +79,16 @@ router.post('/order', authenticated, orderController.postOrder)
 router.get('/user/:id/profile', authenticated, userController.getUserProfile)
 //取消訂單
 router.post('/order/:id', orderController.cancelOrder)
+//-------------coupon----------------------------
+//-----------製作coupon------------------
+router.get('/couponMakingPage', couponController.getCouponMakePage)
+router.post('/couponMake', couponController.postCouponMake)
+//----------使用coupon-------------------
+router.get('/enterCoupon', authenticated, couponController.enterCoupon)
+router.post('/checkCoupon', couponController.checkCoupon)
+///////////////////////////////
+router.get('/couponOrder/:couponId', couponController.getCouponOrderEdit)
+
 
 
 
