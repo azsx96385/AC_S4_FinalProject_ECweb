@@ -16,6 +16,14 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     User.hasMany(models.Comment);
     User.hasMany(models.Order);
+    User.belongsToMany(models.Coupon, {
+      as: 'UserCoupon',
+      through: {
+        model: models.CouponsUsers, unique: true
+      },
+      foreignKey: 'UserId'
+    });
+
   };
   return User;
 };

@@ -4,16 +4,28 @@ module.exports = (sequelize, DataTypes) => {
     "Coupon",
     {
       StoreId: DataTypes.INTEGER,
-      UserId: DataTypes.INTEGER,
       CouponTypeId: DataTypes.INTEGER,
       couponCode: DataTypes.STRING,
       discount: DataTypes.INTEGER,
-      description: DataTypes.STRING
+      description: DataTypes.STRING,
+      availabe: DataTypes.BOOLEAN,
+      expireDate: DataTypes.DATE,
     },
     {}
   );
-  Coupon.associate = function(models) {
+  Coupon.associate = function (models) {
     // associations can be defined here
+    Coupon.belongsToMany(models.User, {
+      as: 'CouponUser',
+      through: {
+        model: models.CouponsUsers
+      },
+      foreignKey: 'CouponId'
+    });
+
+    Coupon.belongsTo(models.Coupon_type);
+    Coupon.belongsTo(models.Store);
+
   };
   return Coupon;
 };

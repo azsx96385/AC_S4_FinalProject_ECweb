@@ -20,10 +20,10 @@
           </div>
         </td>
         <td>
-          <p class="mt-4">$ {{this.price}}</p>
+          <p>$ {{this.price}}</p>
         </td>
         <td>
-          <div class="mt-4" style="display: flex;">
+          <div style="display: flex;">
             <form action="/cartItem/{{this.Cart_item.id}}/add" method="POST">
               <button type="submit" class="btn btn-sm btn-outline-secondary">+</button>
             </form>
@@ -35,12 +35,10 @@
             </form>
           </div>
         </td>
-        <td>
-          <p class="mt-4">{{this.price}} * {{this.Cart_item.quantity}}</p>
-        </td>
+        <td>{{this.price}} * {{this.Cart_item.quantity}}</td>
         <td>
           <form action="/cartItem/{{this.Cart_item.id}}?_method=DELETE" method="POST">
-            <button type="submit" class="btn btn-link mt-3">
+            <button type="submit" class="btn btn-link">
               <i class="fas fa-trash"></i>
             </button>
           </form>
@@ -60,14 +58,17 @@
       </tr>
       <tr>
         <td></td>
-        <td></td>
+        <td><a href="/users/login?redirect=/enterCoupon" class="btn btn-primary">使用coupon</a></td>
         <td>
-          <a href="/orderEdit" class="btn btn-primary">
+          <a href="/users/login?redirect=/orderEdit" class="btn btn-primary">
             去買單
           </a></td>
         <td></td>
         <td></td>
       </tr>
+
+
+
     </tbody>
     {{else}}
     <div class="alert alert-secondary" role="alert">

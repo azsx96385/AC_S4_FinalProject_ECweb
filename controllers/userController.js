@@ -58,12 +58,15 @@ const userController = {
     //驗證密碼相同
   },
   logInPage: (req, res) => {
-    return res.render("user_login");
+    let redirectUrl = req.query.redirect
+    return res.render("user_login", { redirectUrl });
   },
   logIn: (req, res) => {
     //使用 passport 做驗證
     req.flash("success_messages", "成功訊息|你已經成功登入");
-    res.redirect("/");
+
+    let redirectUrl = req.body.redirectUrl
+    res.redirect(redirectUrl);
   },
 
   logOut: (req, res) => {

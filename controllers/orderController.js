@@ -13,6 +13,10 @@ const Shipment_status = db.Shipment_status
 const Shipment_type = db.Shipment_type
 const getTradeInfo = require('../public/javascript/getTradeInfo')
 const decryptTradeInfo = require('../public/javascript/decryptTradeInfo')
+//------coupon-------
+const Coupon = db.Coupon
+const CouponsUsers = db.CouponsUsers
+
 /*---------------nodmailer寄信----------------------*/
 const nodemailer = require('nodemailer');
 const { google } = require("googleapis");
@@ -58,6 +62,31 @@ const orderController = {
     })
   },
   postOrder: (req, res) => {
+
+    //COUPON 
+    if (req.body.couponId) {
+      Coupon.findByPk(req.body.couponId).then(coupon => {
+        //折抵價格
+        var subtotal = req.body.amount - coupon.discount
+
+
+        //生成使用紀錄
+        CouponsUsers.findOrCreate({
+          where: {
+            UserId: req.user.id,
+            CouponId: coupon.id,
+          }
+        }).spread((couponUser, created) => {
+          couponUser.update({
+            counts: (couponUser.counts || 0) + 1,
+          })
+
+        })
+      })
+    }
+    else {
+      var subtotal = req.body.amount
+    }
     return Cart.findByPk(req.body.cartId, { include: [{ model: Product, as: 'items', include: [CartItem] }] }).then(cart => {
       let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.Cart_item.quantity).reduce((a, b) => a + b) : 0
       //建立order  
@@ -67,7 +96,7 @@ const orderController = {
         name: req.body.name,
         address: req.body.address,
         phone: req.body.phone,
-        amount: req.body.amount,
+        amount: subtotal || req.body.amount,
         //還要處理payment跟shipment
       }).then(order => {
         //建立order_item
@@ -83,8 +112,6 @@ const orderController = {
         })
         return order
       }).then(order => {
-        console.log(req.body.paymentType)
-        console.log(req.body.shipmentType)
 
         Shipment.create({
           OrderId: order.id,
@@ -104,8 +131,8 @@ const orderController = {
         .then(order => {
           //nodemail send mail
           var mailOptions = {
-            from: 'vuvu0130@gmail',
-            to: 'vuvu0130@gmail',
+            from: 'vuvu0130@gmail.com',
+            to: 'vuvu0130@gmail.com',
             subject: `${order.id} 訂單成立`,
             text: `${order.id} 訂單成立`,
           };

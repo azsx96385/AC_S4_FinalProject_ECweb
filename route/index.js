@@ -5,11 +5,15 @@ let productController = require("../controllers/productController");
 let cartController = require("../controllers/cartController");
 let orderController = require("../controllers/orderController");
 // addmailsender 衝突
-// module.exports = (app) => {
-//   app.use('/', routes);
-//   app.use('/api', apis)
+/*module.exports = (app) => {
+ app.use('/', routes);
+app.use('/api', apis)*/
 
 module.exports = (app, passport) => {
+
+  app.use('/', routes);
+  app.use('/api', apis)
+
   //加入權限驗證
   const authenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
