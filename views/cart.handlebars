@@ -56,32 +56,19 @@
         </td>
         <td></td>
       </tr>
-      {{#if loginUser }}
+
 
       <tr>
         <td></td>
-        <td><a href="/enterCoupon" class="btn btn-primary">使用coupon</a></td>
+        <td><a href="/users/login?redirect=/enterCoupon" class="btn btn-primary">使用coupon</a></td>
         <td>
-          <a href="/orderEdit" class="btn btn-primary">
+          <a href="/users/login?redirect=/orderEdit" class="btn btn-primary">
             去買單
           </a></td>
         <td></td>
         <td></td>
       </tr>
 
-      {{else}}
-      <tr>
-        <td></td>
-        <td></td>
-        <td>
-          <a href="/users/logIn" class="btn btn-primary">
-            登入
-          </a></td>
-        <td></td>
-        <td></td>
-      </tr>
-
-      {{/if}}
 
 
     </tbody>
