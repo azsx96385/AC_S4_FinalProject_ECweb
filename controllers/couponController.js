@@ -56,7 +56,11 @@ const couponController = {
   enterCoupon: (req, res) => {
     res.render('couponUsingPage')
   },
-  checkCoupon: (req, res) => {
+  checkCoupon: async (req, res) => {
+    let cart = await Cart.findByPk(req.session.cartId, { include: [{ model: Product, as: 'items', include: [CartItem] }] })
+    let totalPrice = await cart.items.length > 0 ? cart.items.map(d => d.price * d.Cart_item.quantity).reduce((a, b) => a + b) : 0//如果cart-item
+
+
     Coupon.findOne({
       where: {
         couponCode: req.body.couponCode
@@ -72,8 +76,12 @@ const couponController = {
         req.flash("error_messages", "此序號已過期");
         return res.redirect('back')
       }
+      if (totalPrice < coupon.discount) {
+        req.flash("error_messages", "你不能折抵超過你所消費的金額!!");
+        return res.redirect('back')
+      }
       req.flash("success_messages", "成功折抵");
-      return res.render('couponUsingPage', { coupon })
+      return res.render('couponUsingPage', { coupon, totalPrice })
 
     })
   },
