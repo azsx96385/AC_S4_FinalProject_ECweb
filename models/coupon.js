@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.STRING,
       availabe: DataTypes.BOOLEAN,
       expireDate: DataTypes.DATE,
-      usingTimes: DataTypes.INTEGER,
     },
     {}
   );

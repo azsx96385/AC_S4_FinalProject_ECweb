@@ -26,6 +26,12 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
+      availabe: {
+        type: Sequelize.BOOLEAN
+      },
+      expireDate: {
+        type: Sequelize.DATE
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

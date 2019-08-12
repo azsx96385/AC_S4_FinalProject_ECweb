@@ -41,6 +41,7 @@ const couponController = {
       discount: req.body.CouponDiscount,
       description: req.body.CouponDescription,
       availabe: true,
+      expireDate: req.body.expiredDate,
 
     }).then(coupon => {
       Coupon.findByPk(coupon.id, { include: CouponType }).then(
