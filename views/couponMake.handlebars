@@ -1,0 +1,37 @@
+<div class="container">
+  <form action="/couponMake" method='POST'>
+    <h1>創造你的coupon</h1>
+    <div class="form-group">
+      <label for="store">輸入你的店家id</label>
+      <input type="number" name="storeId" class="form-control" id="store">
+
+    </div>
+    <div class="form-group">
+      <label for="couponType">選擇你的cuopn種類</label>
+      <select name="couponTypeId" id='couponType'>
+        <option value="1">會員專屬</option>
+        <option value="2">節日促銷</option>
+
+      </select>
+
+    </div>
+    <div class="form-group">
+      <label for="description">coupon備註</label>
+      <textarea class="form-control" name='CouponDescription' rows="5" id="description"></textarea>
+
+    </div>
+    <div class="form-group">
+      <label for="discount">輸入coupon的面額</label>
+      <input type="number" class="form-control" id="discount" name='CouponDiscount'>
+    </div>
+
+    <div class="form-group">
+      <label for="expiredDate">輸入coupon的到期日</label>
+      <input type="date" class="form-control" id="expiredDate" name='expiredDate'>
+    </div>
+
+    <div class="form-group">
+      <input type="submit" class="btn btn-primary">
+    </div>
+  </form>
+</div>

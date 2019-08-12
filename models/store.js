@@ -9,8 +9,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Store.associate = function(models) {
+  Store.associate = function (models) {
     // associations can be defined here
+    Store.hasMany(models.Coupon)
   };
   return Store;
 };
