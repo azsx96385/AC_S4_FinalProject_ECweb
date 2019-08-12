@@ -61,86 +61,90 @@ const orderController = {
   postOrder: (req, res) => {
 
     //COUPON 
-    Coupon.findByPk(req.body.couponId).then(coupon => {
-      //折抵價格
-      var subtotal = req.body.amount - coupon.discount || req.body.amount
+    if (req.body.couponId) {
+      Coupon.findByPk(req.body.couponId).then(coupon => {
+        //折抵價格
+        var subtotal = req.body.amount - coupon.discount
 
 
-      //生成使用紀錄
-      CouponsUsers.findOrCreate({
-        where: {
-          UserId: req.user.id,
-          CouponId: coupon.id,
-        }
-      }).spread((couponUser, created) => {
-        couponUser.update({
-          counts: (couponUser.counts || 0) + 1,
-        })
-
-      })
-
-
-      return Cart.findByPk(req.body.cartId, { include: [{ model: Product, as: 'items', include: [CartItem] }] }).then(cart => {
-        //建立order  
-
-        return Order.create({
-          UserId: req.user.id,
-          name: req.body.name,
-          address: req.body.address,
-          phone: req.body.phone,
-          amount: subtotal,
-          //還要處理payment跟shipment
-        }).then(order => {
-          //建立order_item
-
-          cart.items.forEach(item => { //從購物車中的item移轉到orderItem中
-
-            OrderItem.create({
-              OrderId: order.id,
-              ProductId: item.dataValues.id,
-              price: item.dataValues.price,
-              quantity: item.dataValues.Cart_item.quantity,
-            })
-          })
-          return order
-        }).then(order => {
-
-          Shipment.create({
-            OrderId: order.id,
-            ShipmentStatusId: 1,//預設為1 未出貨
-            ShipmentTypeId: req.body.shipmentType,
-
-          })
-          Payment.create({
-            OrderId: order.id,
-            PaymentStatusId: 1,//預設為1 未匯款
-            PaymentTypeId: req.body.paymentType,
-            amount: 0
-          })
-
-          return order
-        })
-          .then(order => {
-            //nodemail send mail
-            var mailOptions = {
-              from: 'vuvu0130@gmail.com',
-              to: 'vuvu0130@gmail.com',
-              subject: `${order.id} 訂單成立`,
-              text: `${order.id} 訂單成立`,
-            };
-
-            smtpTransport.sendMail(mailOptions, (error, response) => {
-              error ? console.log(error) : console.log(response);
-              smtpTransport.close();
-            });;
-            let userId = Number(req.user.id)
-            return res.redirect(`/user/${userId}/profile`)
+        //生成使用紀錄
+        CouponsUsers.findOrCreate({
+          where: {
+            UserId: req.user.id,
+            CouponId: coupon.id,
           }
-          )
+        }).spread((couponUser, created) => {
+          couponUser.update({
+            counts: (couponUser.counts || 0) + 1,
+          })
 
+        })
       })
+    }
+    else {
+      var subtotal = req.body.amount
+    }
+    return Cart.findByPk(req.body.cartId, { include: [{ model: Product, as: 'items', include: [CartItem] }] }).then(cart => {
+      //建立order  
+
+      return Order.create({
+        UserId: req.user.id,
+        name: req.body.name,
+        address: req.body.address,
+        phone: req.body.phone,
+        amount: subtotal || req.body.amount,
+        //還要處理payment跟shipment
+      }).then(order => {
+        //建立order_item
+
+        cart.items.forEach(item => { //從購物車中的item移轉到orderItem中
+
+          OrderItem.create({
+            OrderId: order.id,
+            ProductId: item.dataValues.id,
+            price: item.dataValues.price,
+            quantity: item.dataValues.Cart_item.quantity,
+          })
+        })
+        return order
+      }).then(order => {
+
+        Shipment.create({
+          OrderId: order.id,
+          ShipmentStatusId: 1,//預設為1 未出貨
+          ShipmentTypeId: req.body.shipmentType,
+
+        })
+        Payment.create({
+          OrderId: order.id,
+          PaymentStatusId: 1,//預設為1 未匯款
+          PaymentTypeId: req.body.paymentType,
+          amount: 0
+        })
+
+        return order
+      })
+        .then(order => {
+          //nodemail send mail
+          var mailOptions = {
+            from: 'vuvu0130@gmail.com',
+            to: 'vuvu0130@gmail.com',
+            subject: `${order.id} 訂單成立`,
+            text: `${order.id} 訂單成立`,
+          };
+
+          smtpTransport.sendMail(mailOptions, (error, response) => {
+            error ? console.log(error) : console.log(response);
+            smtpTransport.close();
+          });;
+          let userId = Number(req.user.id)
+          return res.redirect(`/user/${userId}/profile`)
+        }
+        )
 
     })
+
+
 
 
   },

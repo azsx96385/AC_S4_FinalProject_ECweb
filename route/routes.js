@@ -45,7 +45,7 @@ router.get(
 router.get(
   '/auth/facebook/callback',
   passport.authenticate('facebook', {
-    successRedirect: '/orderEdit',
+    successRedirect: '/cart',
     failureRedirect: '/users/login',
   })
 )
