@@ -181,12 +181,11 @@ const orderController = {
     Order.findByPk(req.params.id, {
       include: [
         User,
-        { model: Product, as: 'items' }
+        { model: Product, as: 'items', include: [CartItem] }
       ]
     }).then(order => {
-      const orderItem = order.items.map(d => d.name)
-      const tradeInfo = getTradeInfo(order.amount, orderItem, order.User.email)
-
+      const orderItemName = order.items.map(d => d.name)
+      const tradeInfo = getTradeInfo(order.amount, orderItemName, order.User.email)
       order.update({
         ...req.body,
         memo: tradeInfo.MerchantOrderNo,
