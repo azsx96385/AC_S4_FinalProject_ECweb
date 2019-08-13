@@ -43,14 +43,14 @@
       </div>
       {{#if loginUser}}
       <div class="user">
-
-        <a href="/user/{{loginUser.id}}/profile"><i class="fas fa-user"></i></a>
+        <a href="/user/{{loginUser.id}}/profile"><i class="fa fa-user-circle" aria-hidden="true"></i>我的帳號
+        </a>
+      </div>
+      {{else}}
+      <div>
+        <a href="/users/logIn?redirect=/"><i class="fas fa-user"></i>登入會員</a>
       </div>
       {{/if}}
-      <div>
-
-      </div>
-
     </div>
   </nav>
 
