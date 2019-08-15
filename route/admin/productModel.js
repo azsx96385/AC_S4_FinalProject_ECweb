@@ -1,5 +1,8 @@
+//引入需要的套件
 const express = require("express");
 let router = express.Router();
+const multer = require("multer");
+const upload = multer({ dest: "temp/" });
 //引入需要的Controller
 const productController = require("../../controllers/admin/productController");
 
@@ -12,8 +15,9 @@ router.get("/create", productController.getProductCreatePage);
 
 // 單一 | 上傳圖片
 // 單一 | 新增產品
-router.post("/create", productController.postProduct);
+router.post("/create", upload.single("image"), productController.postProduct);
 // 單一 | 刪除單一商品
+router.delete("/delete/:productId ", productController.deleteProduct);
 // 單一 | 顯示單一產品編輯頁面
 // 單一 | 編輯單一產品
 // 單一 | 更改商品狀態-上架

@@ -1,4 +1,5 @@
 const db = require("../../models");
+const fs = require("fs");
 const productCategoryModel = db.Product_category;
 const productModel = db.Product;
 const productController = {
@@ -60,12 +61,63 @@ const productController = {
   //   單一 | 上傳圖片
   //   單一 | 新增產品
   postProduct: (req, res) => {
+    //加入防呆
     console.log(req.body);
-    return res.render("admin/productmodel_editproduct", {
-      layout: "admin_main"
-    });
+    //檢查產品的新增是否有圖片
+    const { file } = req;
+    if (file) {
+      //存在圖片->從temp讀出圖片
+      fs.readFile(file.path, (err, data) => {
+        if (err) console.log("Imgur ERR:", err);
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+          return productModel
+            .create({
+              ProductCategoryId: req.body.ProductCategoryId,
+              StoreId: req.body.StoreId,
+              count: req.body.count,
+              name: req.body.name,
+              description: req.body.description,
+              launched: req.body.launched,
+              price: req.body.price,
+              image: file ? `/upload/${file.originalname}` : null
+            })
+            .then(data => {
+              console.log("成功訊息|產品已經成功新增");
+              return res.redirect("/admin/productmodel/product_mange");
+            });
+        });
+      });
+    } else {
+      return productModel
+        .create({
+          ProductCategoryId: req.body.ProductCategoryId,
+          StoreId: req.body.StoreId,
+          count: req.body.count,
+          name: req.body.name,
+          description: req.body.description,
+          launched: req.body.launched,
+          price: req.body.price,
+          image: null
+        })
+        .then(data => {
+          console.log("成功訊息|產品已經成功新增");
+          return res.redirect("/admin/productmodel/product_mange", {
+            layout: "admin_main"
+          });
+        });
+    }
   },
   //   單一 | 刪除單一商品
+  deleteProduct: (req, res) => {
+    //取得storeID-req.user.storeID
+    //取得productID-req.params
+    const productId = req.params.productId;
+    productModel.findByPk(productId).then(product => {
+      product.destroy().then(data => {
+        return res.redirect("back");
+      });
+    });
+  },
   //   單一 | 顯示單一產品編輯頁面
   //   單一 | 編輯單一產品
   //   單一 | 更改商品狀態-上架
