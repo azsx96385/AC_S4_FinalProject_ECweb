@@ -3,9 +3,9 @@
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Price</th>
-        <th scope="col">quantity</th>
-        <th scope="col">Subtotal</th>
+        <th scope="col">價格</th>
+        <th scope="col">數量</th>
+        <th scope="col">總價</th>
         <th scope="col">#</th>
       </tr>
     </thead>
@@ -41,14 +41,14 @@
         <td style="text-align: right;">
           <h2>Total: </h2>
           {{#if coupon}}
-          <h2>Discount:</h2>
-          <h2>SubToal</h2>
+          <h2>coupon折抵:</h2>
+          <h2>總共:</h2>
           {{/if}}
         </td>
         <td>
           <h2>{{totalPrice}}</h2>
           {{#if coupon}}
-          <h2>{{coupon.discount}}</h2>
+          <h2>-{{coupon.discount}}</h2>
           <h2>{{subtoal}}</h2>
           {{/if}}
         </td>

@@ -52,6 +52,12 @@ router.get(
 
 router.get("/users/logOut", userController.logOut);
 
+//忘記密碼
+router.get('/forget', userController.getForgetPasswordPage)
+router.post('/forget', userController.postResetUrl)
+router.get('/reset/:token', userController.getResetPage)
+router.post('/reset/:token', userController.postResetPassword)
+
 //-------------------商品瀏覽頁面-----------------------------------------
 router.get('/', (req, res) => res.redirect('/index'))
 router.get('/index', productController.getIndex)
