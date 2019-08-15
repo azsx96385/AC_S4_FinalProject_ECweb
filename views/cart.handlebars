@@ -1,4 +1,9 @@
 <div class="container">
+  <div class="row bg-primary text-white">
+    <h1>購物明細</h1>
+  </div>
+
+  {{#if cart.items}}
   <table class="table">
     <thead>
       <tr>
@@ -9,7 +14,6 @@
         <th scope="col">#</th>
       </tr>
     </thead>
-    {{#if cart.items}}
     <tbody>
       {{#each cart.items}}
       <tr>
@@ -81,14 +85,12 @@
         <td></td>
         <td></td>
       </tr>
-
-
-
     </tbody>
-    {{else}}
-    <div class="alert alert-secondary" role="alert">
-      你的購物車還是空的!! </div>
-
-    {{/if}}
   </table>
+  {{else}}
+  <div class="alert alert-secondary" role="alert">
+    你的購物車還是空的!! </div>
+  <a href="/" class='btn btn-primary mt-5'>回到首頁</a>
+  {{/if}}
+
 </div>
