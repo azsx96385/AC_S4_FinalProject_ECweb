@@ -87,8 +87,8 @@ router.get('/user/:id/profile', authenticated, userController.getUserProfile)
 router.post('/order/:id', orderController.cancelOrder)
 //-------------coupon----------------------------
 //-----------製作coupon------------------
-router.get('/couponMakingPage', couponController.getCouponMakePage)
-router.post('/couponMake', couponController.postCouponMake)
+router.get('/coupon/makingPage', couponController.getCouponMakePage)
+router.post('/coupon/make', couponController.postCouponMake)
 //----------使用coupon-------------------
 router.get('/enterCoupon', authenticated, couponController.enterCoupon)
 router.post('/checkCoupon', couponController.checkCoupon)
