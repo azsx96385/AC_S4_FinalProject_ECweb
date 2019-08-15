@@ -65,6 +65,8 @@ app.use((req, res, next) => {
   res.locals.error_messages = req.flash("error_messages");
 
   res.locals.loginUser = req.user;
+  res.locals.localcartItem = req.session.cartItemNum;
+
 
   next();
 });

@@ -22,7 +22,11 @@
       <ul class="navbar-nav mr-auto">
       </ul>
       <div class="cartIcon">
-        <a href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+        <a href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
+          {{#if localcartItem }}
+          <span class="bg-danger text-white rounded-circle h-5 p-1">{{localcartItem}}</span>
+          {{/if}}
+        </a>
       </div>
       <form action="/ESHOP/search">
         <div class="growing-search">
@@ -36,21 +40,17 @@
           </div>
         </div>
       </form>
-
-      <div class="cartIcon">
-        <a href="/cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
-        </a>
-      </div>
-      {{#if loginUser}}
-      <div class="user">
-        <a href="/user/{{loginUser.id}}/profile"><i class="fa fa-user-circle" aria-hidden="true"></i>我的帳號
-        </a>
-      </div>
-      {{else}}
-      <div>
-        <a href="/users/logIn?redirect=/"><i class="fas fa-user"></i>登入會員</a>
-      </div>
-      {{/if}}
+    </div>
+    {{#if loginUser}}
+    <div class="user">
+      <a href="/user/{{loginUser.id}}/profile"><i class="fa fa-user-circle" aria-hidden="true"></i>我的帳號
+      </a>
+    </div>
+    {{else}}
+    <div>
+      <a href="/users/logIn?redirect=/"><i class="fas fa-user"></i>登入會員</a>
+    </div>
+    {{/if}}
     </div>
   </nav>
 

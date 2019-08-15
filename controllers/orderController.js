@@ -47,6 +47,7 @@ const orderController = {
     return Cart.findByPk(req.session.cartId, { include: [{ model: Product, as: 'items', include: [CartItem] }] }).then(cart => {
       cart = cart || { items: [] }
       let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.Cart_item.quantity).reduce((a, b) => a + b) : 0//如果cart-item沒東西，則為0
+
       return User.findByPk(req.user.id).then(user => {
         return res.render('orderEdit', {
           cart,
@@ -58,7 +59,7 @@ const orderController = {
 
     })
   },
-  postOrder: (req, res) => {
+  postOrder: async (req, res) => {
 
     //COUPON 
     if (req.body.couponId) {
@@ -96,15 +97,14 @@ const orderController = {
         //還要處理payment跟shipment
       }).then(order => {
         //建立order_item
-
         cart.items.forEach(item => { //從購物車中的item移轉到orderItem中
-
           OrderItem.create({
             OrderId: order.id,
             ProductId: item.dataValues.id,
             price: item.dataValues.price,
             quantity: item.dataValues.Cart_item.quantity,
           })
+
         })
         return order
       }).then(order => {
@@ -137,10 +137,17 @@ const orderController = {
             error ? console.log(error) : console.log(response);
             smtpTransport.close();
           });;
+
+        }
+        ).then(() => {
+          //清除購物車與caartItem
+          Cart.destroy({ where: { id: req.body.cartId } })
+          CartItem.destroy({ where: { CartId: req.body.cartId } })
+          //清空session暫存
+          req.session.cartItemNum = 0
           let userId = Number(req.user.id)
           return res.redirect(`/user/${userId}/profile`)
-        }
-        )
+        })
 
     })
 

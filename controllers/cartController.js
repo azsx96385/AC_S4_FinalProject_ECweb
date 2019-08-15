@@ -18,12 +18,13 @@ const cartController = {
       })
     })
   },
-  postCart: (req, res) => {
+  postCart: async (req, res) => {
     return Cart.findOrCreate({//找到或創造visitor的cart
       where: {
         id: req.session.cartId || 0,//沒有，則預設為0
       }
     }).spread((cart, created) => {
+
       return CartItem.findOrCreate({
         where: {
           CartId: cart.id,
@@ -34,11 +35,13 @@ const cartController = {
           ProductId: req.body.productId,
         }
       }).spread((cartItem, created) => {
+
         return cartItem.update({
-          quantity: req.body.quantity || (cartItem.quantity || 0) + 1,
+          quantity: Number((cartItem.quantity || 0)) + Number(req.body.quantity),
         }).then((cartItem) => {
           req.session.cartId = cart.id
-
+          //加入cartItem數量         
+          req.session.cartItemNum = Number((req.session.cartItemNum || 0)) + Number(req.body.quantity)
           return req.session.save(() => {
             return res.redirect('back')
           })
@@ -52,6 +55,9 @@ const cartController = {
         quantity: cartItem.quantity + 1,
       })
         .then(cartItem => {
+          //加入cartItem數量
+          req.session.cartItemNum = (req.session.cartItemNum || 0) + 1
+
           return res.redirect('back')
         })
 
@@ -70,6 +76,7 @@ const cartController = {
           }
         }).then(
           () => {
+            req.session.cartItemNum = Number((req.session.cartItemNum || 0)) - 1
             res.redirect('back')
           }
         )
@@ -86,6 +93,9 @@ const cartController = {
       }
     }).then(
       () => {
+        //加入cartItem數量
+        req.session.cartItemNum = 0
+
         return res.redirect('back')
       }
     )
