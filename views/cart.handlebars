@@ -1,15 +1,19 @@
-<div>
+<div class="container">
+  <div class="row bg-primary text-white">
+    <h1>購物明細</h1>
+  </div>
+
+  {{#if cart.items}}
   <table class="table">
     <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Price</th>
-        <th scope="col">quantity</th>
-        <th scope="col">Subtotal</th>
+        <th scope="col">價格</th>
+        <th scope="col">數量</th>
+        <th scope="col">總價</th>
         <th scope="col">#</th>
       </tr>
     </thead>
-    {{#if cart.items}}
     <tbody>
       {{#each cart.items}}
       <tr>
@@ -52,28 +56,41 @@
           <h2>Total: </h2>
         </td>
         <td>
-          <h2>{{totalPrice}}</h2>
+          <h2>{{totalPrice}} 元</h2>
         </td>
         <td></td>
       </tr>
       <tr>
         <td></td>
-        <td><a href="/users/login?redirect=/enterCoupon" class="btn btn-primary">使用coupon</a></td>
         <td>
+          {{#if loginUser}}
+          <a href="/enterCoupon" class="btn btn-primary">使用coupon</a>
+          {{else}}
+          <a href="/users/login?redirect=/enterCoupon" class="btn btn-primary">使用coupon</a>
+          {{/if}}
+
+
+        </td>
+        <td>
+          {{#if loginUser}}
+          <a href="/orderEdit" class="btn btn-primary">
+            去買單
+          </a>
+          {{else}}
           <a href="/users/login?redirect=/orderEdit" class="btn btn-primary">
             去買單
-          </a></td>
+          </a>
+          {{/if}}
+        </td>
         <td></td>
         <td></td>
       </tr>
-
-
-
     </tbody>
-    {{else}}
-    <div class="alert alert-secondary" role="alert">
-      你的購物車還是空的!! </div>
-
-    {{/if}}
   </table>
+  {{else}}
+  <div class="alert alert-secondary" role="alert">
+    你的購物車還是空的!! </div>
+  <a href="/" class='btn btn-primary mt-5'>回到首頁</a>
+  {{/if}}
+
 </div>

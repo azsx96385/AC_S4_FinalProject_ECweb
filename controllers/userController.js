@@ -1,5 +1,5 @@
 //引入套件區
-//const bcrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 const db = require("../models");
 const User = db.User;
 const Order = db.Order;
@@ -17,6 +17,34 @@ const ShipmentType = db.Shipment_type;
 const PaymentType = db.Payment_type;
 const ShipmentStatus = db.Shipment_status;
 const PaymentStatus = db.Payment_status;
+//---------忘記密碼---------------------
+var crypto = require('crypto-js');
+/*---------------nodmailer寄信----------------------*/
+const nodemailer = require('nodemailer');
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
+const oauth2Client = new OAuth2(
+  process.env.GMAIL_CLIENT_ID, // ClientID
+  process.env.GMAIL_CLIENT_SECRET, // Client Secret
+  process.env.GOOGLE_REDIRECT_URL, // Redirect URL
+);
+oauth2Client.setCredentials({
+  refresh_token: process.env.AUTH_REFRESH_TOKEN
+});
+const accessToken = oauth2Client.getAccessToken()
+
+
+const smtpTransport = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    type: "OAuth2",
+    user: 'vuvu0130@gmail.com',
+    clientId: process.env.GMAIL_CLIENT_ID,
+    clientSecret: process.env.GMAIL_CLIENT_SECRET,
+    refreshToken: process.env.AUTH_REFRESH_TOKEN,
+    accessToken: accessToken
+  }
+});
 
 const userController = {
   //[使用者 登入 | 登出 | 註冊]
@@ -59,6 +87,8 @@ const userController = {
   },
   logInPage: (req, res) => {
     let redirectUrl = req.query.redirect
+
+
     return res.render("user_login", { redirectUrl });
   },
   logIn: (req, res) => {
@@ -66,7 +96,11 @@ const userController = {
     req.flash("success_messages", "成功訊息|你已經成功登入");
 
     let redirectUrl = req.body.redirectUrl
-    res.redirect(redirectUrl);
+    if (redirectUrl) {
+      res.redirect(redirectUrl);
+    }
+    else { res.redirect('/index') }
+
   },
 
   logOut: (req, res) => {
@@ -92,14 +126,100 @@ const userController = {
       //找出user 在從user中找到order 在從order中找到產品
       let orderInfo = user.Orders.sort((a, b) => b.id - a.id); //由id來排先後???為何createAT不管用
 
-      //找出payment shipment的 status與type
-      // console.log(orderInfo[0].ShipmentStatus[0].dataValues.shipmentStatus);
 
       return res.render("userProfile", {
         user,
         orderInfo
       });
     });
-  }
+  },
+  //-------reset password------------------
+  getForgetPasswordPage: (req, res) => {
+    res.render('forgetPasswordPage')
+  },
+  postResetUrl: async (req, res) => {
+    //除錯 未填email
+    if (!req.body.email) {
+      req.flash("error_messages", '你尚未輸入信箱!!');
+      return res.redirect('/forget');
+    }
+    //生成token
+    let token = Math.random().toString(36).substring(7)
+
+    //審核user是否存在
+    let user = await User.findOne({ where: { email: req.body.email } })
+    if (!user) {
+      req.flash("error_messages", '你的信箱並不存在');
+      return res.redirect('/forget');
+    }
+    //在user上加入token
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+    user.save(function (err) {
+      done(err, token, user);
+    });
+
+    var mailOptions = {
+      from: 'vuvu0130@gmail.com',
+      to: 'vuvu0130@gmail.com',
+      subject: `密碼重設`,
+      text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+        'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+        'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+        'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+    };
+
+    smtpTransport.sendMail(mailOptions, (error, response) => {
+      error ? console.log(error) : console.log(response);
+      smtpTransport.close();
+    });
+    req.flash("success_messages", '已寄驗證信');
+    return res.redirect(`/forget`)
+  },
+
+  getResetPage: async (req, res) => {
+    let user = User.findOne({ where: { resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } } })
+    if (!user) {
+      req.flash('error_messages', 'Password reset token is invalid or has expired.');
+      return res.redirect('/forgot');
+    }
+    res.render('reset', {
+      user: req.user,
+      token: req.params.token
+    });
+
+  },
+  postResetPassword: (req, res) => {
+
+    User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }).then(user => {
+      if (!user) {
+        req.flash('error_messages', 'Password reset token is invalid or has expired.');
+        return res.redirect('back');
+      }
+      if (req.body.password == req.body.password_confirm) {
+        //通過-寫入資料庫
+        let originPassword = req.body.password
+        let hashedPassword = bcrypt.hashSync(
+          originPassword,
+          bcrypt.genSaltSync(10),
+          null
+        );
+
+
+        user.password = hashedPassword;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        console.log(user)
+        user.save(function (err) {
+          req.logIn(user, function (err) {
+            done(err, user);
+          });
+        });
+        req.flash('')
+        return res.redirect('/users/logIn')
+      }
+    })
+  },
+
 };
 module.exports = userController;

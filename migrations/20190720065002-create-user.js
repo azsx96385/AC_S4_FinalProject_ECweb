@@ -23,8 +23,11 @@ module.exports = {
       password: {
         type: Sequelize.STRING
       },
-      emailVerf: {
-        type: Sequelize.BOOLEAN
+      resetPasswordToken: {
+        type: Sequelize.STRING
+      },
+      resetPasswordExpires: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,

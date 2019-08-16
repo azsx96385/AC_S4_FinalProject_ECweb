@@ -13,7 +13,7 @@ module.exports = {
       address: faker.address.streetAddress(),
       createdAt: new Date(),
       updatedAt: new Date(),
-      emailVerf: 0,
+
       StoreId: 0,
     }, {
       id: 2,
@@ -24,7 +24,7 @@ module.exports = {
       address: faker.address.streetAddress(),
       createdAt: new Date(),
       updatedAt: new Date(),
-      emailVerf: 0,
+
       StoreId: 0,
     }, {
       id: 3,
@@ -35,7 +35,7 @@ module.exports = {
       address: faker.address.streetAddress(),
       createdAt: new Date(),
       updatedAt: new Date(),
-      emailVerf: 0,
+
       StoreId: 0
 
     }], {})
