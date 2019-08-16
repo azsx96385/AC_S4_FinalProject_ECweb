@@ -119,6 +119,69 @@ const productController = {
     });
   },
   //   單一 | 顯示單一產品編輯頁面
+  getProduct: (req, res) => {
+    //比對 user - storeid & product 的 storeId
+    //先調出產品資料
+    const productId = req.params.productId;
+    productCategoryModel.findAll().then(categories => {
+      productModel.findByPk(productId).then(product => {
+        //相同才顯示-不相同-返回錯誤訊息
+        if (product.ProductCategoryId) {
+          return res.render("admin/productmodel_editproduct", {
+            categories: categories,
+            product: product,
+            layout: "admin_main"
+          });
+        } else {
+          console.log("錯誤訊息|你沒有權限");
+        }
+      });
+    });
+  },
+  putProduct: (req, res) => {
+    //取出產品資料&讀取req.body資料
+    //驗證product.storeID 與 user.storeID 是否相符
+    const productId = req.params.productId;
+    console.log("-----------------------", req.body);
+    const { file } = req;
+    if (file) {
+      fs.readFile(file.path, (err, data) => {
+        if (err) console.log(err);
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+          return productModel.findByPk(productId).then(product => {
+            product
+              .update({
+                ProductCategoryId: req.body.ProductCategoryId,
+                count: req.body.count,
+                name: req.body.name,
+                description: req.body.description,
+                launched: req.body.launched,
+                price: req.body.price,
+                image: file ? `/upload/${file.originalname}` : null
+              })
+              .then(data => {
+                return res.redirect("/admin/productmodel/product_mange");
+              });
+          });
+        });
+      });
+    } else {
+      return productModel.findByPk(productId).then(product => {
+        product
+          .update({
+            ProductCategoryId: req.body.ProductCategoryId,
+            count: req.body.count,
+            name: req.body.name,
+            description: req.body.description,
+            launched: req.body.launched,
+            price: req.body.price
+          })
+          .then(data => {
+            return res.redirect("/admin/productmodel/product_mange");
+          });
+      });
+    }
+  },
   //   單一 | 編輯單一產品
   //   單一 | 更改商品狀態-上架
   //   單一 | 更改商品狀態-下架

@@ -12,14 +12,18 @@ const productController = require("../../controllers/admin/productController");
 router.get("/product_mange", productController.getProductManagePage);
 // 單一 | 顯示新增單一商品頁面
 router.get("/create", productController.getProductCreatePage);
-
-// 單一 | 上傳圖片
 // 單一 | 新增產品
 router.post("/create", upload.single("image"), productController.postProduct);
 // 單一 | 刪除單一商品
-router.delete("/delete/:productId ", productController.deleteProduct);
+router.delete("/delete/:productId", productController.deleteProduct);
 // 單一 | 顯示單一產品編輯頁面
+router.get("/update/:productId", productController.getProduct);
 // 單一 | 編輯單一產品
+router.put(
+  "/update/:productId",
+  upload.single("image"),
+  productController.putProduct
+);
 // 單一 | 更改商品狀態-上架
 // 單一 | 更改商品狀態-下架
 // 批次 | 變更產品狀態-上架

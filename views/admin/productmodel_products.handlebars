@@ -72,14 +72,20 @@
                             <td>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <button type="button" class="btn btn-outline-secondary">編輯</button>
+                                        <a href="/admin/productmodel/update/{{this.id}}"
+                                            class="btn btn-outline-secondary">編輯</a>
                                         <button type="button"
                                             class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
                                             data-toggle="dropdown"></button>
                                         <div class="dropdown-menu">
                                             <a href="" class="dropdown-item">上架</a>
                                             <a href="" class="dropdown-item">下架</a>
-                                            <a href="" class="dropdown-item">刪除</a>
+                                            <form action="/admin/productmodel/delete/{{this.id}}?_method=DELETE"
+                                                method="POST">
+                                                <button class="dropdown-item" type="submit">刪除
+                                                </button>
+                                            </form>
+
                                         </div>
                                     </div>
                                 </div>
