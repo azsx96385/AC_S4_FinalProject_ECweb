@@ -5,7 +5,9 @@ const {
   Product_category,
   Product,
   Comment,
-  User
+  User,
+  Order,
+  Payment_status
 } = db
 
 const productController = {
@@ -59,7 +61,14 @@ const productController = {
     Product.findByPk(req.params.id, {
       include: [
         { model: Product_category, include: [Product] },
-        { model: Comment, include: [User, Product] }
+        { model: Comment, include: [User, Product] },
+        {
+          model: Order, as: 'orders',
+          include: [
+            User,
+            { model: Payment_status, as: 'PaymentStatus' }
+          ]
+        }
       ]
     }).then(product => {
       const comment = product.Comments.map(r => ({
@@ -74,13 +83,19 @@ const productController = {
         ...r.dataValues,
         description: r.dataValues.description.substring(0, 50),
       }))
-
       productsFilter = products.slice(0, 4)
 
       Product_category.findAll().then(categories => {
         const ratingAve = average(comment)
+        const orders = product.orders
 
-        res.render('product', { product, categories, productsFilter, ratingAve })
+        res.render('product', {
+          product,
+          categories,
+          productsFilter,
+          ratingAve,
+          orders
+        })
       })
     })
   },

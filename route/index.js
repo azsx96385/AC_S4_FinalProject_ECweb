@@ -71,6 +71,7 @@ module.exports = (app, passport) => {
   app.post("/cartItem/:id/sub", cartController.subCartItem);
   //刪除購物車的商品
   app.delete("/cartItem/:id", cartController.deleteCartItem);
+
   //-------------------------------------------訂單--------------------------------------
   //訂單編輯畫面
   app.get("/orderEdit", authenticated, orderController.getOrderEdit);
@@ -80,4 +81,10 @@ module.exports = (app, passport) => {
   app.get("/user/:id/profile", authenticated, userController.getUserProfile);
   //刪除訂單
   //app.delete("/order/:id", orderController.deleteOrder);
+
+  //------------------------------------付款---------------------------------------------
+  //付款頁面
+  app.get("/order/:id/payment", authenticated, orderController.getPayment)
+  //callback
+  app.post("/spgateway/callback", authenticated, orderController.spgatewayCallback)
 };

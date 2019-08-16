@@ -93,7 +93,7 @@ const userController = {
       let orderInfo = user.Orders.sort((a, b) => b.id - a.id); //由id來排先後???為何createAT不管用
 
       //找出payment shipment的 status與type
-      console.log(orderInfo[0].ShipmentStatus[0].dataValues.shipmentStatus);
+      // console.log(orderInfo[0].ShipmentStatus[0].dataValues.shipmentStatus);
 
       return res.render("userProfile", {
         user,

@@ -112,7 +112,7 @@ hr {
 }
 
 .growing-search .input input:focus {
-	width: 150px;
+	width: 250px;
 }
 
 .growing-search .submit button {
