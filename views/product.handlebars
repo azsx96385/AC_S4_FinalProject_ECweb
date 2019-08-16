@@ -71,9 +71,6 @@
     {{#each productsFilter}}
     <div class="col-md-3">
       <div class="card mb-4 shadow-sm">
-        {{!-- {{#ifCond this.id ../product.id}}
-
-        {{else}} --}}
         <a href="/product/{{this.id}}">
           <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="320px" height="180px">
         </a>
@@ -94,7 +91,6 @@
             </form>
           </div>
         </div>
-        {{!-- {{/ifCond}} --}}
       </div>
     </div>
     {{/each}}
@@ -114,9 +110,11 @@
         <small>{{this.User.name}} －{{moment this.createdAt}}</small>
       </div>
       <div class="list-group-item  list-group-item-action">
+        {{#ifCond this.User.id ../loginUser.id}}
         <form action="/product/{{Product.id}}/rate/{{this.id}}?_method=DELETE" method="POST" style="float: right;">
           <button type="submit" class="btn btn-danger">x</button>
         </form>
+        {{/ifCond}}
         <span class="stars d-flex mb-3 mt-2">
           {{#star this.rating}}{{/star}}
         </span>
@@ -126,11 +124,15 @@
     </div>
   </div>
 
+  {{#each orders}}
+  {{#ifCond this.User.id ../loginUser.id}}
+  {{#each this.PaymentStatus}}
+  {{#ifCond this.paymentStatus '已匯款'}}
   <h4 class="mt-5 mb-5">留下您的評論：</h4>
 
-  <form action="/product/{{product.id}}/rate" method="POST">
+  <form action="/product/{{../../product.id}}/rate" method="POST">
     <div class="form-group col-11">
-      <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="登入後即可評論商品"></textarea>
+      <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="請在此輸入內容"></textarea>
     </div>
 
     <p class="mb-3 d-flex align-items-center">
@@ -147,9 +149,13 @@
     </p>
 
 
-    <input type="hidden" name="ProductId" value="{{product.id}}" />
+    <input type="hidden" name="ProductId" value="{{../../product.id}}" />
     <button type="submit" class="btn btn-primary ml-3 mt-2">送出評論</button>
   </form>
+  {{/ifCond}}
+  {{/each}}
+  {{/ifCond}}
+  {{/each}}
 </div>
 
 <br />

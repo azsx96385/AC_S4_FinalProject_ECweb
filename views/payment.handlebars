@@ -1,0 +1,27 @@
+<div class="container py-5">
+  <div class="card w-100">
+    <div class="card-header">
+      <h3>準備為訂單編號： NO.{{order.id}} 付款 </h3>
+    </div>
+    <div class="card-body">
+      {{#each order.items}}
+      <h5 class="mb-2">{{this.name}} * {{#each this.Cart_items}}{{#if @last}}{{this.quantity}}{{/if}}{{/each}}</h5>
+      {{/each}}
+    </div>
+    <div class="card-footer mt-5">
+      <h4>總價 NT $ {{order.amount}} </h4>
+    </div>
+  </div>
+
+  <form name='Spgateway' action='{{tradeInfo.PayGateWay}}' method="POST">
+    {{!-- MerchantID: --}}
+    <input class="form-control mt-2" type="hidden" name="MerchantID" value="{{tradeInfo.MerchantID}}"><br>
+    {{!-- TradeInfo: --}}
+    <input class="form-control mt-2" type="hidden" name="TradeInfo" value="{{tradeInfo.TradeInfo}}"><br>
+    {{!-- TradeSha: --}}
+    <input class="form-control mt-2" type="hidden" name="TradeSha" value="{{tradeInfo.TradeSha}}"><br>
+    {{!-- Version: --}}
+    <input class="form-control mt-2" type="hidden" name="Version" value="{{tradeInfo.Version}}"><br>
+    <button type="submit" class="btn btn-primary mt-2">付款</button>
+  </form>
+</div>

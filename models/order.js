@@ -50,8 +50,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       foreignKey: 'OrderId'
     })
-
-
+    Order.hasMany(models.Payment)
   };
   return Order;
 };

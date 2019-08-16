@@ -126,8 +126,6 @@ const userController = {
       //找出user 在從user中找到order 在從order中找到產品
       let orderInfo = user.Orders.sort((a, b) => b.id - a.id); //由id來排先後???為何createAT不管用
 
-      //找出payment shipment的 status與typ
-
 
       return res.render("userProfile", {
         user,
