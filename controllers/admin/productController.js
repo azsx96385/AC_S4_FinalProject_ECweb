@@ -2,6 +2,7 @@ const db = require("../../models");
 const fs = require("fs");
 const productCategoryModel = db.Product_category;
 const productModel = db.Product;
+const imgur = require('imgur-node-api')
 const productController = {
   //  顯示產品管理頁面
   getProductManagePage: (req, res) => {
@@ -58,7 +59,6 @@ const productController = {
       });
     });
   },
-  //   單一 | 上傳圖片
   //   單一 | 新增產品
   postProduct: (req, res) => {
     //加入防呆
@@ -66,27 +66,28 @@ const productController = {
     //檢查產品的新增是否有圖片
     const { file } = req;
     if (file) {
-      //存在圖片->從temp讀出圖片
-      fs.readFile(file.path, (err, data) => {
-        if (err) console.log("Imgur ERR:", err);
-        fs.writeFile(`upload/${file.originalname}`, data, () => {
-          return productModel
-            .create({
-              ProductCategoryId: req.body.ProductCategoryId,
-              StoreId: req.body.StoreId,
-              count: req.body.count,
-              name: req.body.name,
-              description: req.body.description,
-              launched: req.body.launched,
-              price: req.body.price,
-              image: file ? `/upload/${file.originalname}` : null
-            })
-            .then(data => {
-              console.log("成功訊息|產品已經成功新增");
-              return res.redirect("/admin/productmodel/product_mange");
-            });
-        });
-      });
+      imgur.setClientID(process.env.IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (err, img) => {
+
+        if (err) console.log(err)
+        return productModel
+          .create({
+            ProductCategoryId: req.body.ProductCategoryId,
+            StoreId: req.body.StoreId,
+            count: req.body.count,
+            name: req.body.name,
+            description: req.body.description,
+            launched: req.body.launched,
+            price: req.body.price,
+            image: file ? img.data.link : null
+          })
+          .then(data => {
+            console.log("成功訊息|產品已經成功新增");
+            return res.redirect("/admin/productmodel/product_mange");
+          });
+
+      })
+
     } else {
       return productModel
         .create({
@@ -120,9 +121,9 @@ const productController = {
   },
   //   單一 | 顯示單一產品編輯頁面
   getProduct: (req, res) => {
-    //比對 user - storeid & product 的 storeId
     //先調出產品資料
     const productId = req.params.productId;
+    //比對 user - storeid & product 的 storeId
     productCategoryModel.findAll().then(categories => {
       productModel.findByPk(productId).then(product => {
         //相同才顯示-不相同-返回錯誤訊息
@@ -142,29 +143,29 @@ const productController = {
     //取出產品資料&讀取req.body資料
     //驗證product.storeID 與 user.storeID 是否相符
     const productId = req.params.productId;
-    console.log("-----------------------", req.body);
     const { file } = req;
     if (file) {
-      fs.readFile(file.path, (err, data) => {
-        if (err) console.log(err);
-        fs.writeFile(`upload/${file.originalname}`, data, () => {
-          return productModel.findByPk(productId).then(product => {
-            product
-              .update({
-                ProductCategoryId: req.body.ProductCategoryId,
-                count: req.body.count,
-                name: req.body.name,
-                description: req.body.description,
-                launched: req.body.launched,
-                price: req.body.price,
-                image: file ? `/upload/${file.originalname}` : null
-              })
-              .then(data => {
-                return res.redirect("/admin/productmodel/product_mange");
-              });
-          });
+      console.log('xxxxxx', file.path)
+      imgur.setClientID(process.env.IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (err, img) => {
+        console.log(img.data.link)
+        if (err) console.log(err)
+        return productModel.findByPk(productId).then(product => {
+          product
+            .update({
+              ProductCategoryId: req.body.ProductCategoryId,
+              count: req.body.count,
+              name: req.body.name,
+              description: req.body.description,
+              launched: req.body.launched,
+              price: req.body.price,
+              image: file ? img.data.link : null
+            })
+            .then(data => {
+              return res.redirect("/admin/productmodel/product_mange");
+            });
         });
-      });
+      })
     } else {
       return productModel.findByPk(productId).then(product => {
         product
@@ -185,6 +186,23 @@ const productController = {
   //   單一 | 編輯單一產品
   //   單一 | 更改商品狀態-上架
   //   單一 | 更改商品狀態-下架
+  putProductLauched: (req, res) => {
+    const { productId, launched } = req.query;
+    return productModel.findByPk(productId).then(product => {
+      //驗證storeID 
+      console.log('更動前', product.launched)
+      //驗證通過-修改上下架
+      if (launched === '1') {
+        product.update({ launched: true })
+        console.log('系統通知｜產品已上架')
+      } else if (launched === '0') {
+        product.update({ launched: false })
+        console.log('系統通知｜產品已下架')
+      }
+      console.log('更動後', product.launched)
+      res.redirect('back')
+    })
+  },
   //   批次 | 變更產品狀態-上架
   //   批次 | 變更產品狀態-下架
   //   批次 | 變更刪除產品

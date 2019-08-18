@@ -78,8 +78,20 @@
                                             class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
                                             data-toggle="dropdown"></button>
                                         <div class="dropdown-menu">
-                                            <a href="" class="dropdown-item">上架</a>
-                                            <a href="" class="dropdown-item">下架</a>
+                                            {{#if this.launched}}
+                                            <form
+                                                action="/admin/productmodel/update?_method=PUT&productId={{this.id}}&launched=0"
+                                                method="post">
+                                                <button type="submit" class="dropdown-item">下架</button>
+                                            </form>
+                                            {{else}}
+                                            <form
+                                                action="/admin/productmodel/update?_method=PUT&productId={{this.id}}&launched=1"
+                                                method="post">
+                                                <button type="submit" class="dropdown-item">上架</button>
+                                            </form>
+
+                                            {{/if}}
                                             <form action="/admin/productmodel/delete/{{this.id}}?_method=DELETE"
                                                 method="POST">
                                                 <button class="dropdown-item" type="submit">刪除

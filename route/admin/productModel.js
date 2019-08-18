@@ -16,6 +16,11 @@ router.get("/create", productController.getProductCreatePage);
 router.post("/create", upload.single("image"), productController.postProduct);
 // 單一 | 刪除單一商品
 router.delete("/delete/:productId", productController.deleteProduct);
+// 單一 | 更改商品狀態-下架/上架
+router.put(
+  "/update",
+  productController.putProductLauched
+);
 // 單一 | 顯示單一產品編輯頁面
 router.get("/update/:productId", productController.getProduct);
 // 單一 | 編輯單一產品
@@ -24,8 +29,8 @@ router.put(
   upload.single("image"),
   productController.putProduct
 );
-// 單一 | 更改商品狀態-上架
-// 單一 | 更改商品狀態-下架
+
+
 // 批次 | 變更產品狀態-上架
 // 批次 | 變更產品狀態-下架
 // 批次 | 變更刪除產品
