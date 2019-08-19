@@ -11,6 +11,8 @@ module.exports = {
         email: "root@example.com",
         password: bcrypt.hashSync("12345678", bcrypt.genSaltSync(10), null),
         address: faker.address.streetAddress(),
+        resetPasswordToken: null,
+        resetPasswordExpires: null,
         createdAt: new Date(),
         updatedAt: new Date(),
         emailVerf: 0
@@ -21,6 +23,8 @@ module.exports = {
         email: "user1@example.com",
         password: bcrypt.hashSync("12345678", bcrypt.genSaltSync(10), null),
         address: faker.address.streetAddress(),
+        resetPasswordToken: null,
+        resetPasswordExpires: null,
         createdAt: new Date(),
         updatedAt: new Date(),
         emailVerf: 0
@@ -31,6 +35,8 @@ module.exports = {
         email: "user2@example.com",
         password: bcrypt.hashSync("12345678", bcrypt.genSaltSync(10), null),
         address: faker.address.streetAddress(),
+        resetPasswordToken: null,
+        resetPasswordExpires: null,
         createdAt: new Date(),
         updatedAt: new Date(),
         emailVerf: 0
@@ -41,6 +47,8 @@ module.exports = {
         email: "user3@example.com",
         password: bcrypt.hashSync("12345678", bcrypt.genSaltSync(10), null),
         address: faker.address.streetAddress(),
+        resetPasswordToken: null,
+        resetPasswordExpires: null,
         createdAt: new Date(),
         updatedAt: new Date(),
         emailVerf: 0

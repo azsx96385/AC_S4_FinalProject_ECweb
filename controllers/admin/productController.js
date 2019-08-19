@@ -2,7 +2,7 @@ const db = require("../../models");
 const fs = require("fs");
 const productCategoryModel = db.Product_category;
 const productModel = db.Product;
-const imgur = require('imgur-node-api')
+const imgur = require("imgur-node-api");
 const productController = {
   //  顯示產品管理頁面
   getProductManagePage: (req, res) => {
@@ -66,10 +66,9 @@ const productController = {
     //檢查產品的新增是否有圖片
     const { file } = req;
     if (file) {
-      imgur.setClientID(process.env.IMGUR_CLIENT_ID)
+      imgur.setClientID(process.env.IMGUR_CLIENT_ID);
       imgur.upload(file.path, (err, img) => {
-
-        if (err) console.log(err)
+        if (err) console.log(err);
         return productModel
           .create({
             ProductCategoryId: req.body.ProductCategoryId,
@@ -85,9 +84,7 @@ const productController = {
             console.log("成功訊息|產品已經成功新增");
             return res.redirect("/admin/productmodel/product_mange");
           });
-
-      })
-
+      });
     } else {
       return productModel
         .create({
@@ -145,11 +142,11 @@ const productController = {
     const productId = req.params.productId;
     const { file } = req;
     if (file) {
-      console.log('xxxxxx', file.path)
-      imgur.setClientID(process.env.IMGUR_CLIENT_ID)
+      console.log("xxxxxx", file.path);
+      imgur.setClientID(process.env.IMGUR_CLIENT_ID);
       imgur.upload(file.path, (err, img) => {
-        console.log(img.data.link)
-        if (err) console.log(err)
+        console.log(img.data.link);
+        if (err) console.log(err);
         return productModel.findByPk(productId).then(product => {
           product
             .update({
@@ -165,7 +162,7 @@ const productController = {
               return res.redirect("/admin/productmodel/product_mange");
             });
         });
-      })
+      });
     } else {
       return productModel.findByPk(productId).then(product => {
         product
@@ -189,19 +186,19 @@ const productController = {
   putProductLauched: (req, res) => {
     const { productId, launched } = req.query;
     return productModel.findByPk(productId).then(product => {
-      //驗證storeID 
-      console.log('更動前', product.launched)
+      //驗證storeID
+      console.log("更動前", product.launched);
       //驗證通過-修改上下架
-      if (launched === '1') {
-        product.update({ launched: true })
-        console.log('系統通知｜產品已上架')
-      } else if (launched === '0') {
-        product.update({ launched: false })
-        console.log('系統通知｜產品已下架')
+      if (launched === "1") {
+        product.update({ launched: true });
+        console.log("系統通知｜產品已上架");
+      } else if (launched === "0") {
+        product.update({ launched: false });
+        console.log("系統通知｜產品已下架");
       }
-      console.log('更動後', product.launched)
-      res.redirect('back')
-    })
+      console.log("更動後", product.launched);
+      res.redirect("back");
+    });
   },
   //   批次 | 變更產品狀態-上架
   //   批次 | 變更產品狀態-下架
