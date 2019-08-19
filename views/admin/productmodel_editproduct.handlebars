@@ -1,84 +1,126 @@
 <div class="productmodel_editproduct col-12">
-    {{> message_edit_product}}
+
     {{!-- 產品編輯表單 --}}
-    <form action="" class="edit_form card my-4">
+    {{#if product}}
+    <form action="/admin/productmodel/update/{{product.id}}?_method=PUT" method="POST" class="edit_form my-4"
+        enctype="multipart/form-data">
+        {{else}}
+        <form action="/admin/productmodel/create" method="POST" class="edit_form my-4" enctype="multipart/form-data">
+            {{/if}}
+            {{> message_edit_product}}
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#productImg" data-toggle="tab" role="tab">主要圖片</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="#productDetail" data-toggle="tab" role="tab">商品資訊</a>
+                        </li>
 
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#productImg" data-toggle="tab" role="tab">主要圖片</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#productDetail" data-toggle="tab" role="tab">商品資訊</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link " href="#productMountPrice" data-toggle="tab" role="tab">數量與價格</a>
-                </li>
-            </ul>
-        </div>
-        <div class="card-body tab-content ">
-            {{!-- 分頁-上傳照片 --}}
-            <div id="productImg" class="tab-pane fade show active" role="tabpanel">
-                <p class="text-primary">商品主要圖片</p>
-                <hr>
-                <div class="img_upload text-center   border-secondary p-3" style="border-style: dotted;">
-                    <p>拖放圖片到這裡</p>
-                    <button class="btn btn-primary btn-sm">新增圖片</button>
-
+                        <li class="nav-item">
+                            <a class="nav-link " href="#productMountPrice" data-toggle="tab" role="tab">數量與價格</a>
+                        </li>
+                    </ul>
                 </div>
-                {{!-- 照片預覽區 --}}
-                <div class="img_preview">
-                    {{!-- 照片預覽項目 --}}
-                    {{!-- <div class="img_item">
+                <div class="card-body tab-content ">
+                    {{!-- 分頁-上傳照片 --}}
+                    <div id="productImg" class="tab-pane fade show active" role="tabpanel">
+                        <p class="text-primary">商品主要圖片</p>
+                        <hr>
+                        {{#if product}}
+                        <img class="w-25 p-3" src="{{product.image}}" alt="產品圖片">
+                        {{/if}}
+                        <hr>
+                        <div class="img_upload text-center   border-secondary p-3" style="border-style: dotted;">
+                            <p>拖放圖片到這裡</p>
+                            <input type="file" name="image" class="btn btn-primary btn-sm" id="image">
+                        </div>
+                        {{!-- 照片預覽區 --}}
+                        <div class="img_preview">
+                            {{!-- 照片預覽項目 --}}
+                            {{!-- <div class="img_item">
                     <img src="" alt="">
                     <a href="">delete</a>
                 </div> --}}
+                        </div>
+                    </div>
+
+                    {{!-- 分頁-編輯產品內文 --}}
+                    <div id="productDetail" class="tab-pane fade" role="tabpanel">
+                        <p class="text-primary">商品資訊</p>
+                        <hr>
+                        <input type="hidden" name="StoreId" value="1" id="name">
+                        <div class="product_title form-group">
+                            <label for="product_name">商品狀態</label>
+                            {{#if product}}
+                            {{#if ../product.launched}}
+                            <select class="form-control" name="launched" id="CategoryId">
+                                <option value="0">下架</option>
+                                <option value="1" selected='1'>上架</option>
+                            </select>
+                            {{else}}
+                            <select class="form-control" name="launched" id="CategoryId">
+                                <option value="0" selected='0'>下架</option>
+                                <option value="1">上架</option>
+                            </select>
+                            {{/if}}
+                            {{else}}
+                            <select class="form-control" name="launched" id="CategoryId">
+                                <option value="0">下架</option>
+                                <option value="1">上架</option>
+                            </select>
+                            {{/if}}
+                        </div>
+                        <div class="product_title form-group">
+                            <label for="product_name">商品類別</label>
+                            <select class="form-control" name="ProductCategoryId" id="ProductCategoryId">
+                                {{#each categories}}
+                                <option value="{{this.id}}">{{this.name}}</option>
+                                {{#ifCond this.id ../product.ProductCategoryId}}
+                                <option value="{{this.id}}" selected='{{../product.ProductCategoryId}}'>{{this.name}}
+                                </option>
+                                {{/ifCond}}
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="product_title form-group">
+                            <label for="product_name">商品名稱</label>
+                            <input type="text" class="form-control" name="name" id="name"
+                                {{#if product.name}}value='{{product.name}}' {{/if}}>
+                        </div>
+                        <div class="product_description form-group">
+                            <label for="product_description">商品描述</label>
+                            <textarea class="form-control" name="description" id="description" cols="30"
+                                rows="5">{{#if product.description}}  {{product.description}} {{/if}}</textarea>
+                        </div>
+                    </div>
+
+                    {{!-- 分頁-數量價格 --}}
+                    <div id="productMountPrice" class="tab-pane fade" role="tabpanel">
+                        <p class="text-primary">價格</p>
+                        <hr>
+                        {{!-- 產品售價 --}}
+                        <div class="form-group price">
+                            <label for="">價格</label>
+                            <input class="form-control" name="price" type="text"
+                                {{#if product.price}}value='{{product.price}}' {{/if}}>
+                        </div>
+
+                        <p class="text-primary">數量</p>
+                        <hr>
+                        {{!-- 產品存貨 --}}
+                        <div class="form-group product_amount">
+                            <label for="">數量</label>
+                            <input class="form-control" name="count" type="text"
+                                {{#if product.count}}value='{{product.count}}' {{/if}}>
+                        </div>
+                    </div>
                 </div>
+
             </div>
 
-            {{!-- 分頁-編輯產品內文 --}}
-            <div id="productDetail" class="tab-pane fade" role="tabpanel">
-                <p class="text-primary">商品資訊</p>
-                <hr>
-                <div class="product_title form-group">
-                    <label for="product_name">商品名稱</label>
-                    <input type="text" class="form-control" name="product_name" id="product_name">
-                </div>
-                <div class="product_description form-group">
-                    <label for="product_description">商品描述</label>
-                    <textarea class="form-control" name="product_description" id="product_description" cols="30" rows="5"></textarea>
-                </div>
-            </div>
+            {{> message_edit_product}}
+        </form>
 
-            {{!-- 分頁-數量價格 --}}
-            <div id="productMountPrice" class="tab-pane fade" role="tabpanel">
-                <p class="text-primary">價格</p>   
-                <hr>
-                {{!-- 產品建議售價 --}}
-                <div class="form-group price">
-                    <label for="">原價格</label>
-                    <input class="form-control" type="text">
-                </div>
-                {{!-- 產品打折售價 --}}
-                <div class="form-group discount_price mb-5">
-                    <label for="">特價</label>
-                    <input class="form-control"  type="text">
-                </div>
-                <p class="text-primary">數量</p>
-                <hr>
-                {{!-- 產品存貨 --}}
-                <div class="form-group product_amount">
-                    <label for="">數量</label>
-                    <input class="form-control" type="text">
-                </div>
-            </div>
-
-        </div>
-
-
-
-
-    </form>
-    {{> message_edit_product}}
 </div>
