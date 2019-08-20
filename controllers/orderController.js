@@ -141,27 +141,27 @@ const orderController = {
             error ? console.log(error) : console.log(response);
             smtpTransport.close();
           });;
-
+          return order
 
         }
-        ).then(() => {
+        ).then(order => {
           //清除購物車與caartItem
           Cart.destroy({ where: { id: req.body.cartId } })
           CartItem.destroy({ where: { CartId: req.body.cartId } })
           //清空session暫存
           req.session.cartItemNum = 0
-          let userId = Number(req.user.id)
-          return res.redirect(`/user/${userId}/profile`)
-        })
-
-
+          //導向付款
           const PaymentTypeId = req.body.paymentType
           const userId = req.user.id
           if (PaymentTypeId === '2') return res.redirect(`/user/${userId}/profile`)
           return res.redirect(`order/${order.id}/payment`)
+
         })
+
+
     })
   },
+
 
   cancelOrder: (req, res) => {
     Order.findByPk(req.params.id, { include: [{ model: Shipment_status, as: 'ShipmentStatus' }, { model: Shipment_type, as: 'ShipmentType' }] }).then(order => {

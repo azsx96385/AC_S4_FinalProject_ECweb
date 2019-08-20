@@ -1,7 +1,6 @@
 {
-  "name": "ac_s4_final_project_ecweb",
+  "name": "q",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
@@ -45,5 +44,14 @@
   "devDependencies": {
     "sequelize-test-helpers": "^1.0.7",
     "supertest": "^3.3.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/azsx96385/AC_S4_FinalProject_ECweb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/azsx96385/AC_S4_FinalProject_ECweb/issues"
+  },
+  "homepage": "https://github.com/azsx96385/AC_S4_FinalProject_ECweb#readme",
+  "description": ""
 }

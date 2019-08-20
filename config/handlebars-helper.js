@@ -19,5 +19,13 @@ module.exports = {
     const grayNum = Math.floor(5 - startsNum)
     const decimalNum = (startsNum - yellowNum).toFixed(1)
     return getStarts(yellowNum, decimalNum, grayNum)
-  }
+  },
+  ifExpired: function (a, options) {
+    let today = new Date()
+    if (a < today) {
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  },
+
 };
