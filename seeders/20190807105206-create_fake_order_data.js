@@ -111,7 +111,7 @@ module.exports = {
       [1, 2, 3].map((item, index) => ({
         OrderId: item,
         ShipmentStatusId: Math.floor(Math.random() * 7),
-        ShipmentTypeId: Math.floor(Math.random() * 3),
+        ShipmentTypeId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       }))
@@ -122,7 +122,7 @@ module.exports = {
       [1, 2, 3].map((item, index) => ({
         OrderId: item,
         PaymentStatusId: Math.floor(Math.random() * 4),
-        PaymentTypeId: Math.floor(Math.random() * 4),
+        PaymentTypeId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       }))

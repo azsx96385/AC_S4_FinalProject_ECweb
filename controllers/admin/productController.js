@@ -3,6 +3,7 @@ const fs = require("fs");
 const productCategoryModel = db.Product_category;
 const productModel = db.Product;
 const imgur = require("imgur-node-api");
+
 const productController = {
   //  顯示產品管理頁面
   getProductManagePage: (req, res) => {

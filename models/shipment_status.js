@@ -7,17 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Shipment_status.associate = function (models) {
+  Shipment_status.associate = function(models) {
     // associations can be defined here
-    Shipment_status.belongsToMany(models.Order,
-      {
-        through: models.Shipment,
-        foreginKey: 'ShipmentStatusId',
-        as: 'ShipmentStatusToOrder'
-
-      })
-
-
   };
   return Shipment_status;
 };

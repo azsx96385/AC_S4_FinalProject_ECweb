@@ -10,8 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Payment.associate = function (models) {
-    Payment.belongsTo(models.Order)
+  Payment.associate = function(models) {
+    // Payment.belongsTo(models.Order);
+    Payment.belongsTo(models.Order);
+    Payment.belongsTo(models.Payment_status);
+    Payment.belongsTo(models.Payment_type);
   };
   return Payment;
 };
