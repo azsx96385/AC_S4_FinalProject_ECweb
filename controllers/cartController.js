@@ -35,31 +35,47 @@ const cartController = {
           ProductId: req.body.productId,
         }
       }).spread((cartItem, created) => {
-
-        return cartItem.update({
-          quantity: Number((cartItem.quantity || 0)) + Number(req.body.quantity),
-        }).then((cartItem) => {
-          req.session.cartId = cart.id
-          //加入cartItem數量         
-          req.session.cartItemNum = Number((req.session.cartItemNum || 0)) + Number(req.body.quantity)
-          return req.session.save(() => {
+        //檢查商品庫存
+        Product.findByPk(req.body.productId).then(product => {
+          if (product.count < req.body.quantity) {
+            req.flash("error_messages", "庫存不足");
             return res.redirect('back')
+          }
+          return cartItem.update({
+            quantity: Number((cartItem.quantity || 0)) + Number(req.body.quantity),
+          }).then((cartItem) => {
+            req.session.cartId = cart.id
+            //加入cartItem數量         
+            req.session.cartItemNum = Number((req.session.cartItemNum || 0)) + Number(req.body.quantity)
+            return req.session.save(() => {
+              return res.redirect('back')
+            })
           })
         })
+
+
       })
     })
   },
   addCartItem: (req, res) => {
-    return CartItem.findByPk(req.params.id).then(cartItem => {
-      cartItem.update({
-        quantity: cartItem.quantity + 1,
-      })
-        .then(cartItem => {
-          //加入cartItem數量
-          req.session.cartItemNum = (req.session.cartItemNum || 0) + 1
-
-          return res.redirect('back')
+    CartItem.findByPk(req.params.id, { include: [Product] }).then(cartItem => {
+      //檢查商品的庫存是否足夠    
+      if (cartItem.Product.count < (cartItem.quantity + 1)) {
+        req.flash('error_messages', '庫存不足')
+        return res.redirect('back')
+      }
+      else {
+        return cartItem.update({
+          quantity: cartItem.quantity + 1,
         })
+          .then(cartItem => {
+            //加入cartItem數量
+            req.session.cartItemNum = (req.session.cartItemNum || 0) + 1
+
+            return res.redirect('back')
+          })
+      }
+
 
     })
   },

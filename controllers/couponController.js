@@ -20,7 +20,9 @@ const Shipment_type = db.Shipment_type
 
 const couponController = {
   getCouponMakePage: (req, res) => {
-    res.render('couponMake')
+    let today = new Date
+    //將今日傳入，限定coupon的expireDate不能早於今天
+    res.render('couponMake', { today })
   },
   postCouponMake: (req, res) => {
     //產生亂數 couponCode
