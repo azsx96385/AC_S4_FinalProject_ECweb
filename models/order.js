@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       UserId: DataTypes.INTEGER,
       StoreId: DataTypes.INTEGER,
+      OrderStatusId: DataTypes.INTEGER,
       name: DataTypes.STRING,
       amount: DataTypes.INTEGER,
       phone: DataTypes.STRING,
@@ -15,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   Order.associate = function(models) {
     // associations can be defined here
+    Order.belongsTo(models.Order_status);
     Order.belongsToMany(models.Product, {
       as: "items",
       through: {

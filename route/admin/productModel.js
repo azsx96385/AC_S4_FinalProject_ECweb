@@ -38,11 +38,7 @@ router.put(
 // 顯示全部訂單頁面
 router.get("/order_mange", orderController.getOrderManagePage);
 // 單一 | 顯示單筆訂單
-router.get("/order_mange/:id", (req, res) => {
-  return res.render("admin/productmodel_orderdetail", {
-    layout: "admin_main"
-  });
-});
+router.get("/order_mange/:id", orderController.getOrder);
 
 // 顯示訂單處理中頁面
 // 顯示未付款頁面

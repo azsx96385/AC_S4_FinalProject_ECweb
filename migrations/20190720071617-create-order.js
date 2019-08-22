@@ -14,6 +14,9 @@ module.exports = {
       StoreId: {
         type: Sequelize.INTEGER
       },
+      OrderStatusId: {
+        type: Sequelize.INTEGER
+      },
       name: {
         type: Sequelize.STRING
       },

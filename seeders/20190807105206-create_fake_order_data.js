@@ -78,13 +78,23 @@ module.exports = {
       }))
     );
 
-    //Orders OrderItems payment shipment
+    //Orders OrderItems OrderStatus payment shipment
     //Order 記錄訂單-訂購人資訊 | 建立3筆訂單
+    queryInterface.bulkInsert(
+      "Order_statuses",
+      ["排程中", "處理中", "已完成"].map((item, index) => ({
+        orderStatus: item,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }))
+    );
+
     queryInterface.bulkInsert(
       "Orders",
       [2, 3, 4].map((item, index) => ({
         UserId: item,
         StoreId: 1,
+        OrderStatusId: Math.floor(Math.random() * 2) + 1,
         name: "water",
         amount: 2000,
         phone: "06-2626255",
