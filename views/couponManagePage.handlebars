@@ -1,0 +1,44 @@
+<div class="container">
+  <h1>Coupon 管理中心</h1>
+  <table class="table">
+
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Coupon序號</th>
+        <th scope="col">Coupon種類</th>
+        <th scope="col">商城id</th>
+        <th scope="col">描述</th>
+        <th scope="col">折扣</th>
+        <th scope="col">到期日</th>
+        <th scope='col'>是否過期</th>
+        <th scope="col">有效性</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each coupons}}
+      <tr>
+        <th scope="row">{{this.id}}</th>
+        <td>{{this.couponCode}}</td>
+        <td>{{this.Coupon_type.couponType}}</td>
+        <td>{{this.StoreId}}</td>
+        <td>{{this.description}}</td>
+        <td>{{this.discount}}</td>
+        <td>{{moment this.expireDate}}</td>
+        {{#ifExpired this.expireDate }}
+        <td>已過期</td>
+        {{else}}
+        <td>未過期</td>
+        {{/ifExpired}}
+        <td>{{this.available}}</td>
+        <td></td>
+        <td></td>
+        <td><a href="/admin/coupon/managePage/{{this.id}}/edit" class='btn btn-primary'>Edit</a></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>

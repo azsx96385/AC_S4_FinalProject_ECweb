@@ -146,23 +146,29 @@ const orderController = {
           smtpTransport.sendMail(mailOptions, (error, response) => {
             error ? console.log(error) : console.log(response);
             smtpTransport.close();
-          });
-        })
-        .then(() => {
+
+          });;
+          return order
+
+        }
+        ).then(order => {
+
           //清除購物車與caartItem
           Cart.destroy({ where: { id: req.body.cartId } });
           CartItem.destroy({ where: { CartId: req.body.cartId } });
           //清空session暫存
-          req.session.cartItemNum = 0;
-          let userId = Number(req.user.id);
-          return res.redirect(`/user/${userId}/profile`);
-        });
-      const PaymentTypeId = req.body.paymentType;
-      const userId = req.user.id;
-      if (PaymentTypeId === "2") return res.redirect(`/user/${userId}/profile`);
-      return res.redirect(`order/${order.id}/payment`);
-    });
+
+          req.session.cartItemNum = 0
+          //導向付款
+          const PaymentTypeId = req.body.paymentType
+          const userId = req.user.id
+          if (PaymentTypeId === '2') return res.redirect(`/user/${userId}/profile`)
+          return res.redirect(`order/${order.id}/payment`)
+        })
+    })
+
   },
+
 
   cancelOrder: (req, res) => {
     Order.findByPk(req.params.id, {

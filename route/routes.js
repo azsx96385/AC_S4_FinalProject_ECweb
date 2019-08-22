@@ -86,14 +86,19 @@ router.get('/user/:id/profile', authenticated, userController.getUserProfile)
 //取消訂單
 router.post('/order/:id', orderController.cancelOrder)
 //-------------coupon----------------------------
-//-----------製作coupon------------------
-router.get('/coupon/makingPage', couponController.getCouponMakePage)
-router.post('/coupon/make', couponController.postCouponMake)
+
 //----------使用coupon-------------------
 router.get('/enterCoupon', authenticated, couponController.enterCoupon)
 router.post('/checkCoupon', couponController.checkCoupon)
-///////////////////////////////
 router.get('/couponOrder/:couponId', couponController.getCouponOrderEdit)
+//-----------adimin coupon manage---------------------
+router.get('/admin/coupon/managePage', couponController.getCouponManagePage)
+router.get('/admin/coupon/managePage/:id/edit', couponController.getCouponEditPage)
+router.post('/admin/coupon/edit', couponController.postCouponEdit)
+//-----------製作coupon------------------
+router.get('/admin/coupon/makingPage', couponController.getCouponMakePage)
+router.post('/coupon/make', couponController.postCouponMake)
+
 
 
 
