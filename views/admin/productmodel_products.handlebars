@@ -1,11 +1,11 @@
 <div class="col-12 productmodel_products px-5 ">
     {{!-- 提示訊息 --}}
-    <div>1/無限</div>
+    <div>{{ shopProductsCount}}/無限</div>
     {{> message_products}}
     {{!-- 產品總攬 --}}
     <div class="card my-3">
         {{!-- 上方功能列 --}}
-        <div class="function_bar d-flex justify-content-between py-4 px-2">
+        <div class="function_bar d-flex justify-content-between pt-3 px-2">
             {{!-- 篩選器 --}}
             <div class="filter_btns">
                 {{!-- 顯示所有商品 --}}
@@ -14,32 +14,35 @@
                         data-toggle="dropdown">顯示:
                         所有商品</a>
                     <div class="dropdown-menu">
-                        <a href="" class="dropdown-item">所有商品</a>
-                        <a href="" class="dropdown-item">已上架</a>
-                        <a href="" class="dropdown-item">已下架</a>
-                        <a href="" class="dropdown-item">預購商品</a>
-                        <div class="dropdown-divider"></div>
-                        <a href="" class="dropdown-item">精選商品</a>
+                        <a href="/admin/productmodel/product_mange" class="dropdown-item">所有商品</a>
+                        <a href="/admin/productmodel/product_mange?launched=1" class="dropdown-item">已上架</a>
+                        <a href="/admin/productmodel/product_mange?launched=0" class="dropdown-item">已下架</a>
                     </div>
                 </div>
                 {{!-- 新增產品 --}}
-                <a class="btn btn-primary btn-sm d-inline" href=""><i class="fas fa-plus-circle"></i> 增加</a>
+                <a class="btn btn-primary btn-sm d-inline" href="/admin/productmodel/create"><i
+                        class="fas fa-plus-circle"></i> 增加</a>
             </div>
             {{!-- 搜尋欄 --}}
             <div class="search_bar">
                 <form action="" method="post">
-                    <div class="dropdown d-inline">
-                        <a href="" class="btn btn-primary btn-sm dropdown-toggle" role="button"
-                            data-toggle="dropdown">全部</a>
-                        <div class="dropdown-menu">
-                            <a href="" class="dropdown-item">全部</a>
-                            <a href="" class="dropdown-item">標籤為</a>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <a href="" class="btn btn-primary btn-sm dropdown-toggle" role="button"
+                                data-toggle="dropdown">全部</a>
+                            <div class="dropdown-menu">
+                                <a href="" class="dropdown-item">全部</a>
+                                <a href="" class="dropdown-item">標籤為</a>
+                            </div>
+                        </div>
+                        <input type="text" placeholder="找啥?">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary btn-sm">搜尋</button>
                         </div>
                     </div>
-                    <input type="text" placeholder="找啥?">
-                    <button type="submit" class="btn btn-primary btn-sm">搜尋</button>
+                </form>
             </div>
-            </form>
+
         </div>
         {{!-- 下方產品清單 --}}
         <div class="productsTable my-3 ">
@@ -50,41 +53,83 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">圖片</th>
-                            <th scope="col">原價格</th>
-                            <th scope="col">特價</th>
-                            <th scope="col">數量</th>
                             <th scope="col">商品名稱</th>
+                            <th scope="col">價格</th>
+                            <th scope="col">數量</th>
                             <th scope="col">狀態</th>
                             <th scope="col">操作</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {{#each shopProducts}}
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <th scope="row"><input type="checkbox" name="" id=""></th>
+                            <td style='width:10%'><img class="w-100" src="{{this.image}}" alt="產品圖片"></td>
+                            <td>{{this.name}}</td>
+                            <td>{{this.price}}</td>
+                            <td>{{this.count}}</td>
+                            <td>{{#if this.launched}}上架{{else}}下架 {{/if}}</td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <a href="/admin/productmodel/update/{{this.id}}"
+                                            class="btn btn-outline-secondary">編輯</a>
+                                        <button type="button"
+                                            class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                                            data-toggle="dropdown"></button>
+                                        <div class="dropdown-menu">
+                                            {{#if this.launched}}
+                                            <form
+                                                action="/admin/productmodel/update?_method=PUT&productId={{this.id}}&launched=0"
+                                                method="post">
+                                                <button type="submit" class="dropdown-item">下架</button>
+                                            </form>
+                                            {{else}}
+                                            <form
+                                                action="/admin/productmodel/update?_method=PUT&productId={{this.id}}&launched=1"
+                                                method="post">
+                                                <button type="submit" class="dropdown-item">上架</button>
+                                            </form>
 
-                            <td>Otto</td>
+                                            {{/if}}
+                                            <form action="/admin/productmodel/delete/{{this.id}}?_method=DELETE"
+                                                method="POST">
+                                                <button class="dropdown-item" type="submit">刪除
+                                                </button>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
-
+                        {{/each}}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
     {{!-- 分頁按鈕 --}}
-    <div class="page">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">
-                        <<</a> </li> <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">>></a></li>
+    <div class="page w-100">
+        <nav aria-label="Page navigation  d-flex ">
+            <ul class="pagination  d-flex justify-content-center">
+                <li class="page-item">
+                    <a class="page-link"
+                        href="/admin/productmodel/product_mange?page={{prePage}}&launched={{launched}}">
+                        <span>
+                            <<</span> </a> </li> {{#each totalPage}} {{#ifCond this ../page  }} <li
+                                class="page-item active"><a class="page-link "
+                                    href="/admin/productmodel/product_mange?page={{this}}&launched={{../launched}}">{{this}}</a>
+                </li>
+                {{else}}
+                <li class="page-item"><a class="page-link"
+                        href="/admin/productmodel/product_mange?page={{this}}&launched={{../launched}}">{{this}}</a>
+                </li>
+                {{/ifCond}}
+                {{/each}}
+                <li class="page-item"><a class="page-link"
+                        href="/admin/productmodel/product_mange?page={{../nextPage}}&launched={{../nextPage}}"><span>>></span></a>
+                </li>
             </ul>
         </nav>
     </div>

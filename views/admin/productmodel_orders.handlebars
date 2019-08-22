@@ -50,16 +50,39 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">口</th>
+                            <th scope="row"><input type="checkbox" name="" id=""></th>
                             <td><a href="#">123456</a></td>
                             <td>2019-08-01 2:10pm</td>
-                            <td><span class="badge badge-warning">處理中</span></td>
-                            <td><span class="badge badge-warning">處理中</span></td>
-                            <td><span class="badge badge-warning">處理中</span></td>
+                            <td>
+                                <h5><span class="badge badge-warning">處理中</span></h5>
+                            </td>
+                            <td>
+                                <h5><span class="badge badge-warning">處理中</span></h5>
+                            </td>
+                            <td>
+                                <h5><span class="badge badge-warning">處理中</span></h5>
+                            </td>
                             <td>王曉明(azc@gmail.com)</td>
                             <td>NT$250</td>
                         </tr>
-
+                        {{#each orders}}
+                        <tr>
+                            <th scope="row"><input type="checkbox" name="" id=""></th>
+                            <td><a href="#">{{this.id}}</a></td>
+                            <td>2019-08-01 2:10pm</td>
+                            <td>
+                                <h5><span class="badge badge-warning">處理中</span></h5>
+                            </td>
+                            <td>
+                                <h5><span class="badge badge-warning">處理中</span></h5>
+                            </td>
+                            <td>
+                                <h5><span class="badge badge-warning">處理中</span></h5>
+                            </td>
+                            <td>王曉明(azc@gmail.com)</td>
+                            <td>NT$250</td>
+                        </tr>
+                        {{/each}}
                     </tbody>
                 </table>
             </div>

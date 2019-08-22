@@ -8,23 +8,24 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       address: DataTypes.STRING,
       password: DataTypes.STRING,
+      emailVerf: DataTypes.BOOLEAN,
       resetPasswordToken: DataTypes.STRING,
       resetPasswordExpires: DataTypes.DATE
     },
     {}
   );
-  User.associate = function (models) {
+  User.associate = function(models) {
     // associations can be defined here
     User.hasMany(models.Comment);
     User.hasMany(models.Order);
     User.belongsToMany(models.Coupon, {
-      as: 'UserCoupon',
+      as: "UserCoupon",
       through: {
-        model: models.CouponsUsers, unique: true
+        model: models.CouponsUsers,
+        unique: true
       },
-      foreignKey: 'UserId'
+      foreignKey: "UserId"
     });
-
   };
   return User;
 };

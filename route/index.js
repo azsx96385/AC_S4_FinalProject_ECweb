@@ -4,15 +4,19 @@ let userController = require("../controllers/userController");
 let productController = require("../controllers/productController");
 let cartController = require("../controllers/cartController");
 let orderController = require("../controllers/orderController");
+//Admin 後台 ==路由群組====================================================
+let saleModel = require("./admin/saleModel");
+let productModel = require("./admin/productModel");
+let marketingModel = require("./admin/marketingModel");
+
 // addmailsender 衝突
 /*module.exports = (app) => {
  app.use('/', routes);
 app.use('/api', apis)*/
 
 module.exports = (app, passport) => {
-
-  app.use('/', routes);
-  app.use('/api', apis)
+  app.use("/", routes);
+  app.use("/api", apis);
 
   //加入權限驗證
   const authenticated = (req, res, next) => {
@@ -84,7 +88,18 @@ module.exports = (app, passport) => {
 
   //------------------------------------付款---------------------------------------------
   //付款頁面
-  app.get("/order/:id/payment", authenticated, orderController.getPayment)
+  app.get("/order/:id/payment", authenticated, orderController.getPayment);
   //callback
-  app.post("/spgateway/callback", authenticated, orderController.spgatewayCallback)
+  app.post(
+    "/spgateway/callback",
+    authenticated,
+    orderController.spgatewayCallback
+  );
+  //[Admin 後台管理介面]=========================================================================================
+  //銷售模組router
+  app.use("/admin/salemodel", saleModel);
+  //產品模組router
+  app.use("/admin/productmodel", productModel);
+  //行銷模組router
+  app.use("/admin/marketingmodel", marketingModel);
 };
