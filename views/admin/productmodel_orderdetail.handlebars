@@ -8,8 +8,9 @@
             <div class="card order-detail  my-3">
                 <div class="card-header d-flex justify-content-between">
                     <p class="d-inline text-primary">訂單資料</p>
-                    <div class="status_btn d-flex ">
-                        <button class="btn btn-sm btn-primary d-inline">編輯</button>
+                    <div id="orderData" class="status_btn d-flex ">
+                        <button id="edit" class="btn btn-sm btn-primary ">編輯</button>
+                        <button id="save" class="btn btn-sm btn-success d-none">儲存</button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -35,8 +36,8 @@
                         {{#ifCond orderStatus '已完成' }}
                         <h5><span class="badge badge-success">{{this.orderStatus}}</span></h5>
                         {{/ifCond}}
-                        <div class="d-nonea input-group hidden">
-                            <select class="d-none custom-select" id="inputGroupSelect01">
+                        <div id="orderStatus" class="d-none input-group hidden">
+                            <select class=" custom-select" id="inputGroupSelect01">
                                 <option selected>更改為...</option>
                                 <option value="0">排程中</option>
                                 <option value="1">處理中</option>
@@ -49,7 +50,7 @@
                     <div class="order-detail-item my-1">
                         <h6 class="font-weight-bold">訂單備註</h6>
                         <p></p>
-                        <input type="text" class="form-control" value="晚上六點後送" disabled>
+                        <input id="orderMemo" type="text" class="form-control " value="晚上六點後送" disabled>
                     </div>
                 </div>
             </div>
@@ -57,15 +58,15 @@
             <div class="card order-info  my-3">
                 <div class="card-header d-flex justify-content-between">
                     <p class="d-inline text-primary">訂購人資訊</p>
-                    <div class="status_btn d-flex ">
-                        <button class="btn btn-sm btn-primary d-inline">編輯</button>
+                    <div id="ordererInfo" class="status_btn d-flex ">
+                        <button id="edit" class="btn btn-sm btn-primary ">編輯</button>
+                        <button id="save" class="btn btn-sm btn-success d-none">儲存</button>
                     </div>
                 </div>
-                <div class="card-body">
+                <div id="ordererInfoDetail" class="card-body">
                     {{!-- 訂購人 --}}
                     <div class="order-info-item my-1">
                         <h6 class="font-weight-bold">訂購人</h6>
-
                         <input type="text" class="form-control" value="王曉明" disabled>
                     </div>
                     {{!-- 訂單Email --}}
@@ -96,13 +97,14 @@
             <div class="card payment-status my-3">
                 <div class="card-header d-flex justify-content-between">
                     <p class="d-inline text-primary">付款資料</p>
-                    <div class="status_btn d-flex ">
-                        <button class="btn btn-sm btn-primary d-inline">編輯</button>
+                    <div id="payment" class="status_btn d-flex ">
+                        <button id="edit" class="btn btn-sm btn-primary ">編輯</button>
+                        <button id="save" class="btn btn-sm btn-success d-none">儲存</button>
                     </div>
                 </div>
                 <div class="card-body">
                     {{!-- 付款狀態--}}
-                    <div class="payment-status-item my-1">
+                    <div id="paymentDetail" class="payment-status-item my-1">
                         <h6 class="font-weight-bold">付款狀態</h6>
 
                         {{#ifCond paymentStatus '未付款'}}
@@ -120,8 +122,8 @@
                         {{#ifCond paymentStatus '已退款'}}
                         <h5><span class="badge badge-secondary">{{this.paymentStatus}}</span></h5>
                         {{/ifCond}}
-                        <div class="d-none input-group hidden">
-                            <select class="custom-select" id="inputGroupSelect01">
+                        <div id="paymentStatus" class="d-none input-group hidden">
+                            <select class="custom-select">
                                 <option selected>更改為...</option>
                                 <option value="1">未付款</option>
                                 <option value="2">已付款</option>
@@ -134,8 +136,8 @@
                     <div class="payment-status-item my-1">
                         <h6 class="font-weight-bold">付款方法</h6>
                         <p>貨到付款</p>
-                        <div class="d-nonea input-group hidden">
-                            <select class="d-none custom-select" id="inputGroupSelect01">
+                        <div id="paymentType" class="d-none input-group hidden">
+                            <select class=" custom-select">
                                 <option selected>更改為...</option>
                                 <option value="1">信用卡</option>
                                 <option value="2">LINEPAY</option>
@@ -151,11 +153,12 @@
             <div class="card shipment-status  my-3">
                 <div class="card-header d-flex justify-content-between">
                     <p class="d-inline text-primary">配送資料</p>
-                    <div class="status_btn d-flex ">
-                        <button class="btn btn-sm btn-primary d-inline">編輯</button>
+                    <div id="shipment" class="status_btn d-flex ">
+                        <button id="edit" class="btn btn-sm btn-primary ">編輯</button>
+                        <button id="save" class="btn btn-sm btn-success d-none">儲存</button>
                     </div>
                 </div>
-                <div class="card-body">
+                <div id="shipmentDetail" class="card-body">
                     {{!-- 發貨狀態--}}
                     <div class="shipment-status-item my-1">
                         <h6 class="font-weight-bold">發貨狀態</h6>
@@ -181,8 +184,8 @@
                         {{#ifCond shipmentStatus '退貨中'}}
                         <h5><span class="badge badge-warning">{{this.shipmentStatus}}</span></h5>
                         {{/ifCond}}
-                        <div class="d-none input-group hidden">
-                            <select class="custom-select" id="inputGroupSelect01">
+                        <div id="shipmentStatus" class="d-none input-group hidden">
+                            <select class="custom-select">
                                 <option selected>更改為...</option>
                                 <option value="1">備貨中</option>
                                 <option value="2">發貨中</option>
@@ -198,8 +201,8 @@
                     <div class="shipment-status-item my-1">
                         <h6 class="font-weight-bold">送貨方法</h6>
                         <p>貨到付款</p>
-                        <div class="d-none input-group hidden">
-                            <select class="custom-select" id="inputGroupSelect01">
+                        <div id="shipmentType" class="d-none input-group hidden">
+                            <select class="custom-select">
                                 <option selected>更改為...</option>
                                 <option value="1">宅配</option>
                                 <option value="2">超商取貨</option>
