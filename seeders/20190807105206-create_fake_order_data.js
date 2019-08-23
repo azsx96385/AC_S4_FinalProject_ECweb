@@ -138,8 +138,8 @@ module.exports = {
     queryInterface.bulkDelete("Shipment_types", null, {});
     queryInterface.bulkDelete("Shipment_statuses", null, {});
     queryInterface.bulkDelete("Cart_items", null, {});
-    queryInterface.bulkDelete("Carts", null, {});
+    return queryInterface.bulkDelete("Carts", null, {});
 
-    return queryInterface.bulkDelete("People", null, {});
+    // return queryInterface.bulkDelete("People", null, {});
   }
 };

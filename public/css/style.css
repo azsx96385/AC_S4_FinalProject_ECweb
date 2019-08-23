@@ -1,4 +1,4 @@
-#logo, .navbar-brand {
+#logo, .navbar-brand{
   font-family: 'Pacifico','Noto Sans TC', sans-serif;
   color: black;
 }
@@ -20,6 +20,20 @@ hr {
   margin-bottom: 20px;
   border: 0;
   border-top: 1px solid gray;
+}
+
+.card-title, .price, .help-block {
+  font-family: 微軟正黑體, Arial;
+}
+
+.pickup {
+  width: 0.1%;
+}
+
+.ChooseStore {
+  width: 86px; 
+  height: 35px;
+  font-size: 15px;
 }
 
 /* ====== product.handlebars-display star ===== */

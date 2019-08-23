@@ -5,7 +5,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       OrderId: DataTypes.INTEGER,
       ShipmentStatusId: DataTypes.INTEGER,
-      ShipmentTypeId: DataTypes.INTEGER
+      ShipmentTypeId: DataTypes.INTEGER,
+      ShipmentConvenienceStoreId: DataTypes.INTEGER
     },
     {}
   );

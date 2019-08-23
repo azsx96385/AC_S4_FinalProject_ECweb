@@ -95,6 +95,14 @@ module.exports = (app, passport) => {
     authenticated,
     orderController.spgatewayCallback
   );
+
+  //------------------------------------超商取貨---------------------------------------------
+  //callback
+  app.post(
+    "/pickup/callback",
+    authenticated,
+    orderController.pickupCallback
+  );
   //[Admin 後台管理介面]=========================================================================================
   //銷售模組router
   app.use("/admin/salemodel", saleModel);

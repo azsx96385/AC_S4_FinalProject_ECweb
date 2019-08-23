@@ -13,6 +13,7 @@ const Shipment_status = db.Shipment_status;
 const Shipment_type = db.Shipment_type;
 const getTradeInfo = require("../public/javascript/getTradeInfo");
 const decryptTradeInfo = require("../public/javascript/decryptTradeInfo");
+const getPickupInfo = require("../public/javascript/getPickupInfo")
 //------coupon-------
 const Coupon = db.Coupon;
 const CouponsUsers = db.CouponsUsers;
@@ -48,19 +49,21 @@ const orderController = {
     return Cart.findByPk(req.session.cartId, {
       include: [{ model: Product, as: "items", include: [CartItem] }]
     }).then(cart => {
+      const pickupInfo = getPickupInfo()
       cart = cart || { items: [] };
       let totalPrice =
         cart.items.length > 0
           ? cart.items
-              .map(d => d.price * d.Cart_item.quantity)
-              .reduce((a, b) => a + b)
+            .map(d => d.price * d.Cart_item.quantity)
+            .reduce((a, b) => a + b)
           : 0; //如果cart-item沒東西，則為0
 
       return User.findByPk(req.user.id).then(user => {
         return res.render("orderEdit", {
           cart,
           totalPrice,
-          user
+          user,
+          pickupInfo
         });
       });
     });
@@ -93,8 +96,8 @@ const orderController = {
       let totalPrice =
         cart.items.length > 0
           ? cart.items
-              .map(d => d.price * d.Cart_item.quantity)
-              .reduce((a, b) => a + b)
+            .map(d => d.price * d.Cart_item.quantity)
+            .reduce((a, b) => a + b)
           : 0;
       //建立order
 
@@ -147,6 +150,11 @@ const orderController = {
             error ? console.log(error) : console.log(response);
             smtpTransport.close();
           });
+
+          const PaymentTypeId = req.body.paymentType;
+          const userId = req.user.id;
+          if (PaymentTypeId !== "1") return res.redirect(`/user/${userId}/profile`);
+          return res.redirect(`order/${order.id}/payment`);
         })
         .then(() => {
           //清除購物車與caartItem
@@ -157,10 +165,6 @@ const orderController = {
           let userId = Number(req.user.id);
           return res.redirect(`/user/${userId}/profile`);
         });
-      const PaymentTypeId = req.body.paymentType;
-      const userId = req.user.id;
-      if (PaymentTypeId === "2") return res.redirect(`/user/${userId}/profile`);
-      return res.redirect(`order/${order.id}/payment`);
     });
   },
 
@@ -237,6 +241,12 @@ const orderController = {
         });
       });
     });
+  },
+
+  pickupCallback: (req, res) => {
+    const data = req.body.CVSStoreName
+    console.log(data)
+    res.redirect('/orderEdit')
   }
 };
 module.exports = orderController;
