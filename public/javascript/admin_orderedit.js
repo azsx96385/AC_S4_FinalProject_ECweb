@@ -3,8 +3,8 @@ const orderData = document.getElementById("orderData");
 const orderStatus = document.getElementById("orderStatus");
 const orderMemo = document.getElementById("orderMemo");
 //orderer
-const ordererInfo = document.getElementById("ordererInfo");
-const ordererInfoDetail = document.getElementById("ordererInfoDetail");
+// const ordererInfo = document.getElementById("ordererInfo");
+// const ordererInfoDetail = document.getElementById("ordererInfoDetail");
 //payment
 const payment = document.getElementById("payment");
 const paymentDetail = document.getElementById("paymentDetail");
@@ -17,7 +17,7 @@ const shipmentStatus = document.getElementById("shipmentStatus");
 const shipmentType = document.getElementById("shipmentType");
 //==========================================
 orderData.addEventListener("click", orderDataEdit);
-ordererInfo.addEventListener("click", ordererInfoEdit);
+// ordererInfo.addEventListener("click", ordererInfoEdit);
 payment.addEventListener("click", paymentEdit);
 shipment.addEventListener("click", shipmentEdit);
 
@@ -38,24 +38,24 @@ function orderDataEdit() {
   }
 }
 
-function ordererInfoEdit() {
-  let eventId = event.target.id;
-  let allInput = ordererInfoDetail.querySelectorAll("input");
-  if (eventId === "edit") {
-    ordererInfo.querySelector("#edit").classList.add("d-none");
-    ordererInfo.querySelector("#save").classList.remove("d-none");
-    allInput.forEach(element => {
-      element.removeAttribute("disabled");
-    });
-  }
-  if (eventId === "save") {
-    ordererInfo.querySelector("#edit").classList.remove("d-none");
-    ordererInfo.querySelector("#save").classList.add("d-none");
-    allInput.forEach(element => {
-      element.setAttribute("disabled", "");
-    });
-  }
-}
+// function ordererInfoEdit() {
+//   let eventId = event.target.id;
+//   let allInput = ordererInfoDetail.querySelectorAll("input");
+//   if (eventId === "edit") {
+//     ordererInfo.querySelector("#edit").classList.add("d-none");
+//     ordererInfo.querySelector("#save").classList.remove("d-none");
+//     allInput.forEach(element => {
+//       element.removeAttribute("disabled");
+//     });
+//   }
+//   if (eventId === "save") {
+//     ordererInfo.querySelector("#edit").classList.remove("d-none");
+//     ordererInfo.querySelector("#save").classList.add("d-none");
+//     allInput.forEach(element => {
+//       element.setAttribute("disabled", "");
+//     });
+//   }
+// }
 
 function paymentEdit() {
   let eventId = event.target.id;

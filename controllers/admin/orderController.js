@@ -86,7 +86,50 @@ const orderController = {
   // 顯示備貨中頁面
   // 單一 | 顯示單筆訂單
   getOrder: (req, res) => {
-    res.render("admin/productmodel_orderdetail", { layout: "admin_main" });
+    orderModel
+      .findByPk(2, {
+        include: [
+          { model: userModel },
+          { model: orderStatusModel },
+          {
+            model: paymentModel,
+            include: [
+              { model: paymentTypeModel },
+              { model: paymentStatusModel }
+            ]
+          },
+          {
+            model: shipmentModel,
+            include: [
+              { model: shipmentStatusModel },
+              { model: shipmentTypeModel }
+            ]
+          }
+        ]
+      })
+      .then(order => {
+        order.createdAt_format = moment(order.createdAt).format(
+          "YYYY-MM-DD HH:mm"
+        );
+
+        let orderer = order.User;
+        let orderStatus = order.Order_status.orderStatus;
+        let paymentStatus = order.Payments[0].Payment_status.paymentStatus;
+        let paymentType = order.Payments[0].Payment_type.paymentType;
+        let shipmentStatus = order.Shipments[0].Shipment_status.shipmentStatus;
+        let shipmentType = order.Shipments[0].Shipment_type.shipmentType;
+        console.log(paymentStatus);
+        res.render("admin/productmodel_orderdetail", {
+          order,
+          orderer,
+          orderStatus,
+          paymentStatus,
+          paymentType,
+          shipmentStatus,
+          shipmentType,
+          layout: "admin_main"
+        });
+      });
   }
   // 單一 | 更改訂單狀態
   // 單一 | 更改訂單付款狀態
