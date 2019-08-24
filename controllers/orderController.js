@@ -11,8 +11,10 @@ const Payment_type = db.Payment_type;
 const Shipment = db.Shipment;
 const Shipment_status = db.Shipment_status;
 const Shipment_type = db.Shipment_type;
+const Shipment_convenienceStore = db.Shipment_convenienceStore
 const getTradeInfo = require("../public/javascript/getTradeInfo");
 const decryptTradeInfo = require("../public/javascript/decryptTradeInfo");
+const getPickupInfo = require("../public/javascript/getPickupInfo")
 //------coupon-------
 const Coupon = db.Coupon;
 const CouponsUsers = db.CouponsUsers;
@@ -52,8 +54,8 @@ const orderController = {
       let totalPrice =
         cart.items.length > 0
           ? cart.items
-              .map(d => d.price * d.Cart_item.quantity)
-              .reduce((a, b) => a + b)
+            .map(d => d.price * d.Cart_item.quantity)
+            .reduce((a, b) => a + b)
           : 0; //如果cart-item沒東西，則為0
 
       return User.findByPk(req.user.id).then(user => {
@@ -93,8 +95,8 @@ const orderController = {
       let totalPrice =
         cart.items.length > 0
           ? cart.items
-              .map(d => d.price * d.Cart_item.quantity)
-              .reduce((a, b) => a + b)
+            .map(d => d.price * d.Cart_item.quantity)
+            .reduce((a, b) => a + b)
           : 0;
       //建立order
 
@@ -146,12 +148,10 @@ const orderController = {
           smtpTransport.sendMail(mailOptions, (error, response) => {
             error ? console.log(error) : console.log(response);
             smtpTransport.close();
-
           });;
           return order
 
-        }
-        ).then(order => {
+        }).then(order => {
 
           //清除購物車與caartItem
           Cart.destroy({ where: { id: req.body.cartId } });
@@ -160,13 +160,14 @@ const orderController = {
 
           req.session.cartItemNum = 0
           //導向付款
-          const PaymentTypeId = req.body.paymentType
-          const userId = req.user.id
-          if (PaymentTypeId === '2') return res.redirect(`/user/${userId}/profile`)
-          return res.redirect(`order/${order.id}/payment`)
+          const PaymentTypeId = req.body.paymentType;
+          const ShipmentTypeId = req.body.shipmentType;
+          const userId = req.user.id;
+          if (PaymentTypeId === "1") return res.redirect(`order/${order.id}/payment`);
+          if (ShipmentTypeId === "2") return res.redirect(`/order/${order.id}/branchselection`);
+          return res.redirect(`/user/${userId}/profile`);
         })
     })
-
   },
 
 
@@ -196,9 +197,6 @@ const orderController = {
   },
 
   getPayment: (req, res) => {
-    console.log("===== getPayment =====");
-    console.log(req.params.id);
-    console.log("==========");
 
     Order.findByPk(req.params.id, {
       include: [User, { model: Product, as: "items", include: [CartItem] }]
@@ -238,6 +236,54 @@ const orderController = {
           PaymentStatusId: 2,
           PaymentTypeId: payment.PaymentTypeId,
           amount: payment.amount
+        }).then(() => {
+          res.redirect(`/user/${userId}/profile`);
+        });
+      });
+    });
+  },
+
+  getBranchSelection: (req, res) => {
+
+    Order.findByPk(req.params.id, {
+      include: [User, { model: Product, as: "items", include: [CartItem] }]
+    }).then(order => {
+
+      const pickupInfo = getPickupInfo()
+      order
+        .update({
+          ...req.body,
+          memo: pickupInfo.MerchantTradeNo
+        })
+        .then(order => {
+          res.render("branchSelection", { order, pickupInfo });
+        });
+    });
+  },
+
+  pickupCallback: (req, res) => {
+    const MerchantTradeNo = req.body.MerchantTradeNo
+    const branchName = req.body.CVSStoreName
+    const branchAddress = req.body.CVSAddress
+
+    console.log(req.body)
+    Order.findAll({
+      include: [Shipment, User, { model: Shipment_convenienceStore, as: "ShipmentConvenienceStore" }],
+      where: { memo: MerchantTradeNo }
+    }).then(orders => {
+      const userId = orders[0].User.id;
+
+      Shipment_convenienceStore.create({
+        id: orders[0].id,
+        branch: branchName,
+        address: branchAddress
+      })
+
+      Shipment.findOne({ where: { OrderId: orders[0].id } }).then((shipment) => {
+
+        shipment.update({
+          ...req.body,
+          ShipmentConvenienceStoreId: orders[0].id
         }).then(() => {
           res.redirect(`/user/${userId}/profile`);
         });
