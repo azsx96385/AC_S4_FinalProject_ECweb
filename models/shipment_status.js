@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     Shipment_status.belongsToMany(models.Order,
       {
         through: models.Shipment,
-        foreginKey: 'ShipmentStatusId',
+        foreignKey: 'ShipmentStatusId',
         as: 'ShipmentStatusToOrder'
 
       })

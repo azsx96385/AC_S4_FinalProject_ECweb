@@ -26,16 +26,6 @@ hr {
   font-family: 微軟正黑體, Arial;
 }
 
-.pickup {
-  width: 0.1%;
-}
-
-.ChooseStore {
-  width: 86px; 
-  height: 35px;
-  font-size: 15px;
-}
-
 /* ====== product.handlebars-display star ===== */
 .star {
   position: relative;

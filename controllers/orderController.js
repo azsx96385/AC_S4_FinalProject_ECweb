@@ -11,6 +11,7 @@ const Payment_type = db.Payment_type;
 const Shipment = db.Shipment;
 const Shipment_status = db.Shipment_status;
 const Shipment_type = db.Shipment_type;
+const Shipment_convenienceStore = db.Shipment_convenienceStore
 const getTradeInfo = require("../public/javascript/getTradeInfo");
 const decryptTradeInfo = require("../public/javascript/decryptTradeInfo");
 const getPickupInfo = require("../public/javascript/getPickupInfo")
@@ -49,7 +50,6 @@ const orderController = {
     return Cart.findByPk(req.session.cartId, {
       include: [{ model: Product, as: "items", include: [CartItem] }]
     }).then(cart => {
-      const pickupInfo = getPickupInfo()
       cart = cart || { items: [] };
       let totalPrice =
         cart.items.length > 0
@@ -62,8 +62,7 @@ const orderController = {
         return res.render("orderEdit", {
           cart,
           totalPrice,
-          user,
-          pickupInfo
+          user
         });
       });
     });
@@ -151,13 +150,16 @@ const orderController = {
             smtpTransport.close();
           });
 
+          //redirect
           const PaymentTypeId = req.body.paymentType;
+          const ShipmentTypeId = req.body.shipmentType;
           const userId = req.user.id;
-          if (PaymentTypeId !== "1") return res.redirect(`/user/${userId}/profile`);
-          return res.redirect(`order/${order.id}/payment`);
+          if (PaymentTypeId === "1") return res.redirect(`order/${order.id}/payment`);
+          if (ShipmentTypeId === "2") return res.redirect(`/order/${order.id}/branchselection`);
+          return res.redirect(`/user/${userId}/profile`);
         })
         .then(() => {
-          //清除購物車與caartItem
+          //清除購物車與cartItem
           Cart.destroy({ where: { id: req.body.cartId } });
           CartItem.destroy({ where: { CartId: req.body.cartId } });
           //清空session暫存
@@ -194,9 +196,6 @@ const orderController = {
   },
 
   getPayment: (req, res) => {
-    console.log("===== getPayment =====");
-    console.log(req.params.id);
-    console.log("==========");
 
     Order.findByPk(req.params.id, {
       include: [User, { model: Product, as: "items", include: [CartItem] }]
@@ -243,10 +242,52 @@ const orderController = {
     });
   },
 
+  getBranchSelection: (req, res) => {
+
+    Order.findByPk(req.params.id, {
+      include: [User, { model: Product, as: "items", include: [CartItem] }]
+    }).then(order => {
+
+      const pickupInfo = getPickupInfo()
+      order
+        .update({
+          ...req.body,
+          memo: pickupInfo.MerchantTradeNo
+        })
+        .then(order => {
+          res.render("branchSelection", { order, pickupInfo });
+        });
+    });
+  },
+
   pickupCallback: (req, res) => {
-    const data = req.body.CVSStoreName
-    console.log(data)
-    res.redirect('/orderEdit')
+    const MerchantTradeNo = req.body.MerchantTradeNo
+    const branchName = req.body.CVSStoreName
+    const branchAddress = req.body.CVSAddress
+
+    console.log(req.body)
+    Order.findAll({
+      include: [Shipment, User, { model: Shipment_convenienceStore, as: "ShipmentConvenienceStore" }],
+      where: { memo: MerchantTradeNo }
+    }).then(orders => {
+      const userId = orders[0].User.id;
+
+      Shipment_convenienceStore.create({
+        id: orders[0].id,
+        branch: branchName,
+        address: branchAddress
+      })
+
+      Shipment.findOne({ where: { OrderId: orders[0].id } }).then((shipment) => {
+
+        shipment.update({
+          ...req.body,
+          ShipmentConvenienceStoreId: orders[0].id
+        }).then(() => {
+          res.redirect(`/user/${userId}/profile`);
+        });
+      });
+    });
   }
 };
 module.exports = orderController;

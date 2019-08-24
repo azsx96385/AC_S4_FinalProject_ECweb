@@ -17,7 +17,7 @@ module.exports = {
       ShipmentTypeId: {
         type: Sequelize.INTEGER
       },
-      ShipmentConvenienceStoresId: {
+      ShipmentConvenienceStoreId: {
         type: Sequelize.INTEGER
       },
       createdAt: {
