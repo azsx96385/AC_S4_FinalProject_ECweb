@@ -42,7 +42,6 @@
 
       <div class="cartBtn" style="text-align: center;">
         <form action="/cart" method="POST">
-
           <div class="selectQty mt-5">
             <input type="button" value='-' class='qtyMinus' field='quantity'>
             <input type='text' name='quantity' value='1' class='qty'>
@@ -51,13 +50,46 @@
           {{#ifCond product.count 0}}
           <button type="submit" class="btn btn-success mt-4" disabled /><i class="fa fa-truck" aria-hidden="true"></i>
           商品補貨中</button>
-          <a href="" class="btn btn-primary mt-4"><i class="fa fa-envelope" aria-hidden="true"></i> 貨到通知我</a>
+          <span class="notice btn btn-primary mt-4"><i class="fa fa-envelope" aria-hidden="true"></i> 貨到通知我</span>
           {{else}}
           <input type="hidden" name="productId" value="{{product.id}}">
           <button type="submit" class="btn btn-success mt-4"><i class="fas fa-shopping-cart"></i> 加入購物車</button>
           <a href="/cart" class="btn btn-primary mt-4">前往購物車 ></a>
           {{/ifCond}}
         </form>
+
+        <div class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h5 class="mt-3" style="text-align: center; color: gray;">到貨通知</h5>
+
+            <div class="mt-2" style="color: gray; font-size: 16px;">
+              商品名稱：<p style="color: red; font-size: 16px;">
+                【{{product.Product_category.name}}】{{product.name}}</p>
+            </div>
+
+            <p>---------------------------------------</p>
+
+            <form action="" method="post">
+              <div class="form-group row ml-5">
+                <label style="color: gray; font-size: 16px;" for=" inputEmail">電子郵件：&nbsp;</label>
+                <input style="font-size: 16px;" type="text" name="email" class="form" value="{{loginUser.email}}"
+                  required autofocus>
+              </div>
+              <div class="form-group row ml-4">
+                <label style="color: gray; font-size: 16px;" for=" inputEmail">確認電子郵件：&nbsp;</label>
+                <input style="font-size: 16px;" type="text" name="email_confirm" class="form"
+                  value="{{loginUser.email}}">
+              </div>
+
+              <p>---------------------------------------</p>
+              <p style="color: red; font-size: 16px;">*此功能僅為貨到通知，無法保留商品喔。</p>
+
+              <button class="btn btn-primary">送出</button>
+            </form>
+
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -179,6 +211,9 @@
   const qtyMinus = document.querySelector('.qtyMinus')
   const qtyPlus = document.querySelector('.qtyPlus')
   const qty = document.querySelector('.qty')
+  const modal = document.querySelector('.modal')
+  const btn = document.querySelector('.notice')
+  const span = document.querySelector('.close')
 
   qtyMinus.addEventListener('click', () => {
     if (qty.value > 1) return qty.value--
@@ -189,5 +224,15 @@
     if (qty.value >= 10) return qty.value === 10
     return qty.value++
   })
+
+  // When the user clicks the button, open the modal 
+  btn.onclick = () => {
+    modal.style.display = "block";
+  }
+
+  // When the user clicks on <span> (x), close the modal 
+  span.onclick = () => {
+    modal.style.display = "none";
+  }
 
 </script>
