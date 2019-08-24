@@ -148,9 +148,18 @@ const orderController = {
           smtpTransport.sendMail(mailOptions, (error, response) => {
             error ? console.log(error) : console.log(response);
             smtpTransport.close();
-          });
+          });;
+          return order
 
-          //redirect
+        }).then(order => {
+
+          //清除購物車與caartItem
+          Cart.destroy({ where: { id: req.body.cartId } });
+          CartItem.destroy({ where: { CartId: req.body.cartId } });
+          //清空session暫存
+
+          req.session.cartItemNum = 0
+          //導向付款
           const PaymentTypeId = req.body.paymentType;
           const ShipmentTypeId = req.body.shipmentType;
           const userId = req.user.id;
@@ -158,17 +167,9 @@ const orderController = {
           if (ShipmentTypeId === "2") return res.redirect(`/order/${order.id}/branchselection`);
           return res.redirect(`/user/${userId}/profile`);
         })
-        .then(() => {
-          //清除購物車與cartItem
-          Cart.destroy({ where: { id: req.body.cartId } });
-          CartItem.destroy({ where: { CartId: req.body.cartId } });
-          //清空session暫存
-          req.session.cartItemNum = 0;
-          let userId = Number(req.user.id);
-          return res.redirect(`/user/${userId}/profile`);
-        });
-    });
+    })
   },
+
 
   cancelOrder: (req, res) => {
     Order.findByPk(req.params.id, {
