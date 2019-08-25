@@ -1,0 +1,56 @@
+<div class="container">
+  <form action="/admin/coupon/edit" method='POST'>
+    <h1>修改你的coupon</h1>
+    <div class="form-group">
+      <label for="store">修改你的店家id</label>
+      <input type="number" name="storeId" class="form-control" id="store" value="{{coupon.StoreId}}">
+
+    </div>
+    <div class="form-group">
+      <label for="couponType">修改你的cuopn種類</label>
+      <select name="couponTypeId" id='couponType'>
+        {{#ifCond coupon.CouponTypeId 1 }}
+        <option selected value="1">會員專屬</option>
+        <option value="2">節日促銷</option>
+        {{else}}
+        <option value="1">會員專屬</option>
+        <option selected value="2">節日促銷</option>
+        {{/ifCond}}
+
+      </select>
+
+    </div>
+    <div class="form-group">
+      <label for="description">coupon備註</label>
+      <textarea class="form-control" name='CouponDescription' rows="5"
+        id="description">{{coupon.description}}</textarea>
+
+    </div>
+    <div class="form-group">
+      <label for="discount">修改coupon的面額</label>
+      <input type="number" class="form-control" id="discount" name='CouponDiscount' value={{coupon.discount}}>
+    </div>
+
+    <div class="form-group">
+      <label for="expiredDate">修改coupon的到期日</label>
+      <input type="date" class="form-control" id="expiredDate" name='expiredDate' value={{ moment coupon.expireDate}}>
+    </div>
+    <div class="form-group">
+      <label for="available">修改coupon是否有效</label>
+      <select name='available' id="available" value={{coupon.available}}>
+        {{#ifCond coupon.available true}}
+        <option selected value="true">有效</option>
+        <option value="false">無效</option>
+        {{else}}
+        <option value="true">有效</option>
+        <option selected value="false">無效</option>
+        {{/ifCond}}
+
+      </select>
+
+      <div class=" form-group">
+        <input type="hidden" name="couponId" value={{coupon.id}}>
+        <input type="submit" class="btn btn-primary">
+      </div>
+  </form>
+</div>

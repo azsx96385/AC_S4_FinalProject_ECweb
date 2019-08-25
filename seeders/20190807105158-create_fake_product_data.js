@@ -37,8 +37,8 @@ module.exports = {
       [...Array(150)]
         .map((item, index) => index)
         .map(i => ({
-          UserId: Math.floor(Math.random() * 4),
-          ProductId: Math.floor(Math.random() * 4),
+          UserId: Math.floor(Math.random() * 4) + 1,
+          ProductId: Math.floor(Math.random() * 4) + 1,
           comment: faker.lorem.sentence(),
           rating: Math.floor(Math.random() * 5) + 1,
           createdAt: new Date(),

@@ -70,6 +70,8 @@
               付款狀況:{{#each this.PaymentStatus}}{{#if @last}}{{this.paymentStatus}}{{/if}}{{/each}}</li>
             <li class="list-group-item">
               出貨方式:{{#each this.ShipmentType}}{{#if @last}}{{this.shipmentType}}{{/if}}{{/each}}
+              {{#each this.ShipmentConvenienceStore}}{{#if @last}}[{{this.branch}}]{{/if}}{{/each}}
+              {{#each this.ShipmentConvenienceStore}}{{#if @last}}- {{this.address}}{{/if}}{{/each}}
             </li>
             <li class="list-group-item">
               出貨狀況:{{#each this.ShipmentStatus}}{{#if @last}}{{this.shipmentStatus}}{{/if}}{{/each}}</li>

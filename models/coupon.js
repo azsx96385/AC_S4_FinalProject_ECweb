@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       couponCode: DataTypes.STRING,
       discount: DataTypes.INTEGER,
       description: DataTypes.STRING,
-      availabe: DataTypes.BOOLEAN,
+      available: DataTypes.BOOLEAN,
       expireDate: DataTypes.DATE,
     },
     {}

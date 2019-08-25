@@ -5,7 +5,7 @@
     </div>
     <div class="card-body">
       {{#each order.items}}
-      <h5 class="mb-2">{{this.name}} * {{#each this.Cart_items}}{{#if @last}}{{this.quantity}}{{/if}}{{/each}}</h5>
+      <h5 class="mb-2">{{this.name}} * {{this.Order_item.quantity}}</h5>
       {{/each}}
     </div>
     <div class="card-footer mt-5">

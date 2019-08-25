@@ -23,29 +23,73 @@
 
   <div class="col-5 mt-5">
     <div class="card-body mt-5">
-      <h3 class="card-title" style="text-align: center;">{{product.name}}</h3>
-      <h5 class="mt-5" style="text-align: center;">NT $ {{product.price}}</h5>
+      <h2 class="card-title" style="text-align: center; color: gray;">{{product.name}}</h2>
+      <h6 class="count mt-1" style="text-align: center; color: gray;">庫存數 {{product.count}}</h6>
+      <h5 class="price mt-5" style="text-align: center; color: rgb(32, 80, 240);">定價 $ {{product.price}}</h5>
 
       <div class="star ml-5">
         <span class="stars d-flex mt-5 align-items-center ml-5">
           {{#star ratingAve}}{{/star}}
         </span>
       </div>
-      <div class="help-block mt-3" style="text-align: center;">平均 {{ratingAve}}分，已有{{product.Comments.length}}人評價
+      {{#ifCond product.Comments.length 0}}
+      <div class="help-block mt-4" style="text-align: center; color: rgb(112, 21, 231);">此商品尚未有人評價</div>
+      {{else}}
+      <div class="help-block mt-4" style="text-align: center; color: rgb(112, 21, 231);">平均 {{ratingAve}} 分，已有
+        {{product.Comments.length}} 人評價
       </div>
+      {{/ifCond}}
 
       <div class="cartBtn" style="text-align: center;">
         <form action="/cart" method="POST">
-
           <div class="selectQty mt-5">
             <input type="button" value='-' class='qtyMinus' field='quantity'>
             <input type='text' name='quantity' value='1' class='qty'>
             <input type='button' value="+" class='qtyPlus' field='quantity'>
           </div>
-
+          {{#ifCond product.count 0}}
+          <button type="submit" class="btn btn-success mt-4" disabled /><i class="fa fa-truck" aria-hidden="true"></i>
+          商品補貨中</button>
+          <span class="notice btn btn-primary mt-4"><i class="fa fa-envelope" aria-hidden="true"></i> 貨到通知我</span>
+          {{else}}
           <input type="hidden" name="productId" value="{{product.id}}">
-          <button type="submit" class="btn btn-secondary mt-4"><i class="fas fa-shopping-cart"></i> 加入購物車</button>
+          <button type="submit" class="btn btn-success mt-4"><i class="fas fa-shopping-cart"></i> 加入購物車</button>
+          <a href="/cart" class="btn btn-primary mt-4">前往購物車 ></a>
+          {{/ifCond}}
         </form>
+
+        <div class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h5 class="mt-3" style="text-align: center; color: gray;">到貨通知</h5>
+
+            <div class="mt-2" style="color: gray; font-size: 16px;">
+              商品名稱：<p style="color: red; font-size: 16px;">
+                【{{product.Product_category.name}}】{{product.name}}</p>
+            </div>
+
+            <p>---------------------------------------</p>
+
+            <form action="" method="post">
+              <div class="form-group row ml-5">
+                <label style="color: gray; font-size: 16px;" for=" inputEmail">電子郵件：&nbsp;</label>
+                <input style="font-size: 16px;" type="text" name="email" class="form" value="{{loginUser.email}}"
+                  required autofocus>
+              </div>
+              <div class="form-group row ml-4">
+                <label style="color: gray; font-size: 16px;" for=" inputEmail">確認電子郵件：&nbsp;</label>
+                <input style="font-size: 16px;" type="text" name="email_confirm" class="form"
+                  value="{{loginUser.email}}">
+              </div>
+
+              <p>---------------------------------------</p>
+              <p style="color: red; font-size: 16px;">*此功能僅為貨到通知，無法保留商品喔。</p>
+
+              <button class="btn btn-primary">送出</button>
+            </form>
+
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -83,11 +127,10 @@
           <div class="badgeBox" style="text-align: center;">
             <span class="badge badge-primary">NT $ {{this.price}}</span>
           </div>
-          <small class="card-text">{{this.description}}</small>
           <div class="cartBtn mt-2" style="text-align: center;">
             <form action="/cart" method="POST">
               <input type="hidden" name="productId" value="{{this.id}}">
-              <button type="submit" class="btn btn-success">加入購物車</button>
+              <button type="submit" class="btn btn-success mt-2">加入購物車</button>
             </form>
           </div>
         </div>
@@ -127,12 +170,12 @@
   {{#each orders}}
   {{#ifCond this.User.id ../loginUser.id}}
   {{#each this.PaymentStatus}}
-  {{#ifCond this.paymentStatus '已匯款'}}
+  {{#ifCond this.paymentStatus '已付款'}}
   <h4 class="mt-5 mb-5">留下您的評論：</h4>
 
   <form action="/product/{{../../product.id}}/rate" method="POST">
     <div class="form-group col-11">
-      <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="請在此輸入內容"></textarea>
+      <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="請在此輸入內容" required></textarea>
     </div>
 
     <p class="mb-3 d-flex align-items-center">
@@ -168,6 +211,9 @@
   const qtyMinus = document.querySelector('.qtyMinus')
   const qtyPlus = document.querySelector('.qtyPlus')
   const qty = document.querySelector('.qty')
+  const modal = document.querySelector('.modal')
+  const btn = document.querySelector('.notice')
+  const span = document.querySelector('.close')
 
   qtyMinus.addEventListener('click', () => {
     if (qty.value > 1) return qty.value--
@@ -175,7 +221,18 @@
   })
 
   qtyPlus.addEventListener('click', () => {
-    qty.value++
+    if (qty.value >= 10) return qty.value === 10
+    return qty.value++
   })
+
+  // When the user clicks the button, open the modal 
+  btn.onclick = () => {
+    modal.style.display = "block";
+  }
+
+  // When the user clicks on <span> (x), close the modal 
+  span.onclick = () => {
+    modal.style.display = "none";
+  }
 
 </script>

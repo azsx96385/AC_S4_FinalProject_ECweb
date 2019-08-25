@@ -17,6 +17,7 @@ const ShipmentType = db.Shipment_type;
 const PaymentType = db.Payment_type;
 const ShipmentStatus = db.Shipment_status;
 const PaymentStatus = db.Payment_status;
+const Shipment_convenienceStore = db.Shipment_convenienceStore
 //---------忘記密碼---------------------
 var crypto = require('crypto-js');
 /*---------------nodmailer寄信----------------------*/
@@ -118,14 +119,14 @@ const userController = {
             { model: ShipmentType, as: "ShipmentType" },
             { model: PaymentType, as: "PaymentType" },
             { model: ShipmentStatus, as: "ShipmentStatus" },
-            { model: PaymentStatus, as: "PaymentStatus" }
+            { model: PaymentStatus, as: "PaymentStatus" },
+            { model: Shipment_convenienceStore, as: "ShipmentConvenienceStore" }
           ]
         }
       ]
     }).then(user => {
       //找出user 在從user中找到order 在從order中找到產品
       let orderInfo = user.Orders.sort((a, b) => b.id - a.id); //由id來排先後???為何createAT不管用
-
 
       return res.render("userProfile", {
         user,

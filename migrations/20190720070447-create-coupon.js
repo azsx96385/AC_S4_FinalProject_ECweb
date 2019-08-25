@@ -26,7 +26,7 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-      availabe: {
+      available: {
         type: Sequelize.BOOLEAN
       },
       expireDate: {

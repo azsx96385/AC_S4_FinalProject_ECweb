@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Order.associate = function(models) {
+  Order.associate = function (models) {
     // associations can be defined here
     Order.belongsTo(models.Order_status);
     Order.belongsToMany(models.Product, {
@@ -27,8 +27,17 @@ module.exports = (sequelize, DataTypes) => {
     });
     Order.belongsTo(models.User);
     Order.hasMany(models.Payment);
-    // Order.hasMany(models.Payment);
+
     Order.hasMany(models.Shipment);
+    Order.belongsToMany(models.Shipment_convenienceStore, {
+      as: "ShipmentConvenienceStore",
+      through: {
+        model: models.Shipment,
+        unique: false
+      },
+      foreignKey: "OrderId"
+    });
+
   };
   return Order;
 };
