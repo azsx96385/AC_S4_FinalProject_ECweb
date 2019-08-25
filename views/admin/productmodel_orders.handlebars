@@ -69,17 +69,60 @@
                         <tr>
                             <th scope="row"><input type="checkbox" name="" id=""></th>
                             <td><a href="#">{{this.id}}</a></td>
-                            <td>2019-08-01 2:10pm</td>
+                            <td>{{this.orderDate}}</td>
                             <td>
-                                <h5><span class="badge badge-warning">處理中</span></h5>
+                                {{#ifCond this.orderStatus '排程中' }}
+                                <h5><span class="badge badge-secondary">{{this.orderStatus}}</span></h5>
+                                {{/ifCond}}
+                                {{#ifCond this.orderStatus '處理中' }}
+                                <h5><span class="badge badge-warning">{{this.orderStatus}}</span></h5>
+                                {{/ifCond}}
+                                {{#ifCond this.orderStatus '已完成' }}
+                                <h5><span class="badge badge-success">{{this.orderStatus}}</span></h5>
+                                {{/ifCond}}
                             </td>
                             <td>
-                                <h5><span class="badge badge-warning">處理中</span></h5>
+                                {{#ifCond this.paymentStatus '未付款'}}
+                                <h5><span class="badge badge-secondary">{{this.paymentStatus}}</span></h5>
+                                {{/ifCond}}
+
+                                {{#ifCond this.paymentStatus '已付款'}}
+                                <h5><span class="badge badge-success">{{this.paymentStatus}}</span></h5>
+                                {{/ifCond}}
+
+                                {{#ifCond this.paymentStatus '退款中'}}
+                                <h5><span class="badge badge-warning">{{this.paymentStatus}}</span></h5>
+                                {{/ifCond}}
+
+                                {{#ifCond this.paymentStatus '已退款'}}
+                                <h5><span class="badge badge-secondary">{{this.paymentStatus}}</span></h5>
+                                {{/ifCond}}
+
                             </td>
                             <td>
-                                <h5><span class="badge badge-warning">處理中</span></h5>
+                                {{#ifCond this.shipmentStatus '備貨中'}}
+                                <h5><span class="badge badge-secondary">{{this.shipmentStatus}}</span></h5>
+                                {{/ifCond}}
+                                {{#ifCond this.shipmentStatus '發貨中'}}
+                                <h5><span class="badge badge-secondary">{{this.shipmentStatus}}</span></h5>
+                                {{/ifCond}}
+                                {{#ifCond this.shipmentStatus '已發貨'}}
+                                <h5><span class="badge badge-primary">{{this.shipmentStatus}}</span></h5>
+                                {{/ifCond}}
+                                {{#ifCond this.shipmentStatus '已到達'}}
+                                <h5><span class="badge badge-success">{{this.shipmentStatus}}</span></h5>
+                                {{/ifCond}}
+                                {{#ifCond this.shipmentStatus '已取貨'}}
+                                <h5><span class="badge badge-success">{{this.shipmentStatus}}</span></h5>
+                                {{/ifCond}}
+                                {{#ifCond this.shipmentStatus '已退貨'}}
+                                <h5><span class="badge badge-warning">{{this.shipmentStatus}}</span></h5>
+                                {{/ifCond}}
+                                {{#ifCond this.shipmentStatus '退貨中'}}
+                                <h5><span class="badge badge-warning">{{this.shipmentStatus}}</span></h5>
+                                {{/ifCond}}
                             </td>
-                            <td>王曉明(azc@gmail.com)</td>
+                            <td>{{this.User.name}}({{this.User.email}})</td>
                             <td>NT$250</td>
                         </tr>
                         {{/each}}
@@ -92,11 +135,18 @@
     <div class="page  ">
         <nav aria-label="Page navigation example">
             <ul class="pagination text-center">
-                <li class="page-item"><a class="page-link" href="#">
-                        <<</a> </li> <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">>></a></li>
+
+                <li class="page-item"><a class="page-link" href="/admin/productmodel/order_mange?page={{lastPage}}">
+                        <<</a> </li> {{#each totalPage}} {{#ifCond this ../page}} <li class="page-item  active"><a
+                                class="page-link" href="#">{{this}}</a></li>
+                {{else}}
+                <li class="page-item"><a class="page-link" href="#">{{this}}</a></li>
+                {{/ifCond}}
+                {{/each}}
+
+                <li class="page-item"><a class="page-link"
+                        href="/admin/productmodel/order_mange?page={{nextPage}}">>></a></li>
+
             </ul>
         </nav>
     </div>

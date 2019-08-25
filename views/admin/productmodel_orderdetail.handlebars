@@ -8,46 +8,49 @@
             <div class="card order-detail  my-3">
                 <div class="card-header d-flex justify-content-between">
                     <p class="d-inline text-primary">訂單資料</p>
-                    <div class="status_btn d-flex ">
-                        <div class="dropdown ">
-                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                                data-toggle="dropdown">--更改訂單狀態--</button>
-
-                            <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">處理中</a>
-                                <a href="#" class="dropdown-item">已確認</a>
-                                <a href="#" class="dropdown-item">已完成</a>
-                                <a href="#" class="dropdown-item">已取消</a>
-                            </div>
-                        </div>
-                        <button class="btn btn-sm btn-primary d-inline">編輯</button>
+                    <div id="orderData" class="status_btn d-flex ">
+                        <button id="edit" class="btn btn-sm btn-primary ">編輯</button>
+                        <button id="save" class="btn btn-sm btn-success d-none">儲存</button>
                     </div>
                 </div>
                 <div class="card-body">
                     {{!-- 訂單號碼 --}}
                     <div class="order-detail-item my-1">
                         <h6 class="font-weight-bold">訂單號碼</h6>
-                        <p>1111112222222</p>
+                        <p>{{order.id}}</p>
                     </div>
                     {{!-- 訂單日期 --}}
                     <div class="order-detail-item my-1">
                         <h6 class="font-weight-bold">訂單日期</h6>
-                        <p>1111112222222</p>
+                        <p>{{order.createdAt_format}}</p>
                     </div>
                     {{!-- 訂單狀態 --}}
                     <div class="order-detail-item my-3">
                         <h6 class="font-weight-bold">訂單狀態</h6>
-                        <span class="badge badge-warning">處理中</span>
+                        {{#ifCond orderStatus '排程中' }} <h5><span
+                                class="badge badge-secondary">{{this.orderStatus}}</span></h5>
+                        {{/ifCond}}
+                        {{#ifCond orderStatus '處理中' }}
+                        <h5><span class="badge badge-warning">{{this.orderStatus}}</span></h5>
+                        {{/ifCond}}
+                        {{#ifCond orderStatus '已完成' }}
+                        <h5><span class="badge badge-success">{{this.orderStatus}}</span></h5>
+                        {{/ifCond}}
+                        <div id="orderStatus" class="d-none input-group hidden">
+                            <select class=" custom-select" id="inputGroupSelect01">
+                                <option selected>更改為...</option>
+                                <option value="0">排程中</option>
+                                <option value="1">處理中</option>
+                                <option value="2">已完成</option>
+                            </select>
+                        </div>
                     </div>
-                    {{!-- 訂單來源 --}}
-                    <div class="order-detail-item my-1">
-                        <h6 class="font-weight-bold">訂單來源</h6>
-                        <p>前台購物網站</p>
-                    </div>
+
                     {{!-- 訂單備註 --}}
                     <div class="order-detail-item my-1">
                         <h6 class="font-weight-bold">訂單備註</h6>
-                        <p>晚上六點後送</p>
+                        <p></p>
+                        <input id="orderMemo" type="text" class="form-control " value="{{order.memo}}" disabled>
                     </div>
                 </div>
             </div>
@@ -55,30 +58,31 @@
             <div class="card order-info  my-3">
                 <div class="card-header d-flex justify-content-between">
                     <p class="d-inline text-primary">訂購人資訊</p>
-                    <div class="status_btn d-flex ">
-                        <button class="btn btn-sm btn-primary d-inline">編輯</button>
-                    </div>
+                    {{!-- <div id="ordererInfo" class="status_btn d-flex ">
+                        <button id="edit" class="btn btn-sm btn-primary ">編輯</button>
+                        <button id="save" class="btn btn-sm btn-success d-none">儲存</button>
+                    </div> --}}
                 </div>
-                <div class="card-body">
+                <div id="ordererInfoDetail" class="card-body">
                     {{!-- 訂購人 --}}
                     <div class="order-info-item my-1">
                         <h6 class="font-weight-bold">訂購人</h6>
-                        <p>王曉明</p>
+                        <p>{{orderer.name}}</p>
                     </div>
                     {{!-- 訂單Email --}}
                     <div class="order-info-item my-1">
-                        <h6 class="font-weight-bold">訂單Email</h6>
-                        <p>az55555555@gmail.com</p>
+                        <h6 class="font-weight-bold">訂購人Email</h6>
+                        <p>{{orderer.email}}</p>
                     </div>
                     {{!-- 電話號碼 --}}
-                    <div class="order-info-item my-3">
+                    {{!-- <div class="order-info-item my-3">
                         <h6 class="font-weight-bold">電話號碼</h6>
-                        <p>0939-11111111</p>
-                    </div>
+                        <p>{{orderer.phone}}</p>
+                    </div> --}}
                     {{!-- 訂購帳號 --}}
                     <div class="order-info-item my-1">
-                        <h6 class="font-weight-bold">訂購帳號</h6>
-                        <p>王曉明|az55555555@gmail.com</p>
+                        <h6 class="font-weight-bold">訂購地址</h6>
+                        <p>{{orderer.address}}</p>
                     </div>
 
                 </div>
@@ -90,32 +94,55 @@
             {{!-- 付款資料 --}}
             <div class="card payment-status my-3">
                 <div class="card-header d-flex justify-content-between">
-                    <p class="d-inline text-primary">訂單資料</p>
-                    <div class="status_btn d-flex ">
-                        <div class="dropdown ">
-                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                                data-toggle="dropdown">--更改訂單付款狀態--</button>
-
-                            <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">未付款</a>
-                                <a href="#" class="dropdown-item">已付款</a>
-                                <a href="#" class="dropdown-item">退款中</a>
-                                <a href="#" class="dropdown-item">已退款</a>
-                            </div>
-                        </div>
-
+                    <p class="d-inline text-primary">付款資料</p>
+                    <div id="payment" class="status_btn d-flex ">
+                        <button id="edit" class="btn btn-sm btn-primary ">編輯</button>
+                        <button id="save" class="btn btn-sm btn-success d-none">儲存</button>
                     </div>
                 </div>
                 <div class="card-body">
                     {{!-- 付款狀態--}}
-                    <div class="payment-status-item my-1">
+                    <div id="paymentDetail" class="payment-status-item my-1">
                         <h6 class="font-weight-bold">付款狀態</h6>
-                        <span class="badge badge-warning">未付款</span>
+
+                        {{#ifCond paymentStatus '未付款'}}
+                        <h5><span class="badge badge-secondary">{{this.paymentStatus}}</span></h5>
+                        {{/ifCond}}
+
+                        {{#ifCond paymentStatus '已付款'}}
+                        <h5><span class="badge badge-success">{{this.paymentStatus}}</span></h5>
+                        {{/ifCond}}
+
+                        {{#ifCond paymentStatus '退款中'}}
+                        <h5><span class="badge badge-warning">{{this.paymentStatus}}</span></h5>
+                        {{/ifCond}}
+
+                        {{#ifCond paymentStatus '已退款'}}
+                        <h5><span class="badge badge-secondary">{{this.paymentStatus}}</span></h5>
+                        {{/ifCond}}
+                        <div id="paymentStatus" class="d-none input-group hidden">
+                            <select class="custom-select">
+                                <option selected>更改為...</option>
+                                <option value="1">未付款</option>
+                                <option value="2">已付款</option>
+                                <option value="3">退款中</option>
+                                <option value="4">已退款</option>
+                            </select>
+                        </div>
                     </div>
                     {{!-- 付款方法 --}}
                     <div class="payment-status-item my-1">
                         <h6 class="font-weight-bold">付款方法</h6>
-                        <p>貨到付款</p>
+                        <h5><span class="badge badge-secondary">{{this.paymentType}}</span></h5>
+                        <div id="paymentType" class="d-none input-group hidden">
+                            <select class=" custom-select">
+                                <option selected>更改為...</option>
+                                <option value="1">信用卡</option>
+                                <option value="2">LINEPAY</option>
+                                <option value="3">GOOGLEPAY</option>
+                                <option value="4">匯款</option>
+                            </select>
+                        </div>
                     </div>
 
                 </div>
@@ -123,55 +150,83 @@
             {{!-- 配送/送貨資料 --}}
             <div class="card shipment-status  my-3">
                 <div class="card-header d-flex justify-content-between">
-                    <p class="d-inline text-primary">配送/送貨資料</p>
-                    <div class="status_btn d-flex ">
-                        <div class="dropdown ">
-                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button"
-                                data-toggle="dropdown">--更改訂單送貨狀態--</button>
-
-                            <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">備貨中</a>
-                                <a href="#" class="dropdown-item">發貨中</a>
-                                <a href="#" class="dropdown-item">已發貨</a>
-                                <a href="#" class="dropdown-item">已到達</a>
-                                <a href="#" class="dropdown-item">已取貨</a>
-                                <a href="#" class="dropdown-item">已退貨</a>
-                                <a href="#" class="dropdown-item">退貨中</a>
-                            </div>
-                        </div>
-
+                    <p class="d-inline text-primary">配送資料</p>
+                    <div id="shipment" class="status_btn d-flex ">
+                        <button id="edit" class="btn btn-sm btn-primary ">編輯</button>
+                        <button id="save" class="btn btn-sm btn-success d-none">儲存</button>
                     </div>
                 </div>
-                <div class="card-body">
+                <div id="shipmentDetail" class="card-body">
                     {{!-- 發貨狀態--}}
                     <div class="shipment-status-item my-1">
                         <h6 class="font-weight-bold">發貨狀態</h6>
-                        <span class="badge badge-warning">備貨中</span>
+
+                        {{#ifCond shipmentStatus '備貨中'}}
+                        <h5><span class="badge badge-secondary">{{this.shipmentStatus}}</span></h5>
+                        {{/ifCond}}
+                        {{#ifCond shipmentStatus '發貨中'}}
+                        <h5><span class="badge badge-secondary">{{this.shipmentStatus}}</span></h5>
+                        {{/ifCond}}
+                        {{#ifCond shipmentStatus '已發貨'}}
+                        <h5><span class="badge badge-primary">{{this.shipmentStatus}}</span></h5>
+                        {{/ifCond}}
+                        {{#ifCond shipmentStatus '已到達'}}
+                        <h5><span class="badge badge-success">{{this.shipmentStatus}}</span></h5>
+                        {{/ifCond}}
+                        {{#ifCond shipmentStatus '已取貨'}}
+                        <h5><span class="badge badge-success">{{this.shipmentStatus}}</span></h5>
+                        {{/ifCond}}
+                        {{#ifCond shipmentStatus '已退貨'}}
+                        <h5><span class="badge badge-warning">{{this.shipmentStatus}}</span></h5>
+                        {{/ifCond}}
+                        {{#ifCond shipmentStatus '退貨中'}}
+                        <h5><span class="badge badge-warning">{{this.shipmentStatus}}</span></h5>
+                        {{/ifCond}}
+                        <div id="shipmentStatus" class="d-none input-group hidden">
+                            <select class="custom-select">
+                                <option selected>更改為...</option>
+                                <option value="1">備貨中</option>
+                                <option value="2">發貨中</option>
+                                <option value="3">已發貨</option>
+                                <option value="4">已到達</option>
+                                <option value="5">已取貨</option>
+                                <option value="6">已退貨</option>
+                                <option value="7">退貨中</option>
+                            </select>
+                        </div>
                     </div>
                     {{!-- 送貨方式--}}
                     <div class="shipment-status-item my-1">
                         <h6 class="font-weight-bold">送貨方法</h6>
-                        <p>貨到付款</p>
+                        <h5><span class="badge badge-secondary">{{this.shipmentType}}</span></h5>
+                        <div id="shipmentType" class="d-none input-group hidden">
+                            <select class="custom-select">
+                                <option selected>更改為...</option>
+                                <option value="1">宅配</option>
+                                <option value="2">超商取貨</option>
+                                <option value="3">面交</option>
+                            </select>
+                        </div>
                     </div>
                     {{!-- 收件人 --}}
                     <div class="shipment-status-item my-1">
                         <h6 class="font-weight-bold">收件人</h6>
-                        <p>王曉明</p>
+                        <input type="text" class="form-control" value="{{order.name}}" disabled>
                     </div>
                     {{!-- 收件人電話號碼 --}}
                     <div class="shipment-status-item my-1">
                         <h6 class="font-weight-bold">收件人電話號碼</h6>
-                        <p>0931-2222222</p>
+                        <input type="text" class="form-control" value="{{order.phone}}" disabled>
                     </div>
                     {{!-- 送貨費用 --}}
                     <div class="shipment-status-item my-1">
                         <h6 class="font-weight-bold">送貨費用</h6>
-                        <p>NT$22</p>
+                        <p>NT$0</p>
                     </div>
                     {{!-- 送貨地址 --}}
                     <div class="shipment-status-item my-1">
                         <h6 class="font-weight-bold">送貨地址</h6>
-                        <p>高雄市北門路5段12號</p>
+                        <input type="text" class="form-control" value="{{order.address}}" disabled>
                     </div>
                 </div>
             </div>

@@ -3,6 +3,7 @@ const fs = require("fs");
 const productCategoryModel = db.Product_category;
 const productModel = db.Product;
 const imgur = require("imgur-node-api");
+
 const productController = {
   //  顯示產品管理頁面
   getProductManagePage: (req, res) => {
@@ -33,7 +34,7 @@ const productController = {
         ); //創造頁碼陣列
         //[定義上下頁頁碼]---------------- //使用三元運算子
         let prePage = page - 1 < 1 ? 1 : page - 1;
-        let nextPage = page + 1 > page ? page : page + 1;
+        let nextPage = page + 1 > pages ? pages : page + 1;
 
         res.render("admin/productmodel_products", {
           shopProductsCount: shopProducts.count,

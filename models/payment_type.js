@@ -7,15 +7,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Payment_type.associate = function (models) {
+  Payment_type.associate = function(models) {
     // associations can be defined here
-    Payment_type.belongsToMany(models.Order,
-      {
-        through: models.Payment,
-        foreginKey: 'PaymentTypeId',
-        as: 'PaymentTypeToOrder'
-
-      })
+    Payment_type.hasMany(models.Payment);
   };
   return Payment_type;
 };

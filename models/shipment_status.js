@@ -7,8 +7,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  Shipment_status.associate = function (models) {
+  Shipment_status.associate = function(models) {
     // associations can be defined here
+
     Shipment_status.belongsToMany(models.Order,
       {
         through: models.Shipment,
@@ -16,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'ShipmentStatusToOrder'
 
       })
+
 
 
   };

@@ -78,13 +78,23 @@ module.exports = {
       }))
     );
 
-    //Orders OrderItems payment shipment
+    //Orders OrderItems OrderStatus payment shipment
     //Order 記錄訂單-訂購人資訊 | 建立3筆訂單
+    queryInterface.bulkInsert(
+      "Order_statuses",
+      ["排程中", "處理中", "已完成"].map((item, index) => ({
+        orderStatus: item,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }))
+    );
+
     queryInterface.bulkInsert(
       "Orders",
       [2, 3, 4].map((item, index) => ({
         UserId: item,
         StoreId: 1,
+        OrderStatusId: Math.floor(Math.random() * 2) + 1,
         name: "water",
         amount: 2000,
         phone: "06-2626255",
@@ -111,7 +121,7 @@ module.exports = {
       [1, 2, 3].map((item, index) => ({
         OrderId: item,
         ShipmentStatusId: Math.floor(Math.random() * 7),
-        ShipmentTypeId: Math.floor(Math.random() * 3),
+        ShipmentTypeId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       }))
@@ -122,7 +132,7 @@ module.exports = {
       [1, 2, 3].map((item, index) => ({
         OrderId: item,
         PaymentStatusId: Math.floor(Math.random() * 4),
-        PaymentTypeId: Math.floor(Math.random() * 4),
+        PaymentTypeId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       }))
