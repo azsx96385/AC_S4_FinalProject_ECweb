@@ -21,21 +21,27 @@ orderData.addEventListener("click", orderDataEdit);
 payment.addEventListener("click", paymentEdit);
 shipment.addEventListener("click", shipmentEdit);
 
+//-----------------------
+let saveBtn =
+  '<button id="save" type="submit" class="btn btn-sm btn-success ">儲存</button>';
+
 function orderDataEdit() {
   let eventId = event.target.id;
   console.log(eventId);
   if (eventId === "edit") {
-    orderData.querySelector("#edit").classList.add("d-none");
-    orderData.querySelector("#save").classList.remove("d-none");
+    orderData.querySelector("#edit").remove();
+    orderData.innerHTML = saveBtn;
     orderStatus.classList.remove("d-none");
     orderMemo.removeAttribute("disabled");
+    // orderData.querySelector("#edit").classList.add("d-none");
+    // orderData.querySelector("#save").classList.remove("d-none");
   }
-  if (eventId === "save") {
-    orderData.querySelector("#edit").classList.remove("d-none");
-    orderData.querySelector("#save").classList.add("d-none");
-    orderStatus.classList.add("d-none");
-    orderMemo.setAttribute("disabled", "");
-  }
+  // if (eventId === "save") {
+  //   // orderData.querySelector("#edit").classList.remove("d-none");
+  //   // orderData.querySelector("#save").classList.add("d-none");
+  //   orderStatus.classList.add("d-none");
+  //   orderMemo.setAttribute("disabled", "");
+  // }
 }
 
 // function ordererInfoEdit() {
@@ -60,16 +66,11 @@ function orderDataEdit() {
 function paymentEdit() {
   let eventId = event.target.id;
   if (eventId === "edit") {
-    payment.querySelector("#edit").classList.add("d-none");
-    payment.querySelector("#save").classList.remove("d-none");
+    payment.querySelector("#edit").remove();
+    payment.innerHTML = saveBtn;
+
     paymentStatus.classList.remove("d-none");
     paymentType.classList.remove("d-none");
-  }
-  if (eventId === "save") {
-    payment.querySelector("#edit").classList.remove("d-none");
-    payment.querySelector("#save").classList.add("d-none");
-    paymentStatus.classList.add("d-none");
-    paymentType.classList.add("d-none");
   }
 }
 
@@ -77,21 +78,12 @@ function shipmentEdit() {
   let eventId = event.target.id;
   let allInput = shipmentDetail.querySelectorAll("input");
   if (eventId === "edit") {
-    shipment.querySelector("#edit").classList.add("d-none");
-    shipment.querySelector("#save").classList.remove("d-none");
+    shipment.querySelector("#edit").remove();
+    shipment.innerHTML = saveBtn;
     shipmentStatus.classList.remove("d-none");
     shipmentType.classList.remove("d-none");
     allInput.forEach(item => {
       item.removeAttribute("disabled");
-    });
-  }
-  if (eventId === "save") {
-    shipment.querySelector("#edit").classList.remove("d-none");
-    shipment.querySelector("#save").classList.add("d-none");
-    shipmentStatus.classList.add("d-none");
-    shipmentType.classList.add("d-none");
-    allInput.forEach(item => {
-      item.setAttribute("disabled", "");
     });
   }
 }

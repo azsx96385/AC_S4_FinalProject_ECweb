@@ -66,10 +66,11 @@ const orderController = {
           ),
           orderStatus: item.dataValues.Order_status.orderStatus,
           paymentStatus:
-            item.dataValues.Payments[0].dataValues.Payment_status.paymentStatus,
+            item.dataValues.Payments[item.dataValues.Payments.length - 1]
+              .dataValues.Payment_status.paymentStatus,
           shipmentStatus:
-            item.dataValues.Shipments[0].dataValues.Shipment_status
-              .shipmentStatus
+            item.dataValues.Shipments[item.dataValues.Shipments.length - 1]
+              .dataValues.Shipment_status.shipmentStatus
         }));
         res.render("admin/productmodel_orders", {
           page,
@@ -114,11 +115,18 @@ const orderController = {
 
         let orderer = order.User;
         let orderStatus = order.Order_status.orderStatus;
-        let paymentStatus = order.Payments[0].Payment_status.paymentStatus;
-        let paymentType = order.Payments[0].Payment_type.paymentType;
-        let shipmentStatus = order.Shipments[0].Shipment_status.shipmentStatus;
-        let shipmentType = order.Shipments[0].Shipment_type.shipmentType;
-        console.log(paymentStatus);
+        let paymentStatus =
+          order.Payments[order.Payments.length - 1].Payment_status
+            .paymentStatus;
+        let paymentType =
+          order.Payments[order.Payments.length - 1].Payment_type.paymentType;
+        let shipmentStatus =
+          order.Shipments[order.Shipments.length - 1 || 0].Shipment_status
+            .shipmentStatus;
+        let shipmentType =
+          order.Shipments[order.Shipments.length - 1 || 0].Shipment_type
+            .shipmentType;
+        //console.log(order.Payments[order.Payments.length - 1]);
         res.render("admin/productmodel_orderdetail", {
           order,
           orderer,
@@ -130,10 +138,51 @@ const orderController = {
           layout: "admin_main"
         });
       });
+  },
+  // 單一 | 訂單詳細頁-更改訂單狀態
+  putOrderStatus: (req, res) => {
+    //驗證身分(訂單storeId & user storeId)
+    //調出修改參數
+    let orderId = req.params.orderId;
+    let { OrderStatusId, memo } = req.body;
+
+    //調出訂單資料-修改更新資料
+    return orderModel.findByPk(orderId).then(orderData => {
+      orderData.update({ OrderStatusId, memo }).then(data => {
+        return res.redirect("back");
+      });
+    });
+  },
+  // 單一 | 訂單詳細頁-更改訂單付款狀態
+  putPaymentStatus: (req, res) => {
+    //驗證身分
+    //調整修改參數
+    let OrderId = req.params.orderId;
+    let { PaymentStatusId, PaymentTypeId } = req.body;
+    //新增該筆訂單付款紀錄
+    return paymentModel
+      .create({ OrderId, PaymentStatusId, PaymentTypeId })
+      .then(data => {
+        return res.redirect("back");
+      });
+  },
+  // 單一 | 訂單詳細頁-更改訂單送貨狀態
+  putShipmentStatu: (req, res) => {
+    //驗證身分
+    //調整修改參數
+    let OrderId = req.params.orderId;
+    let { ShipmentStatusId, ShipmentTypeId, name, phone, address } = req.body;
+    //新增該筆訂單配送紀錄
+    return shipmentModel
+      .create({ OrderId, ShipmentStatusId, ShipmentTypeId })
+      .then(data => {
+        return orderModel.findByPk(OrderId).then(order => {
+          order.update({ name, phone, address }).then(data => {
+            return res.redirect("back");
+          });
+        });
+      });
   }
-  // 單一 | 更改訂單狀態
-  // 單一 | 更改訂單付款狀態
-  // 單一 | 更改訂單送貨狀態
-  // 單一 | 更改訂單訂購人資訊
+  // 單一 | 訂單詳細頁-更改訂單訂購人資訊
 };
 module.exports = orderController;
