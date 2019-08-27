@@ -49,48 +49,42 @@
         </td>
       </tr>
       {{/each}}
-      <tr>
-        <td></td>
-        <td></td>
-        <td style="text-align: right;">
-          <h2>總共: </h2>
-        </td>
-        <td>
-          <h2>{{totalPrice}} 元</h2>
-        </td>
-        <td>{{#if loginUser}}
-          <a href="/enterCoupon" class="btn btn-primary">使用coupon</a>
-          {{else}}
-          <a href="/users/login?redirect=/enterCoupon" class="btn btn-primary">使用coupon</a>
-          {{/if}}</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-
-
-
-        </td>
-        <td>
-          {{#if loginUser}}
-          <a href="/orderEdit" class="btn btn-primary">
-            去買單
-          </a>
-          {{else}}
-          <a href="/users/login?redirect=/orderEdit" class="btn btn-primary">
-            去買單
-          </a>
-          {{/if}}
-        </td>
-        <td></td>
-        <td></td>
-      </tr>
     </tbody>
   </table>
+  <div class="expenseTable bg-light text-dark ">
+
+    <div class="row">
+      <div class="col">商品金額總計:</div>
+      <div class="col">{{totalPrice}} 元</div>
+    </div>
+    <div class="row">
+      <div class="col">運費:</div>
+      <div class="col">0</div>
+    </div>
+    <div class="row">
+      <div class="col">coupon折抵</div>
+      <div class="col">0</div>
+    </div>
+    <div class="row">
+      <div class="col">金額總計:</div>
+      <div class="col">{{totalPrice}} 元</div>
+    </div>
+
+  </div>
+  <div class="row">{{#if loginUser}}
+    <a href="/orderEdit" class="btn btn-primary">
+      去買單
+    </a>
+    {{else}}
+    <a href="/users/login?redirect=/orderEdit" class="btn btn-primary">
+      去買單
+    </a>
+    {{/if}}</div>
   {{else}}
   <div class="alert alert-secondary" role="alert">
     你的購物車還是空的!! </div>
   <a href="/" class='btn btn-primary mt-5'>回到首頁</a>
   {{/if}}
+
 
 </div>
