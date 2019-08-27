@@ -1,6 +1,8 @@
 const moment = require("moment");
 const getStarts = require('../public/javascript/getStars')
 
+var isNumber = require('is-number');
+
 module.exports = {
   ifCond: function (a, b, options) {
     if (a === b) {
@@ -27,5 +29,14 @@ module.exports = {
     }
     return options.inverse(this);
   },
+  multiplicate: function (a, b) {
+    if (isNumber(a) && isNumber(b)) {
+      return Number(a) * Number(b);
+    }
+    if (typeof a === 'string' && typeof b === 'string') {
+      return a + b;
+    }
+    return '';
+  }
 
 };

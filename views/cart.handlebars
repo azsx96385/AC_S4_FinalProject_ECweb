@@ -39,7 +39,7 @@
             </form>
           </div>
         </td>
-        <td>{{this.price}} * {{this.Cart_item.quantity}}</td>
+        <td> {{multiplicate this.price this.Cart_item.quantity }} </td>
         <td>
           <form action="/cartItem/{{this.Cart_item.id}}?_method=DELETE" method="POST">
             <button type="submit" class="btn btn-link">
