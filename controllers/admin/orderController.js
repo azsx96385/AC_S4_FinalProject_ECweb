@@ -167,7 +167,7 @@ const orderController = {
       });
   },
   // 單一 | 訂單詳細頁-更改訂單送貨狀態
-  putShipmentStatu: (req, res) => {
+  putShipmentStatus: (req, res) => {
     //驗證身分
     //調整修改參數
     let OrderId = req.params.orderId;

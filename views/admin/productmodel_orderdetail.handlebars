@@ -208,10 +208,10 @@
                             <h5><span class="badge badge-secondary">{{this.shipmentType}}</span></h5>
                             <div id="shipmentType" class="d-none input-group hidden">
                                 <select name="ShipmentTypeId" class="custom-select">
-                                    <option selected>更改為...</option>
-                                    <option value="1" {{#ifCond ShipmentType "宅配"}}>宅配</option>
-                                    <option value="2" {{#ifCond ShipmentType "超商取貨"}}>超商取貨</option>
-                                    <option value="3" {{#ifCond ShipmentType "面交"}}>面交</option>
+
+                                    <option value="1" {{#ifCond ShipmentType "宅配"}}selected{{/ifCond}}>宅配</option>
+                                    <option value="2" {{#ifCond ShipmentType "超商取貨"}}selected{{/ifCond}}>超商取貨</option>
+                                    <option value="3" {{#ifCond ShipmentType "面交"}}selected{{/ifCond}}>面交</option>
                                 </select>
                             </div>
                         </div>
