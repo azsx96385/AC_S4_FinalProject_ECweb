@@ -7,11 +7,11 @@
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">#</th>
+        <th scope="col">商品</th>
         <th scope="col">價格</th>
         <th scope="col">數量</th>
-        <th scope="col">總價</th>
-        <th scope="col">#</th>
+        <th scope="col">小計</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
@@ -53,21 +53,21 @@
         <td></td>
         <td></td>
         <td style="text-align: right;">
-          <h2>Total: </h2>
+          <h2>總共: </h2>
         </td>
         <td>
           <h2>{{totalPrice}} 元</h2>
         </td>
-        <td></td>
+        <td>{{#if loginUser}}
+          <a href="/enterCoupon" class="btn btn-primary">使用coupon</a>
+          {{else}}
+          <a href="/users/login?redirect=/enterCoupon" class="btn btn-primary">使用coupon</a>
+          {{/if}}</td>
       </tr>
       <tr>
         <td></td>
         <td>
-          {{#if loginUser}}
-          <a href="/enterCoupon" class="btn btn-primary">使用coupon</a>
-          {{else}}
-          <a href="/users/login?redirect=/enterCoupon" class="btn btn-primary">使用coupon</a>
-          {{/if}}
+
 
 
         </td>
