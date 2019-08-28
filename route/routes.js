@@ -79,8 +79,10 @@ router.delete('/cartItem/:id', cartController.deleteCartItem)
 //-------------------------------------------訂單--------------------------------------
 //訂單編輯畫面
 router.get('/orderEdit', authenticated, orderController.getOrderEdit)
-//訂單成立
+//建立訂單
 router.post('/order', authenticated, orderController.postOrder)
+//訂單成立頁面
+router.get('/order/:id/success', authenticated, orderController.getOrderSuccess)
 //個人資料頁面與訂單詳情
 router.get('/user/:id/profile', authenticated, userController.getUserProfile)
 //取消訂單

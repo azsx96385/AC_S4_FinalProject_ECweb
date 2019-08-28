@@ -7,10 +7,11 @@ const Order = db.Order;
 const OrderItem = db.Order_item;
 /*---------------------處理payment跟shipment------------------------------*/
 const Payment = db.Payment;
-const Payment_type = db.Payment_type;
 const Shipment = db.Shipment;
-const Shipment_status = db.Shipment_status;
-const Shipment_type = db.Shipment_type;
+const ShipmentType = db.Shipment_type;
+const PaymentType = db.Payment_type;
+const ShipmentStatus = db.Shipment_status;
+const PaymentStatus = db.Payment_status;
 const Shipment_convenienceStore = db.Shipment_convenienceStore
 const getTradeInfo = require("../public/javascript/getTradeInfo");
 const decryptTradeInfo = require("../public/javascript/decryptTradeInfo");
@@ -70,34 +71,29 @@ const orderController = {
   postOrder: async (req, res) => {
     //COUPON
     if (req.body.couponId) {
-      Coupon.findByPk(req.body.couponId).then(coupon => {
-        //折抵價格
-        var subtotal = req.body.amount - coupon.discount;
-
-        //生成使用紀錄
-        CouponsUsers.findOrCreate({
-          where: {
-            UserId: req.user.id,
-            CouponId: coupon.id
-          }
-        }).spread((couponUser, created) => {
-          couponUser.update({
-            counts: (couponUser.counts || 0) + 1
-          });
+      let coupon = await Coupon.findByPk(req.body.couponId)
+      var subtotal = req.body.amount - coupon.discount
+      var discount = coupon.discount
+      CouponsUsers.findOrCreate({
+        where: {
+          UserId: req.user.id,
+          CouponId: coupon.id
+        }
+      }).spread((couponUser, created) => {
+        couponUser.update({
+          counts: (couponUser.counts || 0) + 1
         });
-      });
+      })
+
     } else {
       var subtotal = req.body.amount;
+      var discount = 0
     }
+
     return Cart.findByPk(req.body.cartId, {
       include: [{ model: Product, as: "items", include: [CartItem] }]
     }).then(cart => {
-      let totalPrice =
-        cart.items.length > 0
-          ? cart.items
-            .map(d => d.price * d.Cart_item.quantity)
-            .reduce((a, b) => a + b)
-          : 0;
+      let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.Cart_item.quantity).reduce((a, b) => a + b) : 0;
       //建立order
 
       return Order.create({
@@ -105,7 +101,7 @@ const orderController = {
         name: req.body.name,
         address: req.body.address,
         phone: req.body.phone,
-        amount: subtotal || req.body.amount
+        amount: subtotal
         //還要處理payment跟shipment
       })
         .then(order => {
@@ -163,19 +159,36 @@ const orderController = {
           const PaymentTypeId = req.body.paymentType;
           const ShipmentTypeId = req.body.shipmentType;
           const userId = req.user.id;
+
           if (PaymentTypeId === "1") return res.redirect(`order/${order.id}/payment`);
           if (ShipmentTypeId === "2") return res.redirect(`/order/${order.id}/branchselection`);
-          return res.redirect(`/user/${userId}/profile`);
+          return res.redirect(`/order/${order.id}/success?discount=${discount}`);
         })
     })
   },
+  getOrderSuccess: (req, res) => {
+    Order.findByPk(req.params.id, {
+      include: [
+        { model: Product, as: "items", include: [OrderItem] },
+        { model: ShipmentType, as: "ShipmentType" },
+        { model: PaymentType, as: "PaymentType" },
+        { model: ShipmentStatus, as: "ShipmentStatus" },
+        { model: PaymentStatus, as: "PaymentStatus" },
+        { model: Shipment_convenienceStore, as: "ShipmentConvenienceStore" }
+      ]
+    }).then(order => {
+      //取得為折抵的總價
+      let originAmount = order.items.length > 0 ? order.items.map(d => d.price * d.Order_item.quantity).reduce((a, b) => a + b) : 0;
 
+      return res.render('orderSuccess', { order, originAmount })
+    })
+  },
 
   cancelOrder: (req, res) => {
     Order.findByPk(req.params.id, {
       include: [
-        { model: Shipment_status, as: "ShipmentStatus" },
-        { model: Shipment_type, as: "ShipmentType" }
+        { model: ShipmentStatus, as: "ShipmentStatus" },
+        { model: ShipmentType, as: "ShipmentType" }
       ]
     })
       .then(order => {

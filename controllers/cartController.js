@@ -8,6 +8,7 @@ const cartController = {
     return Cart.findByPk(req.session.cartId, { include: [{ model: Product, as: 'items', include: [CartItem] }] }).then(async (cart) => {
 
       cart = cart || { items: [] }
+      //如果有使用coupon
       if (req.query.couponId) {
 
         let couponId = req.query.couponId
