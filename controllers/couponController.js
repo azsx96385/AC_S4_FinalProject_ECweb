@@ -46,15 +46,11 @@ const couponController = {
     }).then(coupon => {
       Coupon.findByPk(coupon.id, { include: CouponType }).then(
         coupon => {
-
           res.render('couponShow', { coupon })
         }
       )
 
     })
-  },
-  enterCoupon: (req, res) => {
-    res.render('couponUsingPage')
   },
   checkCoupon: async (req, res) => {
     let cart = await Cart.findByPk(req.session.cartId, { include: [{ model: Product, as: 'items', include: [CartItem] }] })
@@ -81,8 +77,8 @@ const couponController = {
         return res.redirect('back')
       }
       req.flash("success_messages", "成功折抵");
-      return res.render('couponUsingPage', { coupon, totalPrice })
-
+      let couponId = coupon.id
+      return res.redirect(`/cart?couponId= ${couponId}`)
     })
   },
 
