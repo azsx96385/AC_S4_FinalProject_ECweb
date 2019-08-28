@@ -1,73 +1,80 @@
 <div class='container'>
-  <div class="row bg-primary text-white">
-    <h1 class='bg-primary text-white'>訂單明細</h1>
+
+  <div class="orderInfo">
+    <div class="row bg-primary text-white">
+      <h1 class='bg-primary text-white'>訂單明細</h1>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">商品</th>
+          <th scope="col">價格</th>
+          <th scope="col">數量</th>
+          <th scope="col">小計</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      {{#if cart.items}}
+      <tbody>
+        {{#each cart.items}}
+        <tr>
+          <td>
+            <div style="display: flow-root;">
+              <img src="{{this.image}}" class="card-img" alt="..." style="height: 100px;width: auto;">
+              <span>{{this.name}}</span>
+            </div>
+          </td>
+          <td>
+            <p>$ {{this.price}}</p>
+          </td>
+          <td>
+            <div style="display: flex;">
+              <span style="margin: 0 20px;">
+                {{this.Cart_item.quantity}}
+              </span>
+
+            </div>
+          </td>
+          <td>{{multiplicate this.price this.Cart_item.quantity }}</td>
+          <td>
+          </td>
+        </tr>
+        {{/each}}
+        {{else}}
+        <div class="alert alert-secondary" role="alert">
+          你的購物車還是空的!! </div>
+        {{/if}}
+
+      </tbody>
+    </table>
+    <div class=" bg-light text-dark ">
+
+      <div class=" row">
+        <div class="col">商品金額總計:</div>
+        <div class="col">{{totalPrice}} 元</div>
+      </div>
+      <div class="row">
+        <div class="col">運費:</div>
+        <div class="col">0</div>
+      </div>
+      <div class="row">
+        <div class="col">coupon折抵</div>
+        <div class="col">{{coupon.discount}}</div>
+      </div>
+      <div class="row">
+        <div class="col">金額總計:</div>
+        <div class="col">
+          {{#if coupon.discount }}
+          {{subtract totalPrice coupon.discount}} 元
+          {{else}}
+          {{totalPrice}} 元
+          {{/if}}
+        </div>
+      </div>
+    </div>
   </div>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">商品</th>
-        <th scope="col">價格</th>
-        <th scope="col">數量</th>
-        <th scope="col">小計</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    {{#if cart.items}}
-    <tbody>
-      {{#each cart.items}}
-      <tr>
-        <td>
-          <div style="display: flow-root;">
-            <img src="{{this.image}}" class="card-img" alt="..." style="height: 100px;width: auto;">
-            <span>{{this.name}}</span>
-          </div>
-        </td>
-        <td>
-          <p>$ {{this.price}}</p>
-        </td>
-        <td>
-          <div style="display: flex;">
-            <span style="margin: 0 20px;">
-              {{this.Cart_item.quantity}}
-            </span>
-
-          </div>
-        </td>
-        <td>{{multiplicate this.price this.Cart_item.quantity }}</td>
-        <td>
-        </td>
-      </tr>
-      {{/each}}
-      <tr>
-        <td></td>
-        <td></td>
-        <td style="text-align: right;">
-
-          {{#if coupon}}
-          <h2>商品金額總計: </h2>
-          <h2>coupon折抵:</h2>
-          <h2>金額總計:</h2>
-          {{else}}
-          <h2>金額總計:</h2>
-          {{/if}}
-        </td>
-        <td>
-          <h2>{{totalPrice}}</h2>
-          {{#if coupon}}
-          <h2>-{{coupon.discount}}</h2>
-          <h2>{{subtoal}}</h2>
-          {{/if}}
-        </td>
-        <td></td>
-      </tr>
-      {{else}}
-      <div class="alert alert-secondary" role="alert">
-        你的購物車還是空的!! </div>
-      {{/if}}
-
-    </tbody>
-  </table>
   <div class="row" style="height: 100px"></div>
   <form action="/order" method="post">
 

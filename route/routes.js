@@ -88,7 +88,6 @@ router.post('/order/:id', orderController.cancelOrder)
 //-------------coupon----------------------------
 
 //----------使用coupon-------------------
-router.get('/enterCoupon', authenticated, couponController.enterCoupon)
 router.post('/checkCoupon', couponController.checkCoupon)
 router.get('/couponOrder/:couponId', couponController.getCouponOrderEdit)
 //-----------adimin coupon manage---------------------

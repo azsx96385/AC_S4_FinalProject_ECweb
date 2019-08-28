@@ -46,7 +46,6 @@ const couponController = {
     }).then(coupon => {
       Coupon.findByPk(coupon.id, { include: CouponType }).then(
         coupon => {
-
           res.render('couponShow', { coupon })
         }
       )
@@ -81,8 +80,8 @@ const couponController = {
         return res.redirect('back')
       }
       req.flash("success_messages", "成功折抵");
-      return res.render('couponUsingPage', { coupon, totalPrice })
-
+      let couponId = coupon.id
+      return res.redirect(`/cart?couponId= ${couponId}`)
     })
   },
 

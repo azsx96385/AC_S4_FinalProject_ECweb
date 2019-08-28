@@ -50,10 +50,23 @@
       </tr>
       {{/each}}
     </tbody>
-  </table>
-  <div class="expenseTable bg-light text-dark ">
 
-    <div class="row">
+  </table>
+  <div class="coupon">
+    <hr>
+    <form action="/checkCoupon" method='POST'>
+      <div class="form-group">
+        <label for="couponCode">如果要使用折扣碼，請在此填入</label>
+        <input type="text" class="form-control" id='coouponCode' name='couponCode' placeholder='你的Coupon序號'
+          value={{coupon.couponCode}}>
+        <button type="submit" class="btn btn-success mt-3">使用coupon折抵</button>
+      </div>
+    </form>
+  </div>
+  <hr>
+  <div class=" bg-light text-dark ">
+
+    <div class=" row">
       <div class="col">商品金額總計:</div>
       <div class="col">{{totalPrice}} 元</div>
     </div>
@@ -63,28 +76,53 @@
     </div>
     <div class="row">
       <div class="col">coupon折抵</div>
-      <div class="col">0</div>
+      <div class="col">{{coupon.discount}}</div>
     </div>
     <div class="row">
       <div class="col">金額總計:</div>
-      <div class="col">{{totalPrice}} 元</div>
+      <div class="col">
+        {{#if coupon.discount }}
+        {{subtract totalPrice coupon.discount}} 元
+        {{else}}
+        {{totalPrice}} 元
+        {{/if}}
+      </div>
     </div>
-
   </div>
-  <div class="row">{{#if loginUser}}
-    <a href="/orderEdit" class="btn btn-primary">
+
+
+  <div class="row mt-4">
+
+    {{#if loginUser}}
+    {{#if coupon}}
+    <a class="btn btn-warning" href="/couponOrder/{{coupon.id}}?totalamount={{totalPrice}}">去買單coupon</a>
+
+    {{else}}
+    <a href="/orderEdit" class="btn btn-warning">
       去買單
+    </a>
+    {{/if}}
+    {{else}}
+    {{#if coupon}}
+    <a href="/users/login?redirect=/couponOrder/{{coupon.id}}?totalamount={{totalPrice}}" class="btn btn-warning">
+      去買單coupon
     </a>
     {{else}}
-    <a href="/users/login?redirect=/orderEdit" class="btn btn-primary">
+    <a href="/users/login?redirect=/orderEdit" class="btn btn-warning">
       去買單
     </a>
-    {{/if}}</div>
-  {{else}}
-  <div class="alert alert-secondary" role="alert">
-    你的購物車還是空的!! </div>
-  <a href="/" class='btn btn-primary mt-5'>回到首頁</a>
-  {{/if}}
+    {{/if}}
+
+    {{/if}}
 
 
-</div>
+
+
+    {{else}}
+    <div class="alert alert-secondary" role="alert">
+      你的購物車還是空的!! </div>
+    <a href="/" class='btn btn-primary mt-5'>回到首頁</a>
+    {{/if}}
+
+
+  </div>
