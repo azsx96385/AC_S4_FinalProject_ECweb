@@ -52,9 +52,6 @@ const couponController = {
 
     })
   },
-  enterCoupon: (req, res) => {
-    res.render('couponUsingPage')
-  },
   checkCoupon: async (req, res) => {
     let cart = await Cart.findByPk(req.session.cartId, { include: [{ model: Product, as: 'items', include: [CartItem] }] })
     let totalPrice = await cart.items.length > 0 ? cart.items.map(d => d.price * d.Cart_item.quantity).reduce((a, b) => a + b) : 0//如果cart-item
