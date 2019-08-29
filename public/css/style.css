@@ -1,4 +1,4 @@
-#logo, .navbar-brand{
+#logo, .navbar-brand, .navbar-title{
   font-family: 'Pacifico','Noto Sans TC', sans-serif;
   color: black;
 }
@@ -7,8 +7,17 @@ body {
   font-family: 'DFKai-sb';
 }
 
+.navbar-title {
+  margin-left: 150px;
+  font-size: 25px;
+}
+
 .productName, .categoryName {
   color: black;
+}
+
+.no-comment {
+  margin-left: 180px;
 }
 
 .shop-setting {
@@ -19,11 +28,16 @@ hr {
   margin-top: 20px;
   margin-bottom: 20px;
   border: 0;
-  border-top: 1px solid gray;
+  border-top: 1px solid #0085a5;
 }
 
 .card-title, .price, .help-block {
   font-family: 微軟正黑體, Arial;
+}
+
+.card:hover {
+  box-shadow: 0 16px 22px 0 rgba(90, 91, 95, 0.3);
+  top: -5px;
 }
 
 /* ====== product.handlebars-display star ===== */
@@ -91,55 +105,18 @@ hr {
 }
 
 /* ===== main.handlebars-search ===== */
-.growing-search {
-	padding: 5px 5px 5px 7px;
-	border-radius: 5px;
-  background: #fff;
-}
-
-.growing-search div {
-	display: inline-block;
-	font-size: 20px;
-}
-
-.growing-search .input input {
-	margin-right: 0;
-	border: none;
-	font-size: 20px;;
-	transition: width 200ms;
-	padding-top: 5px;
-	padding-left: 5px;
-	padding-bottom: 5px;
-	width: 65px;
-	color: black;
-	border-bottom: 1px solid #eee;
-}
-
-.growing-search .input input:focus {
-	width: 250px;
-}
-
-.growing-search .submit button {
-	margin-left: 0;
-	border: none;
-	font-size: 1.15em;
-	color: #aaa;
-	background-color: #fff;
-	padding-top: 2px;
-	padding-bottom: 2px;
-	transition: color 200ms;
-}
-
-.growing-search .input input:hover, .growing-search .submit button:hover {
-	cursor: pointer;
-}
-
-.growing-search .input input:focus, .growing-search .submit button:focus {
-	outline: none;
-}
-
-.growing-search .submit button:hover {
-	color: #3498db;
+.searchBtn {
+  border-color: #00B2DA;
+  margin: 0 5px;
+  background-color: #3AC4E2;
+  color: white;
+  font-size: 18px;
+  border-radius: 5px;
+  line-height: 30px;
+  border-width: 2px;
+  border-style: solid;
+  cursor: pointer;
+  padding: 3px;
 }
 
 /* ===== product.handlebars-select to quantity ===== */
@@ -154,6 +131,7 @@ hr {
   height: 30px;
   text-align: center;
   border: transparent;
+  background-color: transparent;
 }
 
 input.qtyPlus, input.qtyMinus { 
@@ -207,11 +185,9 @@ input.qtyPlus:active, input.qtyMinus:active {
 
 /* The Close Button */ 
 .close {
-  float: right;
   color: #aaaaaa;
   font-size: 28px;
   font-weight: bold;
-  width: 200%;
 } 
 	 
 .close:hover, 
@@ -221,3 +197,22 @@ input.qtyPlus:active, input.qtyMinus:active {
 	cursor: pointer; 
 } 
 
+/* =====footer===== */
+footer {
+  padding: 20px 0;
+  text-align: center;
+  background-color: #d2f0f5;;
+  color: #0085a5;
+}
+
+.footer-content p {
+  line-height: 22px;
+}
+
+.footer-social-icon a i {
+  color: #0085a5;;
+  display: inline-block;
+  font-size: 20px;
+  line-height: 20px;
+  margin-right: 15px;
+}

@@ -76,17 +76,29 @@ const productController = {
         createdAt: Number(r.createdAt),
         updatedAt: Number(r.updatedAt)
       }))
+
+      // 評價分頁
+      const pageLimit = 10
+      let page = Number(req.query.page) || 1
+      let pages = Math.ceil(comment.length / pageLimit)
+      let totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
+      let prev = page - 1 < 1 ? 1 : page - 1
+      let next = page + 1 > pages ? pages : page + 1
+      let paginationData = []
+      paginationData = comment || paginationData
+      let offset = (page - 1) * pageLimit
+      let pageData = paginationData.slice(offset, offset + pageLimit)
+
+      // 篩選相似商品
       const category = product.Product_category
       const categoryProducts = category.Products
-
-      const products = categoryProducts.map(r => ({
-        ...r.dataValues,
-        description: r.dataValues.description.substring(0, 50),
-      }))
-      productsFilter = products.slice(0, 4)
+      const products = categoryProducts.filter(d => d.id != req.params.id)
+      const productsFilter = products.slice(0, 6)
 
       Product_category.findAll().then(categories => {
+        // 評價平均分數
         const ratingAve = average(comment)
+
         const orders = product.orders
 
         res.render('product', {
@@ -94,7 +106,11 @@ const productController = {
           categories,
           productsFilter,
           ratingAve,
-          orders
+          orders,
+          totalPage,
+          prev,
+          next,
+          comment: pageData
         })
       })
     })
