@@ -93,7 +93,11 @@ const productController = {
       const category = product.Product_category
       const categoryProducts = category.Products
       const products = categoryProducts.filter(d => d.id != req.params.id)
-      const productsFilter = products.slice(0, 6)
+      let productsFilter = products.slice(0, 6)
+      productsFilter = productsFilter.map(r => ({
+        ...r.dataValues,
+        name: r.name.substring(0, 20)
+      }))
 
       Product_category.findAll().then(categories => {
         // 評價平均分數
@@ -119,14 +123,14 @@ const productController = {
   searchProduct: (req, res) => {
     const keyword = req.query.keyword
 
-    Product.findAll().then(products => {
+    Product.findAll({ include: [Product_category] }).then(products => {
       let search = products.filter(product => {
         return product.name.toLowerCase().includes(keyword.toLowerCase())
       })
 
       search = search.map(r => ({
         ...r.dataValues,
-        description: r.dataValues.description.substring(0, 34),
+        name: r.name.substring(0, 30)
       }))
 
       Product_category.findAll().then(categories => {

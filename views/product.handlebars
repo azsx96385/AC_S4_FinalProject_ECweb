@@ -40,8 +40,17 @@
 
       <h3 class="price mt-1 mb-5" style="text-align: center; color:#0085a5">$ {{product.price}}</h3>
 
-      <div class="row ml-5 mb-3">
+      <div class="row ml-5">
         <p class="ml-5 mr-5" style="color: gray;">運送</p>
+        <img
+          src="https://cdngarenanow-a.akamaihd.net/shopee/shopee-pcmall-live-sg/assets/9d21899f3344277e34d40bfc08f60bc7.png"
+          width="35" height="20" class="ml-2 mt-1">
+        <p class="ml-1">滿$999，</p>
+        <p class="mt-1" style="font-size: 16px; color: #ff5722;">免運費</p>
+      </div>
+
+      <div class="row ml-5 mb-3">
+        <p class="ml-5 mr-5">&nbsp;&nbsp;&nbsp;&nbsp;</p>
         <p class="ml-3 mr-5"><i class="fa fa-truck" aria-hidden="true" style="color:#0085a5"></i> 運費</p>
         <p class="ml-3">$ 60</p>
       </div>
@@ -138,6 +147,12 @@
 
 <div class="ml-5 mb-5">
   <p class="ml-5 mr-5 mt-4">{{product.description}}</p>
+  <div class="col-5 ml-5 mb-2">
+    <img class="ml-5" src="{{product.imageI}}" width="500px" height="500px" alt="image">
+  </div>
+  <div class="col-5 ml-5 mb-5">
+    <img class="ml-5" src="{{product.imageII}}" width="500px" height="500px" alt="image">
+  </div>
 </div>
 
 <hr class="ml-5 col-10">
@@ -173,12 +188,20 @@
     </form>
     {{/ifCond}}
 
-    <p class="ml-5 mr-5 mt-2" style="font-size: 18px;">{{this.User.name}}</p>
+    <div class="row">
+      <div class="col-2 ml-2">
+        <img class="avatar" src="{{this.User.image}}">
+      </div>
 
-    <div>
-      <span class="stars d-flex mb-3 mt-2 ml-5">
-        {{#star this.rating}}{{/star}}
-      </span>
+      <div class="col-10">
+        <p class="ml-5 mr-5 mt-2" style="font-size: 18px;">{{this.User.name}}</p>
+
+        <div>
+          <span class="stars d-flex mb-3 mt-2 ml-5">
+            {{#star this.rating}}{{/star}}
+          </span>
+        </div>
+      </div>
     </div>
 
     <p class="ml-5 mt-4">{{this.comment}}</p>
@@ -213,15 +236,17 @@
   {{#ifCond this.User.id ../loginUser.id}}
   {{#each this.PaymentStatus}}
   {{#ifCond this.paymentStatus '已付款'}}
-  <h4 class="mt-5 mb-5">留下您的評價：</h4>
+  <div class="ml-4 mt-5">
+    <h5 class="ml-5">留下您的評價：</h5>
+  </div>
 
   <form action="/product/{{../../product.id}}/rate" method="POST">
-    <div class="form-group col-11">
+    <div class="form-group col-10 mt-3 ml-5">
       <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="請在此輸入內容" required></textarea>
     </div>
 
-    <p class="mb-3 d-flex align-items-center">
-      <span class="text-secondary ml-2">
+    <p class="mb-3 ml-4 d-flex align-items-center">
+      <span class="text-secondary ml-5">
         商品評分：
       </span>
       <span class="starrating risingstar d-flex justify-content-center flex-row-reverse">
@@ -234,7 +259,7 @@
     </p>
 
     <input type="hidden" name="ProductId" value="{{../../product.id}}" />
-    <button type="submit" class="btn btn-primary ml-3 mt-2">送出評價</button>
+    <button type="submit" class="btn btn-primary ml-5 mt-2">送出評價</button>
   </form>
   {{/ifCond}}
   {{/each}}
@@ -253,24 +278,24 @@
   <div class="row">
     {{#each productsFilter}}
     <div class="col-md-2">
-      <div class="card shadow-sm" style="height: 300px;">
-        <a href="/product/{{this.id}}">
+      <a href="/product/{{this.id}}" style="text-decoration: none;">
+        <div class="card shadow-sm" style="height: 300px;">
           <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="320px" height="150px">
-        </a>
-        <div class="card-body">
-          <h6 class="card-text">
-            <a class="productName" style="font-size: 18px;" href="/product/{{this.id}}">
-              【{{../product.Product_category.name}}】{{this.name}}
-            </a>
-          </h6>
-          <div class="row">
-            <p class="price" style="color:#0085a5">$ {{this.price}}</p>
-            <div style="margin: 0 auto">
-              <p style="color:gray; font-size: 17px;">還剩{{this.count}}件</p>
+          <div class="card-body">
+            <h6 class="card-text">
+              <p class="productName" style="font-size: 18px;">
+                【{{../product.Product_category.name}}】{{this.name}}
+              </p>
+            </h6>
+            <div class="row">
+              <p class="price" style="color:#0085a5">$ {{this.price}}</p>
+              <div style="margin: 0 auto">
+                <p style="color:gray; font-size: 17px;">還剩{{this.count}}件</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </a>
     </div>
     {{/each}}
   </div>

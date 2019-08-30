@@ -216,3 +216,14 @@ footer {
   line-height: 20px;
   margin-right: 15px;
 }
+
+/* ====comments user image */
+.avatar {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 50px;
+  height: 50px;
+  display: block;
+  border-radius: 50%;
+}
