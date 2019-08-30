@@ -1,7 +1,6 @@
 <div class="row ml-5 mt-5">
   <div class="col-2">
     <div class="nav flex-column">
-      <a class="navbar-brand mb-5" id="logo" href="/">E-commerce website</a>
       <div class="list-group">
         <a class="list-group-item list-group-item-action" href="/">首頁</a>
       </div>
@@ -14,14 +13,13 @@
   </div>
 
   <div class="index col-10 mb-5">
-    <img src="https://blog.payoneer.com/wp-content/uploads/2014/10/Amazon-Buy-Box.png" style="width:1100px;"
-      alt="image">
+    <img src="{{category.image}}" style="width: 1000px; height: 500px;" alt="image">
   </div>
 </div>
 
 <div class="row ml-5 mt-5">
   <div class="col-9 ml-5">
-    <h3>{{category.name}}</h3>
+    <h3 style="color:#0085a5">{{category.name}}</h3>
   </div>
 
   <div class="col-2">
@@ -42,36 +40,31 @@
   </div>
 </div>
 
-<div class="row mt-5">
+<div class="row mt-5 mb-5">
   <div class="col-2"></div>
 
   <div class="col-8">
     <div class="row">
       {{#each products}}
-      <div class="col-md-4">
-        <div class="card mb-4 shadow-sm">
-          <a href="/product/{{this.id}}">
-            <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="320px" height="180px">
-          </a>
-          <div class="card-body">
-            <h6 class="card-text" style="text-align: center;">
-              <a class="productName" style="text-decoration: none;" href="/product/{{this.id}}">
-                {{this.name}}
-              </a>
-            </h6>
-            <div class="badgeBox" style="text-align: center;">
-              <span class="badge badge-primary">NT $ {{this.price}}</span>
-            </div>
-            <small class="card-text">{{this.description}}</small>
-            <div class="cartBtn mt-2" style="text-align: center;">
-              <form action="/cart" method="POST">
-                <input type="hidden" name="productId" value="{{this.id}}">
-                <input type="hidden" name="quantity" value="1">
-                <button type="submit" class="cartButton btn btn-success">加入購物車</button>
-              </form>
+      <div class="col-md-3 mt-2">
+        <a href="/product/{{this.id}}" style="text-decoration: none;">
+          <div class="card shadow-sm" style="height: 300px;">
+            <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="320px" height="150px">
+            <div class="card-body">
+              <h6 class="card-text">
+                <p class="productName" style="font-size: 18px;">
+                  【{{../category.name}}】{{this.name}}
+                </p>
+              </h6>
+              <div class="row">
+                <p class="price" style="color:#0085a5">$ {{this.price}}</p>
+                <div style="margin: 0 auto">
+                  <p style="color:gray; font-size: 17px;">還剩{{this.count}}件</p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </a>
       </div>
       {{/each}}
     </div>

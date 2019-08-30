@@ -29,7 +29,7 @@ const productController = {
     }).then(category => {
       let products = category.Products.map(r => ({
         ...r.dataValues,
-        description: r.dataValues.description.substring(0, 34),
+        name: r.dataValues.name.substring(0, 20)
       }))
 
       if (key === 'createdAt' && value === 'desc') {
@@ -45,7 +45,7 @@ const productController = {
         products = products.sort((a, b) => a.price - b.price)
         sort = '價格: 由低至高'
       }
-
+      console.log(products)
       Product_category.findAll().then(categories => {
         res.render('categoryProducts', {
           categories,
