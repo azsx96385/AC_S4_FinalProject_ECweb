@@ -10,6 +10,7 @@
         <th scope="col">#</th>
         <th scope="col">E-mail</th>
         <th scope="col">Product</th>
+        <th scope="col">Count</th>
         <th scope="col">#</th>
       </tr>
     </thead>
@@ -19,6 +20,7 @@
         <th scope="row">{{this.id}}</th>
         <td>{{this.email}}</td>
         <td>{{this.Product.name}}</td>
+        <td>{{this.Product.count}}</td>
         <td>
           <form action="/admin/deliveryNotice/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
             <button type="submit" class="btn btn-danger">Delete</button>
