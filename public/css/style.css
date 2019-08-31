@@ -40,6 +40,11 @@ hr {
   top: -5px;
 }
 
+/* ===== a: active display===== */
+.page-link:active, .list-group-item:active {
+  background-color: #0085a5;
+}
+
 /* ====== product.handlebars-display star ===== */
 .star {
   position: relative;

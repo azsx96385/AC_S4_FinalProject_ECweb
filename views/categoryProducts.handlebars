@@ -6,7 +6,12 @@
       </div>
       {{#each categories}}
       <div class="list-group">
+        {{#ifCond this.id ../categoryId}}
+        <a class="list-group-item list-group-item-action active" href="/Category/{{this.id}}"
+          style="background-color: #0085a5">{{this.name}}</a>
+        {{else}}
         <a class="list-group-item list-group-item-action" href="/Category/{{this.id}}">{{this.name}}</a>
+        {{/ifCond}}
       </div>
       {{/each}}
     </div>

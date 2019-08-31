@@ -27,6 +27,7 @@ const productController = {
         Product
       ]
     }).then(category => {
+      const categoryId = category.id
       let products = category.Products.map(r => ({
         ...r.dataValues,
         name: r.dataValues.name.substring(0, 20)
@@ -51,7 +52,8 @@ const productController = {
           categories,
           products,
           category,
-          sort
+          sort,
+          categoryId
         })
       })
     })
@@ -91,6 +93,7 @@ const productController = {
 
       // 篩選相似商品
       const category = product.Product_category
+      const categoryId = category.id
       const categoryProducts = category.Products
       const products = categoryProducts.filter(d => d.id != req.params.id)
       let productsFilter = products.slice(0, 6)
@@ -112,9 +115,11 @@ const productController = {
           ratingAve,
           orders,
           totalPage,
+          page,
           prev,
           next,
-          comment: pageData
+          comment: pageData,
+          categoryId
         })
       })
     })
