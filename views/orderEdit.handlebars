@@ -1,16 +1,36 @@
 <div class='container'>
-  <div class="row bg-primary text-white">
-    <h1>訂單明細</h1>
+  <div class="shopFlow d-flex  justify-content-center mb-3">
+    <div class="step1">
+      <span class='bg-light text-dark rounded-circle p-1'>1</span>
+      <span style='color:#b7b795'>確認購物車</span>
+      <span style='color:#b7b795'>&rarr;
+      </span>
+    </div>
+    <div class="step2">
+      <span class='bg-dark text-light rounded-circle p-1'>2</span>
+      <span>付款與運送方式</span>
+      <span>&rarr;
+      </span>
+    </div>
+    <div class="step3">
+      <span class='bg-light text-dark rounded-circle p-1' style='color:#b7b795'>3</span>
+      <span style='color:#b7b795'>成立訂單</span>
+    </div>
+
   </div>
-  <table class="table">
+  <div class="orderInfo">
+    <div class="row bg-primary text-white">
+      <h1 class='bg-primary text-white'>訂單明細</h1>
+    </div>
+
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">#</th>
+          <th scope="col">商品</th>
           <th scope="col">價格</th>
           <th scope="col">數量</th>
-          <th scope="col">總價</th>
-          <th scope="col">#</th>
+          <th scope="col">小計</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       {{#if cart.items}}
@@ -34,30 +54,11 @@
 
             </div>
           </td>
-          <td>{{this.price}} * {{this.Cart_item.quantity}}</td>
+          <td>{{multiplicate this.price this.Cart_item.quantity }}</td>
           <td>
           </td>
         </tr>
         {{/each}}
-        <tr>
-          <td></td>
-          <td></td>
-          <td style="text-align: right;">
-            <h2>Total: </h2>
-            {{#if coupon}}
-            <h2>coupon折抵:</h2>
-            <h2>總共:</h2>
-            {{/if}}
-          </td>
-          <td>
-            <h2>{{totalPrice}}</h2>
-            {{#if coupon}}
-            <h2>-{{coupon.discount}}</h2>
-            <h2>{{subtoal}}</h2>
-            {{/if}}
-          </td>
-          <td></td>
-        </tr>
         {{else}}
         <div class="alert alert-secondary" role="alert">
           你的購物車還是空的!! </div>
@@ -65,55 +66,85 @@
 
       </tbody>
     </table>
+    <div class=" bg-light text-dark ">
 
-    <form action="/order" method="post">
-      <h1>運送資訊</h1>
-      <div class="form_group row mt-4">
-        <label class="col-2 ">名字:</label>
-        <div class="col-10">
-          <input type="text" class="form-control" name="name" value="{{user.name}}">
+      <div class=" row">
+        <div class="col">商品金額總計:</div>
+        <div class="col">{{totalPrice}} 元</div>
+      </div>
+      <div class="row">
+        <div class="col">運費:</div>
+        <div class="col">0</div>
+      </div>
+      <div class="row">
+        <div class="col">coupon折抵</div>
+        <div class="col">{{coupon.discount}}</div>
+      </div>
+      <div class="row">
+        <div class="col">金額總計:</div>
+        <div class="col">
+          {{#if coupon.discount }}
+          {{subtract totalPrice coupon.discount}} 元
+          {{else}}
+          {{totalPrice}} 元
+          {{/if}}
         </div>
       </div>
-      <div class="form-group row mt-4">
-        <label class="col-2 ">地址:</label>
-        <div class="col-10">
-          <input type="address" class="form-control" name="address" value="{{user.address}}">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-2">Phone:</label>
-        <div class="col-10">
-          <input type="tel" class="form-control" name="phone" value="{{user.phone}}">
-        </div>
-      </div>
-      <h1>運送與付款方式</h1>
-      <div class="form-group">
-        <label class="col-2">運送方式:</label>
-        <div class="col-10">
-          <!--value為對應的id-->
-          <label class="radio-inline"><input type="radio" name='shipmentType' value="1">宅配</label>
-          <label class="radio-inline"><input type="radio" name='shipmentType' value="2">超商取貨</label>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-2">付款方式:</label>
-        <div class="col-10">
-          <label class="checkbox-inline"><input type="checkbox" name='paymentType' value="1">線上支付</label>
-          <label class="checkbox-inline"><input type="checkbox" name='paymentType' value="2">貨到付款</label>
-        </div>
-      </div>
+    </div>
+  </div>
 
-      <div class="form-group d-flex  justify-content-between mt-4">
-        <input type="hidden" name="cartId" value="{{cart.id}}">
-        <!--先將cardId儲存起來-->
-        <input type="hidden" name="amount" value="{{totalPrice}}">
-        <!--先將totalPrice儲存起來-->
-        <input type="hidden" name="couponId" value="{{coupon.id}}">
-        <input type="hidden" name="shipping_status" value="0">
-        <input type="hidden" name="payment_status" value="0">
-        <button type="submit" class='btn btn-primary'>結帳</button>
+  <div class="row" style="height: 100px"></div>
+  <form action="/order" method="post">
 
+    <h1 class='d-inline bg-danger text-white p-2 mt-3 mb-3'>選擇你的付款與運送方式</h1>
+
+    <h4 class='mt-4'>購買人資訊</h4>
+    <div class="form_group row mt-4">
+      <label class="col-2 ">名字:</label>
+      <div class="col-10">
+        <input type="text" class="form-control" name="name" value="{{user.name}}">
       </div>
-    </form>
+    </div>
+    <div class="form-group row mt-4">
+      <label class="col-2 ">地址:</label>
+      <div class="col-10">
+        <input type="address" class="form-control" name="address" value="{{user.address}}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-2">Phone:</label>
+      <div class="col-10">
+        <input type="tel" class="form-control" name="phone" value="{{user.phone}}">
+      </div>
+    </div>
+    <h4>運送與付款方式</h4>
+    <div class="form-group">
+      <label class="col-2">運送方式:</label>
+      <div class="col-10">
+        <!--value為對應的id-->
+        <label class="radio-inline"><input type="radio" name='shipmentType' value="1">宅配</label>
+        <label class="radio-inline"><input type="radio" name='shipmentType' value="2">超商取貨</label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-2">付款方式:</label>
+      <div class="col-10">
+        <label class="checkbox-inline"><input type="checkbox" name='paymentType' value="1">線上支付</label>
+        <label class="checkbox-inline"><input type="checkbox" name='paymentType' value="2">貨到付款</label>
+      </div>
+    </div>
+
+    <div class="form-group d-flex  justify-content-between mt-4">
+      <input type="hidden" name="cartId" value="{{cart.id}}">
+      <!--先將cardId儲存起來-->
+      <input type="hidden" name="amount" value="{{totalPrice}}">
+      <!--先將totalPrice儲存起來-->
+      <input type="hidden" name="couponId" value="{{coupon.id}}">
+      <input type="hidden" name="shipping_status" value="0">
+      <input type="hidden" name="payment_status" value="0">
+      <button type="submit" class='btn btn-primary'>結帳</button>
+
+    </div>
+  </form>
 
 </div>

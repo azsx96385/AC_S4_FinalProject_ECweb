@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
   );
   Order.associate = function (models) {
     // associations can be defined here
-    Order.belongsTo(models.Order_status);
     Order.belongsToMany(models.Product, {
       as: "items",
       through: {
@@ -68,7 +67,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       foreignKey: "OrderId"
     });
-
   };
   return Order;
 };

@@ -2,12 +2,26 @@ const db = require("../models");
 const Cart = db.Cart
 const CartItem = db.Cart_item
 const Product = db.Product
+const Coupon = db.Coupon
 const cartController = {
   getCart: (req, res) => {
-    return Cart.findByPk(req.session.cartId, { include: [{ model: Product, as: 'items', include: [CartItem] }] }).then(cart => {
+    return Cart.findByPk(req.session.cartId, { include: [{ model: Product, as: 'items', include: [CartItem] }] }).then(async (cart) => {
 
-      cart = cart || { items: [] }//////??????
+      cart = cart || { items: [] }
+      //如果有使用coupon
+      if (req.query.couponId) {
 
+        let couponId = req.query.couponId
+        let coupon = await Coupon.findByPk(couponId)
+
+        let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.Cart_item.quantity).reduce((a, b) => a + b) : 0//如果cart-item沒東西，則為0
+
+        return res.render('cart', {
+          cart,
+          totalPrice,
+          coupon
+        })
+      }
 
       let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.Cart_item.quantity).reduce((a, b) => a + b) : 0//如果cart-item沒東西，則為0
 

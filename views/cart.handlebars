@@ -1,5 +1,24 @@
 <div class="container">
-  <div class="row bg-primary text-white">
+  <div class="shopFlow d-flex  justify-content-center">
+    <div class="step1">
+      <span class='bg-dark text-white rounded-circle p-1'>1</span>
+      <span>確認購物車</span>
+      <span>&rarr;
+      </span>
+    </div>
+    <div class="step2">
+      <span class='bg-light text-dark rounded-circle p-1'>2</span>
+      <span style='color:#b7b795'>付款與運送方式</span>
+      <span style='color:#b7b795'>&rarr;
+      </span>
+    </div>
+    <div class="step3">
+      <span class='bg-light text-dark rounded-circle p-1' style='color:#b7b795'>3</span>
+      <span style='color:#b7b795'>成立訂單</span>
+    </div>
+
+  </div>
+  <div class="row bg-primary text-white mt-3">
     <h1>購物明細</h1>
   </div>
 
@@ -7,11 +26,11 @@
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">#</th>
+        <th scope="col">商品</th>
         <th scope="col">價格</th>
         <th scope="col">數量</th>
-        <th scope="col">總價</th>
-        <th scope="col">#</th>
+        <th scope="col">小計</th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <tbody>
@@ -39,7 +58,7 @@
             </form>
           </div>
         </td>
-        <td>{{this.price}} * {{this.Cart_item.quantity}}</td>
+        <td> {{multiplicate this.price this.Cart_item.quantity }} </td>
         <td>
           <form action="/cartItem/{{this.Cart_item.id}}?_method=DELETE" method="POST">
             <button type="submit" class="btn btn-link">
@@ -49,48 +68,80 @@
         </td>
       </tr>
       {{/each}}
-      <tr>
-        <td></td>
-        <td></td>
-        <td style="text-align: right;">
-          <h2>Total: </h2>
-        </td>
-        <td>
-          <h2>{{totalPrice}} 元</h2>
-        </td>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          {{#if loginUser}}
-          <a href="/enterCoupon" class="btn btn-primary">使用coupon</a>
-          {{else}}
-          <a href="/users/login?redirect=/enterCoupon" class="btn btn-primary">使用coupon</a>
-          {{/if}}
-
-
-        </td>
-        <td>
-          {{#if loginUser}}
-          <a href="/orderEdit" class="btn btn-primary">
-            去買單
-          </a>
-          {{else}}
-          <a href="/users/login?redirect=/orderEdit" class="btn btn-primary">
-            去買單
-          </a>
-          {{/if}}
-        </td>
-        <td></td>
-        <td></td>
-      </tr>
     </tbody>
-  </table>
-  {{else}}
-  <div class="alert alert-secondary" role="alert">
-    你的購物車還是空的!! </div>
-  <a href="/" class='btn btn-primary mt-5'>回到首頁</a>
-  {{/if}}
 
-</div>
+  </table>
+  <div class="coupon">
+    <hr>
+    <form action="/checkCoupon" method='POST'>
+      <div class="form-group">
+        <label for="couponCode">如果要使用折扣碼，請在此填入</label>
+        <input type="text" class="form-control" id='coouponCode' name='couponCode' placeholder='你的Coupon序號'
+          value={{coupon.couponCode}}>
+        <button type="submit" class="btn btn-success mt-3">使用coupon折抵</button>
+      </div>
+    </form>
+  </div>
+  <hr>
+  <div class=" bg-light text-dark ">
+
+    <div class=" row">
+      <div class="col">商品金額總計:</div>
+      <div class="col">{{totalPrice}} 元</div>
+    </div>
+    <div class="row">
+      <div class="col">運費:</div>
+      <div class="col">0</div>
+    </div>
+    <div class="row">
+      <div class="col">coupon折抵</div>
+      <div class="col">{{coupon.discount}}</div>
+    </div>
+    <div class="row">
+      <div class="col">金額總計:</div>
+      <div class="col">
+        {{#if coupon.discount }}
+        {{subtract totalPrice coupon.discount}} 元
+        {{else}}
+        {{totalPrice}} 元
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row mt-4">
+
+    {{#if loginUser}}
+    {{#if coupon}}
+    <a class="btn btn-warning" href="/couponOrder/{{coupon.id}}?totalamount={{totalPrice}}">去買單coupon</a>
+
+    {{else}}
+    <a href="/orderEdit" class="btn btn-warning">
+      去買單
+    </a>
+    {{/if}}
+    {{else}}
+    {{#if coupon}}
+    <a href="/users/login?redirect=/couponOrder/{{coupon.id}}?totalamount={{totalPrice}}" class="btn btn-warning">
+      去買單coupon
+    </a>
+    {{else}}
+    <a href="/users/login?redirect=/orderEdit" class="btn btn-warning">
+      去買單
+    </a>
+    {{/if}}
+
+    {{/if}}
+
+
+
+
+    {{else}}
+    <div class="alert alert-secondary" role="alert">
+      你的購物車還是空的!! </div>
+    <a href="/" class='btn btn-primary mt-5'>回到首頁</a>
+    {{/if}}
+
+
+  </div>
