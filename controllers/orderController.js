@@ -279,7 +279,6 @@ const orderController = {
     const branchName = req.body.CVSStoreName
     const branchAddress = req.body.CVSAddress
 
-    console.log(req.body)
     Order.findAll({
       include: [Shipment, User, { model: Shipment_convenienceStore, as: "ShipmentConvenienceStore" }],
       where: { memo: MerchantTradeNo }

@@ -26,6 +26,8 @@ module.exports = {
       price: 1000,
       description: faker.lorem.text().substring(0, 100),
       image: faker.image.imageUrl(),
+      imageI: faker.image.imageUrl(),
+      imageII: faker.image.imageUrl(),
       createdAt: new Date(),
       updatedAt: new Date()
     }));

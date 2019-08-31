@@ -51,6 +51,8 @@ module.exports = (app, passport) => {
   app.get("/Category/:category_id", productController.getCategoryProducts);
   // 單項產品頁面
   app.get("/product/:id", productController.getProduct);
+  // 申請貨到通知
+  app.post('/product/:id/deliveryNotice', productController.postDeliveryNotice)
   // 評價功能
   app.post(
     "/product/:id/rate",
@@ -112,4 +114,12 @@ module.exports = (app, passport) => {
   app.use("/admin/productmodel", productModel);
   //行銷模組router
   app.use("/admin/marketingmodel", marketingModel);
+
+
+
+
+  //管理貨到通知頁面
+  app.get("/admin/deliveryNotice", productController.getDeliveryNotice)
+  // 刪除貨到通知資料
+  app.delete('/admin/deliveryNotice/:id', productController.deleteDeliveryNotice)
 };

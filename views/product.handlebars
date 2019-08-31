@@ -1,94 +1,129 @@
 <div class="row ml-5 mt-5">
   <div class="col-2">
+    {{!-- 類別連結 --}}
     <div class="nav flex-column">
-      <a class="navbar-brand mb-5" id="logo" href="/">E-commerce website</a>
       <div class="list-group">
         <a class="list-group-item list-group-item-action" href="/">首頁</a>
       </div>
       {{#each categories}}
       <div class="list-group">
+        {{#ifCond this.id ../categoryId}}
+        <a class="list-group-item list-group-item-action active" href="/Category/{{this.id}}"
+          style="background-color: #0085a5">{{this.name}}</a>
+        {{else}}
         <a class="list-group-item list-group-item-action" href="/Category/{{this.id}}">{{this.name}}</a>
+        {{/ifCond}}
       </div>
       {{/each}}
     </div>
   </div>
 
-  <div class="index col-3 ml-5 mt-5 mb-5">
-    <a class="categoryName" style="text-decoration: none;"
-      href="/Category/{{product.Product_category.id}}">{{product.Product_category.name}}
-    </a>
-    </br />
-    <img class="mt-5" src="{{product.image}}" width="300px" height="400px" alt="image">
+  {{!-- 產品圖片 --}}
+  <div class="index col-3 ml-5 mb-5">
+    <img src="{{product.image}}" width="400px" height="400px" alt="image">
   </div>
 
-  <div class="col-5 mt-5">
-    <div class="card-body mt-5">
-      <h2 class="card-title" style="text-align: center; color: gray;">{{product.name}}</h2>
-      <h6 class="count mt-1" style="text-align: center; color: gray;">庫存數 {{product.count}}</h6>
-      <h5 class="price mt-5" style="text-align: center; color: rgb(32, 80, 240);">定價 $ {{product.price}}</h5>
+  {{!-- 產品資訊 --}}
+  <div class="col-5">
+    <div class="card-body">
+      <h5 class="card-title" style="text-align: center; color: gray;">【<a class="categoryName"
+          style="text-decoration: none; color: black;"
+          href="/Category/{{product.Product_category.id}}">{{product.Product_category.name}}</a>】{{product.name}}</h5>
 
-      <div class="star ml-5">
-        <span class="stars d-flex mt-5 align-items-center ml-5">
-          {{#star ratingAve}}{{/star}}
-        </span>
+      <div class="row ml-1">
+        {{#ifCond product.Comments.length 0}}
+        <div class="no-comment mb-2" style="text-align: center; color: red;">此商品尚未有人評價</div>
+        {{else}}
+        <div class="star ml-5">
+          <span class="stars d-flex align-items-center">
+            <p class="mt-3" style="color: orange;">{{ratingAve}}</p> &nbsp; {{#star ratingAve}}{{/star}}
+          </span>
+        </div>
+        <a class="ml-5" href="#evaluation" style="text-decoration: none; color: black;"> | {{product.Comments.length}}
+          評價</a>
+        {{/ifCond}}
       </div>
-      {{#ifCond product.Comments.length 0}}
-      <div class="help-block mt-4" style="text-align: center; color: rgb(112, 21, 231);">此商品尚未有人評價</div>
-      {{else}}
-      <div class="help-block mt-4" style="text-align: center; color: rgb(112, 21, 231);">平均 {{ratingAve}} 分，已有
-        {{product.Comments.length}} 人評價
-      </div>
-      {{/ifCond}}
 
-      <div class="cartBtn" style="text-align: center;">
-        <form action="/cart" method="POST">
-          <div class="selectQty mt-5">
+      <h3 class="price mt-3 mb-5" style="text-align: center; color:#0085a5">$ {{product.price}}</h3>
+
+      <div class="row ml-5">
+        <p class="ml-5 mr-5" style="color: gray;">運送</p>
+        <img
+          src="https://cdngarenanow-a.akamaihd.net/shopee/shopee-pcmall-live-sg/assets/9d21899f3344277e34d40bfc08f60bc7.png"
+          width="35" height="20" class="ml-2 mt-1">
+        <p class="ml-1">滿$999，</p>
+        <p class="mt-1" style="font-size: 16px; color: #ff5722;">免運費</p>
+      </div>
+
+      <div class="row ml-5 mb-3">
+        <p class="ml-5 mr-5">&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        <p class="ml-3 mr-5"><i class="fa fa-truck" aria-hidden="true" style="color:#0085a5"></i> 運費</p>
+        <p class="ml-3">$ 60</p>
+      </div>
+
+      <form action="/cart" method="POST">
+        <div class="row ml-5">
+          <p class="ml-5 mr-5 mt-2" style="color: gray;">數量</p>
+
+          <div class="selectQty mr-3">
             <input type="button" value='-' class='qtyMinus' field='quantity'>
             <input type='text' name='quantity' value='1' class='qty'>
             <input type='button' value="+" class='qtyPlus' field='quantity'>
           </div>
+
+          <p class="count mt-2" style="color: gray;">還剩 <span class="Inventory">{{product.count}}</span> 件</p>
+        </div>
+
+        <div class="cartBtn ml-5">
           {{#ifCond product.count 0}}
-          <button type="submit" class="btn btn-success mt-4" disabled /><i class="fa fa-truck" aria-hidden="true"></i>
+          <button type="submit" class="btn btn-danger mt-4 ml-5" disabled /><i class="fa fa-truck"
+            aria-hidden="true"></i>
           商品補貨中</button>
           <span class="notice btn btn-primary mt-4"><i class="fa fa-envelope" aria-hidden="true"></i> 貨到通知我</span>
           {{else}}
           <input type="hidden" name="productId" value="{{product.id}}">
-          <button type="submit" class="btn btn-success mt-4"><i class="fas fa-shopping-cart"></i> 加入購物車</button>
+          <button type="submit" class="btn btn-success mt-4 ml-5"><i class="fas fa-shopping-cart"></i> 加入購物車</button>
           <a href="/cart" class="btn btn-primary mt-4">前往購物車 ></a>
           {{/ifCond}}
-        </form>
+        </div>
+      </form>
 
-        <div class="modal">
-          <div class="modal-content">
+      {{!-- 到貨通知modal --}}
+      <div class="modal">
+        <div class="modal-content">
+          <div style="float: right;">
             <span class="close">&times;</span>
-            <h5 class="mt-3" style="text-align: center; color: gray;">到貨通知</h5>
+          </div>
 
-            <div class="mt-2" style="color: gray; font-size: 16px;">
-              商品名稱：<p style="color: red; font-size: 16px;">
-                【{{product.Product_category.name}}】{{product.name}}</p>
+          <h5 class="mt-3" style="text-align: center; color: gray;">到貨通知</h5>
+
+          <div class="mt-2" style="text-align: center; color: gray; font-size: 16px;">
+            商品名稱：<p style="color: red; font-size: 16px;">
+              【{{product.Product_category.name}}】{{product.name}}</p>
+          </div>
+
+          <p>---------------------------------------</p>
+
+          <form action="/product/{{product.id}}/deliveryNotice" method="post">
+            <div class="form-group row ml-5">
+              <label style="color: gray; font-size: 16px;" for=" inputEmail">電子郵件：&nbsp;</label>
+              <input style="font-size: 16px;" type="text" name="email" class="form" value="{{loginUser.email}}" required
+                autofocus>
+            </div>
+            <div class="form-group row ml-4">
+              <label style="color: gray; font-size: 16px;" for=" inputEmail">確認電子郵件：&nbsp;</label>
+              <input style="font-size: 16px;" type="text" name="email_confirm" class="form" value="{{loginUser.email}}"
+                required>
             </div>
 
             <p>---------------------------------------</p>
+            <p style="text-align: center; color: red; font-size: 16px;">*此功能僅為貨到通知，無法保留商品喔。</p>
 
-            <form action="" method="post">
-              <div class="form-group row ml-5">
-                <label style="color: gray; font-size: 16px;" for=" inputEmail">電子郵件：&nbsp;</label>
-                <input style="font-size: 16px;" type="text" name="email" class="form" value="{{loginUser.email}}"
-                  required autofocus>
-              </div>
-              <div class="form-group row ml-4">
-                <label style="color: gray; font-size: 16px;" for=" inputEmail">確認電子郵件：&nbsp;</label>
-                <input style="font-size: 16px;" type="text" name="email_confirm" class="form"
-                  value="{{loginUser.email}}">
-              </div>
-
-              <p>---------------------------------------</p>
-              <p style="color: red; font-size: 16px;">*此功能僅為貨到通知，無法保留商品喔。</p>
-
+            <div style="text-align: center;">
+              <input type="hidden" name="ProductId" value="{{product.id}}" />
               <button class="btn btn-primary">送出</button>
-            </form>
-
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -97,89 +132,136 @@
 
 <hr class="ml-5 col-10">
 
-<div class="ml-5 mt-5 mb-5">
-  <h4>商品描述</h4>
-  <br />
-
-  <small>{{product.description}}</small>
+{{!-- 商品規格 --}}
+<div class="ml-4 mt-5">
+  <h5 class="ml-5">商品規格</h5>
 </div>
 
-<hr class="ml-5 col-10">
-
-<div class="ml-5 mt-5 mb-5">
-  <h4>相關商品</h4>
+<div class="row ml-5">
+  <p class="ml-5 mr-5 mt-4" style="color: gray;">類別</p>
+  <a class="mt-4 ml-5" style="text-decoration: none;"
+    href="/Category/{{product.Product_category.id}}">{{product.Product_category.name}}</a>
 </div>
 
-<div class="mt-5 ml-5 col-10">
-  <div class="row">
-    {{#each productsFilter}}
-    <div class="col-md-3">
-      <div class="card mb-4 shadow-sm">
-        <a href="/product/{{this.id}}">
-          <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="320px" height="180px">
+<div class="row ml-5">
+  <p class="ml-5 mr-5 mt-2" style="color: gray;">庫存</p>
+  <p class="mt-2 ml-5">{{product.count}}</p>
+</div>
+
+{{!-- 商品詳情 --}}
+<div class="ml-4 mt-5">
+  <h5 class="ml-5">商品詳情</h5>
+</div>
+
+<div class="ml-5 mb-5">
+  <p class="ml-5 mr-5 mt-4">{{product.description}}</p>
+  <div class="col-5 ml-5 mb-2">
+    <img class="ml-5" src="{{product.imageI}}" width="500px" height="500px" alt="image">
+  </div>
+  <div class="col-5 ml-5 mb-5">
+    <img class="ml-5" src="{{product.imageII}}" width="500px" height="500px" alt="image">
+  </div>
+</div>
+
+<section id="evaluation">
+  <hr class="ml-5 col-10">
+  <div>&nbsp;</div>
+</section>
+
+{{!-- 商品評價 --}}
+<div class="ml-4 mt-5">
+  <h5 class="ml-5">商品評價</h5>
+</div>
+
+<div class="ml-4">
+  <div class="card-header mt-3 ml-5 col-10">
+    <div class="row ml-5">
+      {{#ifCond product.Comments.length 0}}
+      <p class="ml-1 mt-4 mr-4" style="color: orange;">0 / 5</p>
+      {{else}}
+      <p class="ml-1 mt-4 mr-4" style="color: orange;">{{ratingAve}} / 5</p>
+      {{/ifCond}}
+      <p class="mt-4 ml-1" style="color: gray;">| 共有 {{product.Comments.length}} 則評價</p>
+    </div>
+
+    <div class="ml-3 mb-4">
+      <span class="stars d-flex align-items-center ml-1">
+        {{#star ratingAve}}{{/star}}
+      </span>
+    </div>
+  </div>
+
+  {{#each comment}}
+  <div class="list-group-item  list-group-item-action ml-5 mt-2 col-10">
+    {{#ifCond this.User.id ../loginUser.id}}
+    <form action="/product/{{Product.id}}/rate/{{this.id}}?_method=DELETE" method="POST" style="float: right;">
+      <button type="submit" class="btn btn-danger">x</button>
+    </form>
+    {{/ifCond}}
+
+    <div class="row">
+      <div class="col-2 ml-2">
+        <img class="avatar" src="{{this.User.image}}">
+      </div>
+
+      <div class="col-10">
+        <p class="ml-5 mr-5 mt-2" style="font-size: 18px;">{{this.User.name}}</p>
+
+        <div>
+          <span class="stars d-flex mb-3 mt-2 ml-5">
+            {{#star this.rating}}{{/star}}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <p class="ml-5 mt-4">{{this.comment}}</p>
+    <small class="ml-5" style="color: gray;">{{moment this.createdAt}}</small>
+  </div>
+  {{/each}}
+
+  {{!-- 分頁 --}}
+  <nav aria-label="Page navigation example">
+    <ul class="pagination mt-3 ml-5">
+      <li class="page-item">
+        <a class="page-link" href="/product/{{product.id}}?page={{prev}}#evaluation" aria-label="Previous"
+          style="color: #0085a5;">
+          <span aria-hidden="true">«</span>
         </a>
-        <div class="card-body">
-          <h6 class="card-text" style="text-align: center;">
-            <a class="productName" style="text-decoration: none;" href="/product/{{this.id}}">
-              {{this.name}}
-            </a>
-          </h6>
-          <div class="badgeBox" style="text-align: center;">
-            <span class="badge badge-primary">NT $ {{this.price}}</span>
-          </div>
-          <div class="cartBtn mt-2" style="text-align: center;">
-            <form action="/cart" method="POST">
-              <input type="hidden" name="productId" value="{{this.id}}">
-              <button type="submit" class="btn btn-success mt-2">加入購物車</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    {{/each}}
-  </div>
-</div>
-
-<hr class="ml-5 col-10">
-
-<div class="ml-5 mt-5 mb-5">
-  <h4>買家評論 ({{product.Comments.length}}則評論)</h4>
-
-  <div class="list-group mt-5 col-11">
-
-    <div class="card">
-      {{#each product.Comments}}
-      <div class="card-header">
-        <small>{{this.User.name}} －{{moment this.createdAt}}</small>
-      </div>
-      <div class="list-group-item  list-group-item-action">
-        {{#ifCond this.User.id ../loginUser.id}}
-        <form action="/product/{{Product.id}}/rate/{{this.id}}?_method=DELETE" method="POST" style="float: right;">
-          <button type="submit" class="btn btn-danger">x</button>
-        </form>
-        {{/ifCond}}
-        <span class="stars d-flex mb-3 mt-2">
-          {{#star this.rating}}{{/star}}
-        </span>
-        <p>{{this.comment}}</p>
-      </div>
+      </li>
+      {{#each totalPage}}
+      {{#ifCond this ../page}}
+      <li class="page-item active"><a class="page-link" href="#"
+          style="color:white; background-color: #0085a5">{{this}}</a></li>
+      {{else}}
+      <li class=" page-item"><a class="page-link" href="/product/{{../product.id}}?page={{this}}#evaluation"
+          style="color: #0085a5;">{{this}}</a>
+      </li>
+      {{/ifCond}}
       {{/each}}
-    </div>
-  </div>
+      <a class="page-link" href="/product/{{product.id}}?page={{next}}#evaluation" aria-label="Next">
+        <span aria-hidden="true" style="color: #0085a5">»</span>
+      </a>
+      </li>
+    </ul>
+  </nav>
 
+  {{!-- 評價功能 --}}
   {{#each orders}}
   {{#ifCond this.User.id ../loginUser.id}}
   {{#each this.PaymentStatus}}
   {{#ifCond this.paymentStatus '已付款'}}
-  <h4 class="mt-5 mb-5">留下您的評論：</h4>
+  <div class="ml-4 mt-5">
+    <h5 class="ml-5">留下您的評價：</h5>
+  </div>
 
   <form action="/product/{{../../product.id}}/rate" method="POST">
-    <div class="form-group col-11">
+    <div class="form-group col-10 mt-3 ml-5">
       <textarea class="form-control" id="comment" name="comment" rows="3" placeholder="請在此輸入內容" required></textarea>
     </div>
 
-    <p class="mb-3 d-flex align-items-center">
-      <span class="text-secondary ml-2">
+    <p class="mb-3 ml-4 d-flex align-items-center">
+      <span class="text-secondary ml-5">
         商品評分：
       </span>
       <span class="starrating risingstar d-flex justify-content-center flex-row-reverse">
@@ -191,9 +273,8 @@
       </span>
     </p>
 
-
     <input type="hidden" name="ProductId" value="{{../../product.id}}" />
-    <button type="submit" class="btn btn-primary ml-3 mt-2">送出評論</button>
+    <button type="submit" class="btn btn-primary ml-5 mt-2">送出評價</button>
   </form>
   {{/ifCond}}
   {{/each}}
@@ -201,9 +282,38 @@
   {{/each}}
 </div>
 
-<br />
-<div class="back ml-5 mb-5">
-  <a class="ml-3" href="javascript:history.back()">回上一頁</a>
+<hr class="ml-5 mt-5 col-10">
+
+{{!-- 相似商品 --}}
+<div class="ml-4 mt-5">
+  <h5 class="ml-5" style="color: gray;">相似商品</h5>
+</div>
+
+<div class="mt-3 ml-5 mb-5 col-10">
+  <div class="row">
+    {{#each productsFilter}}
+    <div class="col-md-2">
+      <a href="/product/{{this.id}}" style="text-decoration: none;">
+        <div class="card shadow-sm" style="height: 300px;">
+          <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="320px" height="150px">
+          <div class="card-body">
+            <h6 class="card-text">
+              <p class="productName" style="font-size: 18px;">
+                【{{../product.Product_category.name}}】{{this.name}}
+              </p>
+            </h6>
+            <div class="row">
+              <p class="price" style="color:#0085a5">$ {{this.price}}</p>
+              <div style="margin: 0 auto">
+                <p style="color:gray; font-size: 17px;">還剩{{this.count}}件</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    {{/each}}
+  </div>
 </div>
 
 <script>
@@ -211,18 +321,28 @@
   const qtyMinus = document.querySelector('.qtyMinus')
   const qtyPlus = document.querySelector('.qtyPlus')
   const qty = document.querySelector('.qty')
+  const Inventory = document.querySelector('.Inventory')
   const modal = document.querySelector('.modal')
   const btn = document.querySelector('.notice')
   const span = document.querySelector('.close')
+  const input = document.querySelector('input');
+
+  let value = Number(Inventory.textContent)
+
 
   qtyMinus.addEventListener('click', () => {
     if (qty.value > 1) return qty.value--
-    return qty.value === 1
+    return qty.value = 1
   })
 
   qtyPlus.addEventListener('click', () => {
-    if (qty.value >= 10) return qty.value === 10
+    if (qty.value >= value) return qty.value = value
     return qty.value++
+  })
+
+  qty.addEventListener('input', () => {
+    if (qty.value >= value) return qty.value = value
+    else if (qty.value < 0) return qty.value = 1
   })
 
   // When the user clicks the button, open the modal 

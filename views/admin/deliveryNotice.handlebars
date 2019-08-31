@@ -1,0 +1,33 @@
+<h1 class="ml-5">貨到通知後台</h1>
+
+<br />
+<br />
+
+<div class="col-11 ml-5 mb-5">
+  <table class="table">
+    <thead class="thead" style="background-color: gray">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">E-mail</th>
+        <th scope="col">Product</th>
+        <th scope="col">Count</th>
+        <th scope="col">#</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each deliveryNotices}}
+      <tr>
+        <th scope="row">{{this.id}}</th>
+        <td>{{this.email}}</td>
+        <td>{{this.Product.name}}</td>
+        <td>{{this.Product.count}}</td>
+        <td>
+          <form action="/admin/deliveryNotice/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
