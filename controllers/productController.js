@@ -7,7 +7,8 @@ const {
   Comment,
   User,
   Order,
-  Payment_status
+  Payment_status,
+  Delivery_notice
 } = db
 
 const productController = {
@@ -161,7 +162,38 @@ const productController = {
         res.redirect(`/product/${comment.ProductId}`)
       })
     })
-  }
+  },
+
+  postDeliveryNotice: (req, res) => {
+    let { email, email_confirm } = req.body;
+
+    if (email !== email_confirm) {
+      req.flash("error_messages", "請確認輸入的電子郵件是否相同");
+      return res.redirect('back')
+    }
+
+    Delivery_notice.create({
+      ProductId: req.body.ProductId,
+      email: req.body.email
+    }).then(() => {
+      req.flash("success_messages", "已送出申請，待補充庫存後，相關人員會寄e-mail通知您");
+      res.redirect(`/product/${req.body.ProductId}`)
+    })
+  },
+
+  getDeliveryNotice: (req, res) => {
+    Delivery_notice.findAll({ include: [Product] }).then(deliveryNotices => {
+      res.render('admin/deliveryNotice', { deliveryNotices })
+    })
+  },
+
+  deleteDeliveryNotice: (req, res) => {
+    Delivery_notice.findByPk(req.params.id).then(deliveryNotice => {
+      deliveryNotice.destroy().then(deliveryNotice => {
+        res.redirect(`/admin/deliveryNotice`)
+      })
+    })
+  },
 }
 
 module.exports = productController
