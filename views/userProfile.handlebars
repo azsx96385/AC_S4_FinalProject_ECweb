@@ -4,32 +4,34 @@
       <h1>個人資料</h1>
     </div>
 
-    <form action=`='/user/{{user.id}}/profile' method="post">
-      <div class="form_group row mt-4">
-        <label class="col-2 ">名字:</label>
-        <div class="col-10">
-          <input type="text" class="form-control" name="name" value="{{user.name}}">
-        </div>
+    <div class="row">
+      <div class="col">
+        <img src="{{user.image}}" alt="img">
       </div>
-      <div class="form-group row mt-4">
-        <label class="col-2 ">email:</label>
-        <div class="col-10">
-          <input type="email" class="form-control" name="email" value="{{user.email}}">
-        </div>
-      </div>
-      <div class="form-group row mt-4">
-        <label class="col-2 ">地址:</label>
-        <div class="col-10">
-          <input type="address" class="form-control" name="address" value="{{user.address}}">
-        </div>
-      </div>
+      <div class="col">
+        <div class="row">
+          <div class="col">名字:{{user.name}}</div>
 
-      <div class="form-group d-flex  justify-content-between mt-4">
-        <button type="submit" class='btn btn-primary'>編輯個人資料</button>
-        <a href='/users/logOut' class="btn btn-danger">登出</a>
+        </div>
+        <div class="row">
+          <div class="col">email:{{user.email}}</div>
+        </div>
+        <div class="row">
+          <div class="col">地址:{{user.address}}</div>
+
+        </div>
 
       </div>
-    </form>
+    </div>
+
+
+    <div class="form-group d-flex  justify-content-between mt-4">
+      <a href="/user/{{user.id}}/editProfile" class="btn btn-primary">編輯個人資料</a>
+
+      <a href='/users/logOut' class="btn btn-danger">登出</a>
+
+    </div>
+
   </section>
   <section class="orderInfo mt-5">
     <div class="row bg-primary text-white">
