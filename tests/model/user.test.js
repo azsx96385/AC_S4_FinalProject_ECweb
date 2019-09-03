@@ -29,7 +29,7 @@ describe('# User Model', () => {
   //檢查properties
   context('properties', () => {
     ;[
-      ' StoreId', 'name', 'email', ' address', 'password', 'emailVerf', 'resetPasswordToken', 'resetPasswordExpires', ' image'
+      'StoreId', 'name', 'email', 'address', 'password', 'emailVerf', 'resetPasswordToken', 'resetPasswordExpires', 'image'
     ].forEach(checkPropertyExists(user))
   })
   //檢查associations

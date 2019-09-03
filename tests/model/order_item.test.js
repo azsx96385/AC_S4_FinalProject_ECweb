@@ -28,7 +28,7 @@ describe('#Order_item_Model', () => {
 
   //檢查properties
   context('properties', () => {
-    ;[
+    ;['id',
       'ProductId',
       'OrderId',
       'quantity',
@@ -55,7 +55,7 @@ describe('#Order_item_Model', () => {
     let data = null
 
     it('create', (done) => {
-      db.Order_item.create({}).then((order_item) => {
+      db.Order_item.create({}, { where: { id: 1 } }).then((order_item) => {
         data = order_item
         done()
       })
