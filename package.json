@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "mocha tests --exit --recursive "
+    "test": "mocha tests/model/order_item.test.js --exit  "
   },
   "author": "",
   "license": "ISC",
