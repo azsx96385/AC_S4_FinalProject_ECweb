@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "mocha tests/model/couponsUsers.test.js --exit  "
+    "test": "mocha tests/model/coupon.test.js --exit  "
   },
   "author": "",
   "license": "ISC",
