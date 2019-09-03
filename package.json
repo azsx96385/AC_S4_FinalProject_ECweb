@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "mocha tests/model/flow.test.js --exit  "
+    "test": "mocha tests/model/delivery_notice.test.js --exit  "
   },
   "author": "",
   "license": "ISC",
