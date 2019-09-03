@@ -28,6 +28,7 @@ describe('# Store_category Model', () => {
   // 檢查欄位是否被定義
   context('properties', () => {
     ;[
+      'name'
     ].forEach(checkPropertyExists(store_category))
   })
 

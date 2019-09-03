@@ -28,6 +28,10 @@ describe('# Shipment Model', () => {
   // 檢查欄位是否被定義
   context('properties', () => {
     ;[
+      'OrderId',
+      'ShipmentStatusId',
+      'ShipmentTypeId',
+      'ShipmentConvenienceStoreId'
     ].forEach(checkPropertyExists(shipment))
   })
 
