@@ -72,3 +72,5 @@ app.use((req, res, next) => {
 });
 
 require("./route")(app, passport);
+
+module.exports = app;
