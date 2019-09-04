@@ -8,6 +8,10 @@ const cartController = require('../controllers/cartController')
 const orderController = require('../controllers/orderController')
 const couponController = require('../controllers/couponController')
 const passport = require('../config/passport')
+//上傳圖片
+const multer = require('multer')
+const upload = multer({ dest: 'temp/' })
+
 
 
 //加入權限驗證
@@ -83,10 +87,19 @@ router.get('/orderEdit', authenticated, orderController.getOrderEdit)
 router.post('/order', authenticated, orderController.postOrder)
 //訂單成立頁面
 router.get('/order/:id/success', authenticated, orderController.getOrderSuccess)
-//個人資料頁面與訂單詳情
-router.get('/user/:id/profile', authenticated, userController.getUserProfile)
+
 //取消訂單
 router.post('/order/:id', orderController.cancelOrder)
+//--------userprofile-----------------------------
+//個人資料頁面與訂單詳情
+router.get('/user/:id/profile', authenticated, userController.getUserProfile)
+
+router.get('/user/:id/editProfile', authenticated, userController.getUserProfileEdit)
+//編輯個人資料頁面
+router.post('/user/:id/edit', authenticated, upload.single('image'), userController.postUserProfile)
+
+
+
 //-------------coupon----------------------------
 
 //----------使用coupon-------------------

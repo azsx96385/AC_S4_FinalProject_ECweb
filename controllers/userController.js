@@ -5,6 +5,7 @@ const User = db.User;
 const Order = db.Order;
 const OrderItem = db.Order_item;
 const Product = db.Product;
+const fs = require('fs')
 //-------------------- JWT----------------------------------------------
 const jwt = require("jsonwebtoken");
 const passportJWT = require("passport-jwt");
@@ -133,6 +134,44 @@ const userController = {
         orderInfo
       });
     });
+  },
+  getUserProfileEdit: (req, res) => {
+    return User.findByPk(req.params.id).then(user => {
+      return res.render('userProfileEdit', { user })
+    })
+  },
+  postUserProfile: (req, res) => {
+    const { file } = req
+    if (file) {
+      fs.readFile(file.path, (err, data) => {
+        if (err) console.log('Error: ', err)
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+          return User.findByPk(req.params.id).then(user => {
+            user.update({
+              name: req.body.name,
+              email: req.body.email,
+              address: req.body.address,
+              password: req.body.password,
+              image: file ? `/upload/${file.originalname}` : user.image
+            })
+
+            res.redirect(`/user/${req.params.id}/profile`)
+          })
+        })
+      })
+    }
+    else {
+      return User.findByPk(req.params.id).then(user => {
+        user.update({
+          name: req.body.name,
+          email: req.body.email,
+          address: req.body.address,
+          password: req.body.password,
+        })
+
+        res.redirect(`/user/${req.params.id}/profile`)
+      })
+    }
   },
   //-------reset password------------------
   getForgetPasswordPage: (req, res) => {
