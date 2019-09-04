@@ -3,6 +3,11 @@ module.exports = (sequelize, DataTypes) => {
   const Store = sequelize.define(
     "Store",
     {
+      id: {
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
       StoreCategoryId: DataTypes.INTEGER,
       name: DataTypes.STRING,
       description: DataTypes.STRING
