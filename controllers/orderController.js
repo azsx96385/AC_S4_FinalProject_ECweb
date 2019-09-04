@@ -158,7 +158,6 @@ const orderController = {
           //導向付款
           const PaymentTypeId = req.body.paymentType;
           const ShipmentTypeId = req.body.shipmentType;
-          const userId = req.user.id;
 
           if (PaymentTypeId === "1") return res.redirect(`order/${order.id}/payment`);
           if (ShipmentTypeId === "2") return res.redirect(`/order/${order.id}/branchselection`);
@@ -241,7 +240,6 @@ const orderController = {
       include: [Payment, User, { model: Payment_type, as: "PaymentType" }],
       where: { memo: data["Result"]["MerchantOrderNo"] }
     }).then(orders => {
-      const userId = orders[0].User.id;
 
       Payment.findOne({ where: { OrderId: orders[0].id } }).then(payment => {
         Payment.create({
@@ -250,7 +248,7 @@ const orderController = {
           PaymentTypeId: payment.PaymentTypeId,
           amount: payment.amount
         }).then(() => {
-          res.redirect(`/user/${userId}/profile`);
+          res.redirect(`/order/${orders[0].id}/success`);
         });
       });
     });
@@ -283,7 +281,6 @@ const orderController = {
       include: [Shipment, User, { model: Shipment_convenienceStore, as: "ShipmentConvenienceStore" }],
       where: { memo: MerchantTradeNo }
     }).then(orders => {
-      const userId = orders[0].User.id;
 
       Shipment_convenienceStore.create({
         id: orders[0].id,
@@ -297,7 +294,7 @@ const orderController = {
           ...req.body,
           ShipmentConvenienceStoreId: orders[0].id
         }).then(() => {
-          res.redirect(`/user/${userId}/profile`);
+          res.redirect(`/order/${orders[0].id}/success`);
         });
       });
     });

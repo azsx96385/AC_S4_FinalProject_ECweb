@@ -47,7 +47,7 @@ const productController = {
         products = products.sort((a, b) => a.price - b.price)
         sort = '價格: 由低至高'
       }
-      console.log(products)
+
       Product_category.findAll().then(categories => {
         res.render('categoryProducts', {
           categories,
