@@ -67,7 +67,6 @@ app.use((req, res, next) => {
   res.locals.loginUser = req.user;
   res.locals.localcartItem = req.session.cartItemNum;
 
-
   next();
 });
 
