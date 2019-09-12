@@ -3,6 +3,7 @@ const passport = require("passport");
 const localStrategy = require("passport-local");
 const FacebookStrategy = require("passport-facebook");
 const bcrypt = require("bcryptjs");
+require('dotenv').config()
 
 //model
 const db = require("../models");

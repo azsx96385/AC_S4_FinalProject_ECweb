@@ -123,3 +123,4 @@ module.exports = (app, passport) => {
   // 刪除貨到通知資料
   app.delete('/admin/deliveryNotice/:id', productController.deleteDeliveryNotice)
 };
+

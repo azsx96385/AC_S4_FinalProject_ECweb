@@ -30,6 +30,9 @@ app.set("view engine", "handlebars");
 const bdParser = require("body-parser");
 app.use(bdParser.urlencoded({ extended: true }));
 
+app.use(bdParser.json())
+
+
 // 靜態檔案設定
 app.use(express.static("public")); //如果要請求靜態檔案-直接到 public找
 app.use("/upload", express.static(__dirname + "/upload")); //如果請求路徑包括 /upload  那就到 /upload找
@@ -72,3 +75,4 @@ app.use((req, res, next) => {
 });
 
 require("./route")(app, passport);
+module.exports = app

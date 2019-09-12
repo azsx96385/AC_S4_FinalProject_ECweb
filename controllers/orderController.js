@@ -52,12 +52,7 @@ const orderController = {
       include: [{ model: Product, as: "items", include: [CartItem] }]
     }).then(cart => {
       cart = cart || { items: [] };
-      let totalPrice =
-        cart.items.length > 0
-          ? cart.items
-            .map(d => d.price * d.Cart_item.quantity)
-            .reduce((a, b) => a + b)
-          : 0; //如果cart-item沒東西，則為0
+      let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.Cart_item.quantity).reduce((a, b) => a + b) : 0; //如果cart-item沒東西，則為0
 
       return User.findByPk(req.user.id).then(user => {
         return res.render("orderEdit", {
@@ -90,7 +85,7 @@ const orderController = {
       var discount = 0
     }
 
-    return Cart.findByPk(req.body.cartId, {
+    return Cart.findByPk(1, {
       include: [{ model: Product, as: "items", include: [CartItem] }]
     }).then(cart => {
       let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.Cart_item.quantity).reduce((a, b) => a + b) : 0;
@@ -127,7 +122,7 @@ const orderController = {
             OrderId: order.id,
             PaymentStatusId: 1, //預設為1 未匯款
             PaymentTypeId: req.body.paymentType,
-            amount: totalPrice
+            amount: subtotal//////////////////////////////
           });
 
           return order;
@@ -144,7 +139,7 @@ const orderController = {
           smtpTransport.sendMail(mailOptions, (error, response) => {
             error ? console.log(error) : console.log(response);
             smtpTransport.close();
-          });;
+          })
           return order
 
         }).then(order => {

@@ -35,7 +35,7 @@ const cartController = {
   postCart: async (req, res) => {
     return Cart.findOrCreate({//找到或創造visitor的cart
       where: {
-        id: req.session.cartId || 0,//沒有，則預設為0
+        id: req.session.cartId || 1,//沒有，則預設為1
       }
     }).spread((cart, created) => {
 
@@ -53,7 +53,9 @@ const cartController = {
         return cartItem.update({
           quantity: Number((cartItem.quantity || 0)) + Number(req.body.quantity),
         }).then((cartItem) => {
+
           req.session.cartId = cart.id
+
           //加入cartItem數量         
           req.session.cartItemNum = Number((req.session.cartItemNum || 0)) + Number(req.body.quantity)
           return req.session.save(() => {
@@ -91,7 +93,7 @@ const cartController = {
         }).then(
           () => {
             req.session.cartItemNum = Number((req.session.cartItemNum || 0)) - 1
-            res.redirect('back')
+            return res.redirect('back')
           }
         )
       }

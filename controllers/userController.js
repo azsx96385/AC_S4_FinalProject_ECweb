@@ -22,7 +22,7 @@ const Shipment_convenienceStore = db.Shipment_convenienceStore
 //---------忘記密碼---------------------
 var crypto = require('crypto-js');
 /*---------------nodmailer寄信----------------------*/
-const nodemailer = require('nodemailer');
+/*const nodemailer = require('nodemailer');
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 const oauth2Client = new OAuth2(
@@ -47,7 +47,7 @@ const smtpTransport = nodemailer.createTransport({
     accessToken: accessToken
   }
 });
-
+*/
 const userController = {
   //[使用者 登入 | 登出 | 註冊]
   signUpPage: (req, res) => {
@@ -85,7 +85,7 @@ const userController = {
         }
       }
     });
-    //驗證密碼相同
+
   },
   logInPage: (req, res) => {
     let redirectUrl = req.query.redirect
