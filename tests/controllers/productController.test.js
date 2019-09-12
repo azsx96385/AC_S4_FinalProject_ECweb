@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test'
+
 const assert = require('assert')
 const moment = require('moment')
 const chai = require('chai')
@@ -6,6 +8,7 @@ const should = chai.should()
 const { expect } = require('chai')
 const sinon = require('sinon')
 
+const passport = require('../../config/passport')
 const app = require('../../app')
 const db = require('../../models')
 
@@ -123,7 +126,7 @@ describe('# Product Controller', () => {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Product.destroy({ where: {}, truncate: { cascade: true } })
 
-      await db.Product.create({ name: 'abc' })
+      await db.Product.create({ name: 'ABC' })
     })
 
     after(async () => {
@@ -133,15 +136,108 @@ describe('# Product Controller', () => {
 
     it('(O) 搜尋產品', (done) => {
       request(app)
-        .get('/ESHOP/search?keyword=abc')
+        .get('/ESHOP/search?keyword=a')
         .set('Accept', 'application/json')
         .expect(200)
         .end((err, res) => {
           if (err) return done(err)
-          res.text.should.include('abc')
+          res.text.should.include('ABC')
           return done()
         })
     })
   })
 
+  describe('POST /product/:id/rate', () => {
+
+    before(async () => {
+      // 在所有測試開始前會執行的程式碼區塊
+      await db.User.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Product_category.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Product.destroy({ where: {}, truncate: { cascade: true } })
+
+      const rootUser = await db.User.create({ name: 'root', email: 'root@gmail.com', password: 'password' })
+      await db.Product_category.create({ id: 1, name: '麵包' })
+      await db.Product.create({ id: 1, ProductCategoryId: 1, name: '吐司' })
+
+      this.authenticate = sinon.stub(passport, "authenticate").callsFake((strategy, options, callback) => {
+        callback(null, { ...rootUser }, null);
+        return (req, res, next) => { req.user = rootUser }
+      })
+    })
+
+    after(async () => {
+      // 在所有測試結束後會執行的程式碼區塊
+      await db.User.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Product_category.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Product.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Comment.destroy({ where: {}, truncate: { cascade: true } })
+      this.authenticate.restore()
+    })
+
+    it('(O) 登入狀態，新增評論後返回單項產品頁面', (done) => {
+      request(app)
+        .post('/product/1/rate')
+        .send('comment=good&rating=3&ProductId=1')
+        .set('Accept', 'application/json')
+        .expect(302)
+        .end((err, res) => {
+          if (err) return done(err)
+          return done()
+        })
+    })
+
+    it('(O) 登入狀態，確認是否有新增評價', (done) => {
+      request(app)
+        .get('/product/1')
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err)
+          res.text.should.include('good')
+          return done()
+        })
+    })
+  })
+
+  describe('DELETE /product/:id/rate/:id', () => {
+    before(async () => {
+      // 在所有測試開始前會執行的程式碼區塊
+      await db.User.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Product_category.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Product.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Comment.destroy({ where: {}, truncate: { cascade: true } })
+
+      const rootUser = await db.User.create({ name: 'root', email: 'root@gmail.com', password: 'password' })
+      await db.Product_category.create({ id: 1, name: '麵包' })
+      await db.Product.create({ id: 1, ProductCategoryId: 1, name: '吐司' })
+      await db.Comment.create({ id: 1, comment: '123' })
+
+      this.authenticate = sinon.stub(passport, "authenticate").callsFake((strategy, options, callback) => {
+        callback(null, { ...rootUser }, null);
+        return (req, res, next) => { req.user = rootUser }
+      })
+    })
+
+    after(async () => {
+      // 在所有測試結束後會執行的程式碼區塊
+      await db.User.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Product_category.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Product.destroy({ where: {}, truncate: { cascade: true } })
+      this.authenticate.restore()
+    })
+
+    it('(O) 登入狀態，刪除評價', (done) => {
+      request(app)
+        .delete('/product/1/rate/1')
+        .set('Accept', 'application/json')
+        .expect(302)
+        .end((err, res) => {
+          if (err) return done(err)
+          db.Comment.findOne({ where: { id: 1 } }).then(comment => {
+            expect(comment).to.be.null
+            done()
+          })
+        })
+    })
+  })
 })
