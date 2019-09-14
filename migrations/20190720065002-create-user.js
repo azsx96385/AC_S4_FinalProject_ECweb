@@ -11,6 +11,9 @@ module.exports = {
       StoreId: {
         type: Sequelize.INTEGER
       },
+      role: {
+        type: Sequelize.INTEGER
+      },
       name: {
         type: Sequelize.STRING
       },

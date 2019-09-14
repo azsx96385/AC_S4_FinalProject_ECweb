@@ -45,8 +45,17 @@ router.get("/order_mange/:id", orderController.getOrder);
 // 顯示備貨中頁面
 
 // 單一 | 更改訂單狀態
+router.put("/order_mange/:orderId/oderstatus", orderController.putOrderStatus);
 // 單一 | 更改訂單付款狀態
-// 單一 | 更改訂單送貨狀態
+router.put(
+  "/order_mange/:orderId/payment_status",
+  orderController.putPaymentStatus
+);
+// // 單一 | 更改訂單送貨狀態
+router.put(
+  "/order_mange/:orderId/shipment_status",
+  orderController.putShipmentStatus
+);
 // 單一 | 更改訂單訂購人資訊
 
 //匯出路由
