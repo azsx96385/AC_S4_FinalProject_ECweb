@@ -17,7 +17,18 @@ const authenticated = (req, res, next) => {
   }
   res.redirect('/users/login')
 }
+const authenticatedAdmin = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    console.log('XXXXXXXXXXXXXXXX', req.loginUser)
+    console.log('XXXXXXXXXXXXXXXX', req.user)
+    return next()
+    // if (req.loginUser.role === 1) {
+    //   return next()
+    // }
 
+  }
+  res.redirect('/users/login')
+}
 
 
 

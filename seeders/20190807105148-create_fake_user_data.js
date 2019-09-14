@@ -7,6 +7,7 @@ module.exports = {
     return queryInterface.bulkInsert("Users", [
       {
         StoreId: 1,
+        role: 1,
         name: "root",
         email: "root@example.com",
         password: bcrypt.hashSync("12345678", bcrypt.genSaltSync(10), null),
@@ -19,6 +20,7 @@ module.exports = {
       },
       {
         StoreId: 1,
+        role: 0,
         name: "user1",
         email: "user1@example.com",
         password: bcrypt.hashSync("12345678", bcrypt.genSaltSync(10), null),
@@ -31,6 +33,7 @@ module.exports = {
       },
       {
         StoreId: 1,
+        role: 0,
         name: "user2",
         email: "user2@example.com",
         password: bcrypt.hashSync("12345678", bcrypt.genSaltSync(10), null),
@@ -43,6 +46,7 @@ module.exports = {
       },
       {
         StoreId: 1,
+        role: 0,
         name: "user3",
         email: "user3@example.com",
         password: bcrypt.hashSync("12345678", bcrypt.genSaltSync(10), null),

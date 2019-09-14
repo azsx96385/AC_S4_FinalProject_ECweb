@@ -26,6 +26,15 @@ module.exports = (app, passport) => {
     res.redirect("/users/login");
   };
 
+  const authenticatedAdmin = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      if (req.user.role === 1) {
+        return next()
+      }
+    }
+    res.redirect('/users/login')
+  }
+
   //[使用者 登入 | 登出 | 註冊]==========================
   app.get("/users/signUp", userController.signUpPage);
   app.post("/users/signUp", userController.signUp);
@@ -97,9 +106,9 @@ module.exports = (app, passport) => {
   );
   //[Admin 後台管理介面]=========================================================================================
   //銷售模組router
-  app.use("/admin/salemodel", saleModel);
+  app.use("/admin/salemodel", authenticatedAdmin, saleModel);
   //產品模組router
-  app.use("/admin/productmodel", productModel);
+  app.use("/admin/productmodel", authenticatedAdmin, productModel);
   //行銷模組router
-  app.use("/admin/marketingmodel", marketingModel);
+  app.use("/admin/marketingmodel", authenticatedAdmin, marketingModel);
 };

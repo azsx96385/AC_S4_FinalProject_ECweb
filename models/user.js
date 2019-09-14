@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     "User",
     {
       StoreId: DataTypes.INTEGER,
+      role: DataTypes.INTEGER,
       name: DataTypes.STRING,
       email: DataTypes.STRING,
       address: DataTypes.STRING,
@@ -14,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  User.associate = function(models) {
+  User.associate = function (models) {
     // associations can be defined here
     User.hasMany(models.Comment);
     User.hasMany(models.Order);
