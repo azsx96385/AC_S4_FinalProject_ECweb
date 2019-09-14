@@ -1,7 +1,5 @@
 process.env.NODE_ENV = 'test'
 
-const assert = require('assert')
-const moment = require('moment')
 const chai = require('chai')
 const request = require('supertest')
 const should = chai.should()
@@ -200,6 +198,7 @@ describe('# Product Controller', () => {
   })
 
   describe('DELETE /product/:id/rate/:id', () => {
+
     before(async () => {
       // 在所有測試開始前會執行的程式碼區塊
       await db.User.destroy({ where: {}, truncate: { cascade: true } })
@@ -238,6 +237,59 @@ describe('# Product Controller', () => {
             done()
           })
         })
+    })
+  })
+
+  describe('POST /product/:id/deliveryNotice', () => {
+
+    before(async () => {
+      // 在所有測試開始前會執行的程式碼區塊
+      await db.Product_category.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Product.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Delivery_notice.destroy({ where: {}, truncate: { cascade: true } })
+
+      await db.Product_category.create({ id: 1, name: '麵包' })
+      await db.Product.create({ id: 1, ProductCategoryId: 1, name: '吐司' })
+    })
+
+    after(async () => {
+      // 在所有測試結束後會執行的程式碼區塊
+      await db.Product_category.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Product.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Delivery_notice.destroy({ where: {}, truncate: { cascade: true } })
+    })
+
+    it("(X) 兩次信箱輸入不同", (done) => {
+      request(app)
+        .post('/product/1/deliveryNotice')
+        .send('email=root@gmail.com&email_confirm=email&ProductId=1')
+        .expect(302)
+        .end((err, res) => {
+          if (err) return done(err)
+          db.Delivery_notice.findOne({ where: { ProductId: 1 } }).then(delivery_notice => {
+            expect(delivery_notice).to.be.null
+            return done()
+          })
+        });
+    });
+
+    it('(O) 申請貨到通知後返回單項產品頁面', (done) => {
+      request(app)
+        .post('/product/1/deliveryNotice')
+        .send('email=root@gmail.com&email_confirm=root@gmail.com&ProductId=1')
+        .set('Accept', 'application/json')
+        .expect(302)
+        .end((err, res) => {
+          if (err) return done(err)
+          return done()
+        })
+    })
+
+    it('(O) 確認申請貨到通知是否有成功', (done) => {
+      db.Delivery_notice.findOne({ where: { ProductId: 1 } }).then(delivery_notice => {
+        expect(delivery_notice.email).to.be.equal('root@gmail.com')
+        return done()
+      })
     })
   })
 })
