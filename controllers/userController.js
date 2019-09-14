@@ -5,6 +5,7 @@ const User = db.User;
 const Order = db.Order;
 const OrderItem = db.Order_item;
 const Product = db.Product;
+const fs = require('fs')
 //-------------------- JWT----------------------------------------------
 const jwt = require("jsonwebtoken");
 const passportJWT = require("passport-jwt");
@@ -17,6 +18,7 @@ const ShipmentType = db.Shipment_type;
 const PaymentType = db.Payment_type;
 const ShipmentStatus = db.Shipment_status;
 const PaymentStatus = db.Payment_status;
+const Shipment_convenienceStore = db.Shipment_convenienceStore
 //---------忘記密碼---------------------
 var crypto = require('crypto-js');
 /*---------------nodmailer寄信----------------------*/
@@ -118,7 +120,8 @@ const userController = {
             { model: ShipmentType, as: "ShipmentType" },
             { model: PaymentType, as: "PaymentType" },
             { model: ShipmentStatus, as: "ShipmentStatus" },
-            { model: PaymentStatus, as: "PaymentStatus" }
+            { model: PaymentStatus, as: "PaymentStatus" },
+            { model: Shipment_convenienceStore, as: "ShipmentConvenienceStore" }
           ]
         }
       ]
@@ -126,12 +129,49 @@ const userController = {
       //找出user 在從user中找到order 在從order中找到產品
       let orderInfo = user.Orders.sort((a, b) => b.id - a.id); //由id來排先後???為何createAT不管用
 
-
       return res.render("userProfile", {
         user,
         orderInfo
       });
     });
+  },
+  getUserProfileEdit: (req, res) => {
+    return User.findByPk(req.params.id).then(user => {
+      return res.render('userProfileEdit', { user })
+    })
+  },
+  postUserProfile: (req, res) => {
+    const { file } = req
+    if (file) {
+      fs.readFile(file.path, (err, data) => {
+        if (err) console.log('Error: ', err)
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+          return User.findByPk(req.params.id).then(user => {
+            user.update({
+              name: req.body.name,
+              email: req.body.email,
+              address: req.body.address,
+              password: req.body.password,
+              image: file ? `/upload/${file.originalname}` : user.image
+            })
+
+            res.redirect(`/user/${req.params.id}/profile`)
+          })
+        })
+      })
+    }
+    else {
+      return User.findByPk(req.params.id).then(user => {
+        user.update({
+          name: req.body.name,
+          email: req.body.email,
+          address: req.body.address,
+          password: req.body.password,
+        })
+
+        res.redirect(`/user/${req.params.id}/profile`)
+      })
+    }
   },
   //-------reset password------------------
   getForgetPasswordPage: (req, res) => {

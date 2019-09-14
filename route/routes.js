@@ -8,6 +8,10 @@ const cartController = require('../controllers/cartController')
 const orderController = require('../controllers/orderController')
 const couponController = require('../controllers/couponController')
 const passport = require('../config/passport')
+//上傳圖片
+const multer = require('multer')
+const upload = multer({ dest: 'temp/' })
+
 
 
 //加入權限驗證
@@ -90,21 +94,36 @@ router.delete('/cartItem/:id', cartController.deleteCartItem)
 //-------------------------------------------訂單--------------------------------------
 //訂單編輯畫面
 router.get('/orderEdit', authenticated, orderController.getOrderEdit)
-//訂單成立
+//建立訂單
 router.post('/order', authenticated, orderController.postOrder)
-//個人資料頁面與訂單詳情
-router.get('/user/:id/profile', authenticated, userController.getUserProfile)
+//訂單成立頁面
+router.get('/order/:id/success', authenticated, orderController.getOrderSuccess)
+
 //取消訂單
 router.post('/order/:id', orderController.cancelOrder)
+//--------userprofile-----------------------------
+//個人資料頁面與訂單詳情
+router.get('/user/:id/profile', authenticated, userController.getUserProfile)
+
+router.get('/user/:id/editProfile', authenticated, userController.getUserProfileEdit)
+//編輯個人資料頁面
+router.post('/user/:id/edit', authenticated, upload.single('image'), userController.postUserProfile)
+
+
+
 //-------------coupon----------------------------
-//-----------製作coupon------------------
-router.get('/coupon/makingPage', couponController.getCouponMakePage)
-router.post('/coupon/make', couponController.postCouponMake)
+
 //----------使用coupon-------------------
-router.get('/enterCoupon', authenticated, couponController.enterCoupon)
 router.post('/checkCoupon', couponController.checkCoupon)
-///////////////////////////////
 router.get('/couponOrder/:couponId', couponController.getCouponOrderEdit)
+//-----------adimin coupon manage---------------------
+router.get('/admin/coupon/managePage', couponController.getCouponManagePage)
+router.get('/admin/coupon/managePage/:id/edit', couponController.getCouponEditPage)
+router.post('/admin/coupon/edit', couponController.postCouponEdit)
+//-----------製作coupon------------------
+router.get('/admin/coupon/makingPage', couponController.getCouponMakePage)
+router.post('/coupon/make', couponController.postCouponMake)
+
 
 
 

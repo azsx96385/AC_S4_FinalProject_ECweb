@@ -40,21 +40,17 @@ const couponController = {
       couponCode: code,
       discount: req.body.CouponDiscount,
       description: req.body.CouponDescription,
-      availabe: true,
+      available: true,
       expireDate: req.body.expiredDate,
 
     }).then(coupon => {
       Coupon.findByPk(coupon.id, { include: CouponType }).then(
         coupon => {
-
           res.render('couponShow', { coupon })
         }
       )
 
     })
-  },
-  enterCoupon: (req, res) => {
-    res.render('couponUsingPage')
   },
   checkCoupon: async (req, res) => {
     let cart = await Cart.findByPk(req.session.cartId, { include: [{ model: Product, as: 'items', include: [CartItem] }] })
@@ -81,8 +77,8 @@ const couponController = {
         return res.redirect('back')
       }
       req.flash("success_messages", "成功折抵");
-      return res.render('couponUsingPage', { coupon, totalPrice })
-
+      let couponId = coupon.id
+      return res.redirect(`/cart?couponId= ${couponId}`)
     })
   },
 
@@ -106,6 +102,55 @@ const couponController = {
     })
 
   },
+
+  //admin管理coupon
+  getCouponManagePage: (req, res) => {
+    let today = new Date()
+
+    Coupon.findAll({ include: [CouponType] }).then(coupons => {
+      //如果過期，就自動失效
+      coupons.map(coupon => {
+        if (today > coupon.expireDate) {
+          coupon.update({
+            ...coupon,
+            available: false
+          })
+        }
+
+        return coupon
+      })
+      return coupons
+
+    }).then(coupons => {
+      res.render('couponManagePage', { coupons })
+    })
+
+  },
+  getCouponEditPage: (req, res) => {
+    Coupon.findByPk(req.params.id, { include: CouponType }).then(
+      coupon => {
+
+        res.render('couponEditPage', { coupon })
+      }
+    )
+  },
+  postCouponEdit: (req, res) => {
+    Coupon.findByPk(req.body.couponId).then(
+      coupon => {
+        coupon.update({
+          StoreId: req.body.StoreId,
+          CouponTypeId: req.body.couponTypeId,
+          discount: req.body.CouponDiscount,
+          description: req.body.CouponDescription,
+          available: req.body.available,
+          expireDate: req.body.expiredDate,
+        })
+
+      }
+    ).then(
+      res.redirect('/admin/coupon/managePage')
+    )
+  }
 }
 
 module.exports = couponController

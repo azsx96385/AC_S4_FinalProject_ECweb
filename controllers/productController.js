@@ -7,7 +7,8 @@ const {
   Comment,
   User,
   Order,
-  Payment_status
+  Payment_status,
+  Delivery_notice
 } = db
 
 const productController = {
@@ -27,9 +28,10 @@ const productController = {
         Product
       ]
     }).then(category => {
+      const categoryId = category.id
       let products = category.Products.map(r => ({
         ...r.dataValues,
-        description: r.dataValues.description.substring(0, 34),
+        name: r.dataValues.name.substring(0, 20)
       }))
 
       if (key === 'createdAt' && value === 'desc') {
@@ -51,7 +53,8 @@ const productController = {
           categories,
           products,
           category,
-          sort
+          sort,
+          categoryId
         })
       })
     })
@@ -76,17 +79,34 @@ const productController = {
         createdAt: Number(r.createdAt),
         updatedAt: Number(r.updatedAt)
       }))
-      const category = product.Product_category
-      const categoryProducts = category.Products
 
-      const products = categoryProducts.map(r => ({
+      // 評價分頁
+      const pageLimit = 10
+      let page = Number(req.query.page) || 1
+      let pages = Math.ceil(comment.length / pageLimit)
+      let totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
+      let prev = page - 1 < 1 ? 1 : page - 1
+      let next = page + 1 > pages ? pages : page + 1
+      let paginationData = []
+      paginationData = comment || paginationData
+      let offset = (page - 1) * pageLimit
+      let pageData = paginationData.slice(offset, offset + pageLimit)
+
+      // 篩選相似商品
+      const category = product.Product_category
+      const categoryId = category.id
+      const categoryProducts = category.Products
+      const products = categoryProducts.filter(d => d.id != req.params.id)
+      let productsFilter = products.slice(0, 6)
+      productsFilter = productsFilter.map(r => ({
         ...r.dataValues,
-        description: r.dataValues.description.substring(0, 50),
+        name: r.name.substring(0, 20)
       }))
-      productsFilter = products.slice(0, 4)
 
       Product_category.findAll().then(categories => {
+        // 評價平均分數
         const ratingAve = average(comment)
+
         const orders = product.orders
 
         res.render('product', {
@@ -94,7 +114,13 @@ const productController = {
           categories,
           productsFilter,
           ratingAve,
-          orders
+          orders,
+          totalPage,
+          page,
+          prev,
+          next,
+          comment: pageData,
+          categoryId
         })
       })
     })
@@ -103,14 +129,14 @@ const productController = {
   searchProduct: (req, res) => {
     const keyword = req.query.keyword
 
-    Product.findAll().then(products => {
+    Product.findAll({ include: [Product_category] }).then(products => {
       let search = products.filter(product => {
         return product.name.toLowerCase().includes(keyword.toLowerCase())
       })
 
       search = search.map(r => ({
         ...r.dataValues,
-        description: r.dataValues.description.substring(0, 34),
+        name: r.name.substring(0, 30)
       }))
 
       Product_category.findAll().then(categories => {
@@ -136,7 +162,38 @@ const productController = {
         res.redirect(`/product/${comment.ProductId}`)
       })
     })
-  }
+  },
+
+  postDeliveryNotice: (req, res) => {
+    let { email, email_confirm } = req.body;
+
+    if (email !== email_confirm) {
+      req.flash("error_messages", "請確認輸入的電子郵件是否相同");
+      return res.redirect('back')
+    }
+
+    Delivery_notice.create({
+      ProductId: req.body.ProductId,
+      email: req.body.email
+    }).then(() => {
+      req.flash("success_messages", "已送出申請，待補充庫存後，相關人員會寄e-mail通知您");
+      res.redirect(`/product/${req.body.ProductId}`)
+    })
+  },
+
+  getDeliveryNotice: (req, res) => {
+    Delivery_notice.findAll({ include: [Product] }).then(deliveryNotices => {
+      res.render('admin/deliveryNotice', { deliveryNotices })
+    })
+  },
+
+  deleteDeliveryNotice: (req, res) => {
+    Delivery_notice.findByPk(req.params.id).then(deliveryNotice => {
+      deliveryNotice.destroy().then(deliveryNotice => {
+        res.redirect(`/admin/deliveryNotice`)
+      })
+    })
+  },
 }
 
 module.exports = productController

@@ -60,6 +60,8 @@ module.exports = (app, passport) => {
   app.get("/Category/:category_id", productController.getCategoryProducts);
   // 單項產品頁面
   app.get("/product/:id", productController.getProduct);
+  // 申請貨到通知
+  app.post('/product/:id/deliveryNotice', productController.postDeliveryNotice)
   // 評價功能
   app.post(
     "/product/:id/rate",
@@ -104,11 +106,29 @@ module.exports = (app, passport) => {
     authenticated,
     orderController.spgatewayCallback
   );
+
+  //------------------------------------超商取貨---------------------------------------------
+  //前往選取門市頁面
+  app.get("/order/:id/branchselection", authenticated, orderController.getBranchSelection);
+  //callback
+  app.post(
+    "/pickup/callback",
+    authenticated,
+    orderController.pickupCallback
+  );
   //[Admin 後台管理介面]=========================================================================================
   //銷售模組router
   app.use("/admin/salemodel", authenticatedAdmin, saleModel);
   //產品模組router
   app.use("/admin/productmodel", authenticatedAdmin, productModel);
   //行銷模組router
-  app.use("/admin/marketingmodel", authenticatedAdmin, marketingModel);
+  app.use("/admin/marketingmodel", marketingModel);
+
+
+
+
+  //管理貨到通知頁面
+  app.get("/admin/deliveryNotice", productController.getDeliveryNotice)
+  // 刪除貨到通知資料
+  app.delete('/admin/deliveryNotice/:id', productController.deleteDeliveryNotice)
 };

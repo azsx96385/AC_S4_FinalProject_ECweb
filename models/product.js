@@ -15,15 +15,18 @@ module.exports = (sequelize, DataTypes) => {
       launched: DataTypes.BOOLEAN,
       price: DataTypes.INTEGER,
       description: DataTypes.STRING,
-      image: DataTypes.STRING
+      image: DataTypes.STRING,
+      imageI: DataTypes.STRING,
+      imageII: DataTypes.STRING,
     },
     {}
   );
-  Product.associate = function(models) {
+  Product.associate = function (models) {
     Product.belongsTo(models.Product_category);
     Product.hasMany(models.Comment);
     Product.hasMany(models.Cart_item);
     Product.hasMany(models.Order_item);
+    Product.hasMany(models.Delivery_notice);
     Product.belongsToMany(models.Cart, {
       as: "carts",
       through: {

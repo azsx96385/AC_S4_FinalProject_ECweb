@@ -1,0 +1,104 @@
+<div class="container">
+  <div class="shopFlow d-flex  justify-content-center mb-3">
+    <div class="step1">
+      <span class='bg-light text-dark rounded-circle p-1'>1</span>
+      <span style='color:#b7b795'>確認購物車</span>
+      <span style='color:#b7b795'>&rarr;
+      </span>
+    </div>
+    <div class="step2">
+      <span class='bg-light text-dark rounded-circle p-1'>2</span>
+      <span style='color:#b7b795'>付款與運送方式</span>
+      <span style='color:#b7b795'>&rarr;
+      </span>
+    </div>
+    <div class="step3">
+      <span class='bg-dark text-light rounded-circle p-1'>3</span>
+      <span>成立訂單</span>
+    </div>
+
+  </div>
+
+  <div class="card mt-4">
+    <div class="card-body">
+      <h2> 訂單{{order.id}}</h2>
+      <hr>
+      <h5>商品詳情</h5>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item ">
+          <div class="row">
+            <div class="col">商品</div>
+            <div class="col">數量</div>
+            <div class="col">小計</div>
+          </div>
+        </li>
+        {{#each order.items}}
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col">{{this.name}}</div>
+            <div class="col">{{this.Order_item.quantity}}</div>
+            <div class="col">{{this.price}}</div>
+          </div>
+        </li>
+        {{/each}}
+        <li class="list-group-item">
+          <h5>金額詳情</h5>
+          <div class=" bg-light text-dark ">
+
+            <div class=" row">
+              <div class="col">商品金額總計:</div>
+              <div class="col">{{originAmount}} 元</div>
+            </div>
+            <div class="row">
+              <div class="col">運費:</div>
+              <div class="col">0</div>
+            </div>
+            <div class="row">
+              <div class="col">coupon折抵</div>
+              <div class="col">{{subtract originAmount order.amount }}元</div>
+            </div>
+            <div class="row">
+              <div class="col">金額總計:</div>
+              <div class="col">
+                {{order.amount}}元
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <hr>
+      <h5>運送資訊</h5>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">名字:{{order.name}}</li>
+        <li class="list-group-item">地址:{{order.address}}</li>
+        <li class="list-group-item">phone:{{order.phone}}</li>
+      </ul>
+      <hr>
+      <h5>出貨狀況</h5>
+
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">付款方式:{{#each order.PaymentType}}{{#if @last}}{{this.paymentType}}{{/if}}{{/each}}
+        </li>
+        <li class="list-group-item">
+          付款狀況:{{#each order.PaymentStatus}}{{#if @last}}{{this.paymentStatus}}{{/if}}{{/each}}</li>
+        <li class="list-group-item">
+          出貨方式:{{#each order.ShipmentType}}{{#if @last}}{{this.shipmentType}}{{/if}}{{/each}}
+          {{#each order.ShipmentConvenienceStore}}{{#if @last}}[{{this.branch}}]{{/if}}{{/each}}
+          {{#each order.ShipmentConvenienceStore}}{{#if @last}}- {{this.address}}{{/if}}{{/each}}
+        </li>
+        <li class="list-group-item">
+          出貨狀況:{{#each order.ShipmentStatus}}{{#if @last}}{{this.shipmentStatus}}{{/if}}{{/each}}</li>
+      </ul>
+      </ul>
+
+    </div>
+
+    <div class="row d-flex flex-row-reverse">
+      <div class="col">
+        <form action="/order/{{order.id}}" method="POST">
+          <button type='submit' class='btn btn-danger'>取消訂單</button></form>
+      </div>
+    </div>
+
+  </div>
+</div>

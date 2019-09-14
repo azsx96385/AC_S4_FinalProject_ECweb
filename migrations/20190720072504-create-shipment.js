@@ -17,6 +17,9 @@ module.exports = {
       ShipmentTypeId: {
         type: Sequelize.INTEGER
       },
+      ShipmentConvenienceStoreId: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

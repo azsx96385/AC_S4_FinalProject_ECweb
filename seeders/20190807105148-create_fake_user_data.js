@@ -14,6 +14,7 @@ module.exports = {
         address: faker.address.streetAddress(),
         resetPasswordToken: null,
         resetPasswordExpires: null,
+        image: 'https://i.imgur.com/Uzs2ty3.jpg',
         createdAt: new Date(),
         updatedAt: new Date(),
         emailVerf: 0
@@ -27,6 +28,7 @@ module.exports = {
         address: faker.address.streetAddress(),
         resetPasswordToken: null,
         resetPasswordExpires: null,
+        image: 'https://i.imgur.com/Uzs2ty3.jpg',
         createdAt: new Date(),
         updatedAt: new Date(),
         emailVerf: 0
@@ -40,6 +42,7 @@ module.exports = {
         address: faker.address.streetAddress(),
         resetPasswordToken: null,
         resetPasswordExpires: null,
+        image: 'https://i.imgur.com/Uzs2ty3.jpg',
         createdAt: new Date(),
         updatedAt: new Date(),
         emailVerf: 0
@@ -53,6 +56,7 @@ module.exports = {
         address: faker.address.streetAddress(),
         resetPasswordToken: null,
         resetPasswordExpires: null,
+        image: 'https://i.imgur.com/Uzs2ty3.jpg',
         createdAt: new Date(),
         updatedAt: new Date(),
         emailVerf: 0
