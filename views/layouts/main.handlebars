@@ -41,8 +41,8 @@
 
     {{#if loginUser}}
     <div class="user ml-4">
-      <a href="/user/{{loginUser.id}}/profile" style="color: #0085a5"><i class="fa fa-user-circle"
-          aria-hidden="true"></i> 我的帳號
+      <a href="/user/{{loginUser.id}}/profile" style="color: #0085a5"><img class="navAvatar"
+          style="width: 23px; border-radius: 50%;" src="{{loginUser.image}}"> 我的帳號
       </a>
     </div>
     {{else}}
