@@ -29,6 +29,15 @@ module.exports = (app, passport) => {
     })(req, res, next);
   }
 
+  const authenticatedAdmin = (req, res, next) => {
+    if (req.isAuthenticated()) {
+      if (req.user.role === 1) {
+        return next()
+      }
+    }
+    res.redirect('/users/login')
+  }
+
   const authenticated = authenticate
 
   //[使用者 登入 | 登出 | 註冊]==========================
@@ -124,7 +133,7 @@ module.exports = (app, passport) => {
 
 
   //管理貨到通知頁面
-  app.get("/admin/deliveryNotice", productController.getDeliveryNotice)
+  app.get("/admin/deliveryNotice", authenticatedAdmin, productController.getDeliveryNotice)
   // 刪除貨到通知資料
-  app.delete('/admin/deliveryNotice/:id', productController.deleteDeliveryNotice)
+  app.delete('/admin/deliveryNotice/:id', authenticatedAdmin, productController.deleteDeliveryNotice)
 };
