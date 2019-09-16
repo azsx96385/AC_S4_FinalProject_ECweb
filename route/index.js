@@ -29,11 +29,11 @@ module.exports = (app, passport) => {
   const authenticatedAdmin = (req, res, next) => {
     if (req.isAuthenticated()) {
       if (req.user.role === 1) {
-        return next()
+        return next();
       }
     }
-    res.redirect('/users/login')
-  }
+    res.redirect("/users/login");
+  };
 
   //[使用者 登入 | 登出 | 註冊]==========================
   app.get("/users/signUp", userController.signUpPage);
@@ -61,7 +61,7 @@ module.exports = (app, passport) => {
   // 單項產品頁面
   app.get("/product/:id", productController.getProduct);
   // 申請貨到通知
-  app.post('/product/:id/deliveryNotice', productController.postDeliveryNotice)
+  app.post("/product/:id/deliveryNotice", productController.postDeliveryNotice);
   // 評價功能
   app.post(
     "/product/:id/rate",
@@ -109,26 +109,26 @@ module.exports = (app, passport) => {
 
   //------------------------------------超商取貨---------------------------------------------
   //前往選取門市頁面
-  app.get("/order/:id/branchselection", authenticated, orderController.getBranchSelection);
-  //callback
-  app.post(
-    "/pickup/callback",
+  app.get(
+    "/order/:id/branchselection",
     authenticated,
-    orderController.pickupCallback
+    orderController.getBranchSelection
   );
+  //callback
+  app.post("/pickup/callback", authenticated, orderController.pickupCallback);
   //[Admin 後台管理介面]=========================================================================================
   //銷售模組router
   app.use("/admin/salemodel", authenticatedAdmin, saleModel);
   //產品模組router
   app.use("/admin/productmodel", authenticatedAdmin, productModel);
   //行銷模組router
-  app.use("/admin/marketingmodel", marketingModel);
-
-
-
+  app.use("/admin/marketingmodel", authenticatedAdmin, marketingModel);
 
   //管理貨到通知頁面
-  app.get("/admin/deliveryNotice", productController.getDeliveryNotice)
+  app.get("/admin/deliveryNotice", productController.getDeliveryNotice);
   // 刪除貨到通知資料
-  app.delete('/admin/deliveryNotice/:id', productController.deleteDeliveryNotice)
+  app.delete(
+    "/admin/deliveryNotice/:id",
+    productController.deleteDeliveryNotice
+  );
 };
