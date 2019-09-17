@@ -17,7 +17,7 @@ module.exports = {
         image: "https://i.imgur.com/Uzs2ty3.jpg",
         createdAt: new Date(),
         updatedAt: new Date(),
-        emailVerf: 0
+        emailVerf: false
       },
       {
         StoreId: 1,
@@ -31,7 +31,7 @@ module.exports = {
         image: "https://i.imgur.com/Uzs2ty3.jpg",
         createdAt: new Date(),
         updatedAt: new Date(),
-        emailVerf: 0
+        emailVerf: false
       },
       {
         StoreId: 1,
@@ -45,7 +45,7 @@ module.exports = {
         image: "https://i.imgur.com/Uzs2ty3.jpg",
         createdAt: new Date(),
         updatedAt: new Date(),
-        emailVerf: 0
+        emailVerf: false
       },
       {
         StoreId: 1,
@@ -59,7 +59,7 @@ module.exports = {
         image: "https://i.imgur.com/Uzs2ty3.jpg",
         createdAt: new Date(),
         updatedAt: new Date(),
-        emailVerf: 0
+        emailVerf: false
       }
     ]);
   },

@@ -27,7 +27,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       emailVerf: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: true
       },
       resetPasswordToken: {
