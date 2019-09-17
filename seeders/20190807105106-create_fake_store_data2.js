@@ -5,7 +5,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     // Store_categories |3種類別3C類 / 服飾類 / 食品類
 
-    return queryInterface.bulkInsert("stores", [
+    return queryInterface.bulkInsert("Stores", [
       {
         StoreCategoryId: 1,
         name: "米國電子",
