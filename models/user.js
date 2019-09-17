@@ -9,14 +9,14 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       address: DataTypes.STRING,
       password: DataTypes.STRING,
-      emailVerf: DataTypes.BOOLEAN,
+      emailVerf: DataTypes.INTEGER,
       resetPasswordToken: DataTypes.STRING,
       resetPasswordExpires: DataTypes.DATE,
       image: DataTypes.STRING
     },
     {}
   );
-  User.associate = function (models) {
+  User.associate = function(models) {
     // associations can be defined here
     User.hasMany(models.Comment);
     User.hasMany(models.Order);
