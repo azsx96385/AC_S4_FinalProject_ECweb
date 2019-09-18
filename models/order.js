@@ -59,6 +59,9 @@ module.exports = (sequelize, DataTypes) => {
     });
     Order.hasMany(models.Payment);
     Order.hasMany(models.Shipment);
+
+    Order.belongsTo(models.Order_status);
+
     Order.belongsToMany(models.Shipment_convenienceStore, {
       as: "ShipmentConvenienceStore",
       through: {

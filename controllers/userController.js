@@ -5,6 +5,7 @@ const User = db.User;
 const Order = db.Order;
 const OrderItem = db.Order_item;
 const Product = db.Product;
+const OrderStatus = db.Order_status
 const fs = require('fs')
 //-------------------- JWT----------------------------------------------
 const jwt = require("jsonwebtoken");
@@ -121,13 +122,16 @@ const userController = {
             { model: PaymentType, as: "PaymentType" },
             { model: ShipmentStatus, as: "ShipmentStatus" },
             { model: PaymentStatus, as: "PaymentStatus" },
-            { model: Shipment_convenienceStore, as: "ShipmentConvenienceStore" }
+            { model: Shipment_convenienceStore, as: "ShipmentConvenienceStore" },
+            { model: OrderStatus }
           ]
         }
       ]
     }).then(user => {
       //找出user 在從user中找到order 在從order中找到產品
       let orderInfo = user.Orders.sort((a, b) => b.id - a.id); //由id來排先後???為何createAT不管用
+      console.log('---------------')
+      console.log(orderInfo)
 
       return res.render("userProfile", {
         user,

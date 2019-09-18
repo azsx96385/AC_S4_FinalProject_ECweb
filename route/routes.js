@@ -21,14 +21,12 @@ const authenticated = (req, res, next) => {
   }
   res.redirect('/users/login')
 }
+
 const authenticatedAdmin = (req, res, next) => {
   if (req.isAuthenticated()) {
-    console.log('XXXXXXXXXXXXXXXX', req.loginUser)
-    console.log('XXXXXXXXXXXXXXXX', req.user)
-    return next()
-    // if (req.loginUser.role === 1) {
-    //   return next()
-    // }
+    if (req.loginUser.role === 1) {
+      return next()
+    }
 
   }
   res.redirect('/users/login')
@@ -100,7 +98,7 @@ router.post('/order', authenticated, orderController.postOrder)
 router.get('/order/:id/success', authenticated, orderController.getOrderSuccess)
 
 //取消訂單
-router.post('/order/:id', orderController.cancelOrder)
+router.post('/order/:id', authenticated, orderController.cancelOrder)
 //--------userprofile-----------------------------
 //個人資料頁面與訂單詳情
 router.get('/user/:id/profile', authenticated, userController.getUserProfile)
@@ -114,15 +112,15 @@ router.post('/user/:id/edit', authenticated, upload.single('image'), userControl
 //-------------coupon----------------------------
 
 //----------使用coupon-------------------
-router.post('/checkCoupon', couponController.checkCoupon)
-router.get('/couponOrder/:couponId', couponController.getCouponOrderEdit)
+router.post('/checkCoupon', authenticated, couponController.checkCoupon)
+router.get('/couponOrder/:couponId', authenticated, couponController.getCouponOrderEdit)
 //-----------adimin coupon manage---------------------
-router.get('/admin/coupon/managePage', couponController.getCouponManagePage)
-router.get('/admin/coupon/managePage/:id/edit', couponController.getCouponEditPage)
-router.post('/admin/coupon/edit', couponController.postCouponEdit)
+router.get('/admin/coupon/managePage', authenticated, couponController.getCouponManagePage)
+router.get('/admin/coupon/managePage/:id/edit', authenticated, couponController.getCouponEditPage)
+router.post('/admin/coupon/edit', authenticated, couponController.postCouponEdit)
 //-----------製作coupon------------------
-router.get('/admin/coupon/makingPage', couponController.getCouponMakePage)
-router.post('/coupon/make', couponController.postCouponMake)
+router.get('/admin/coupon/makingPage', authenticated, couponController.getCouponMakePage)
+router.post('/admin/coupon/make', authenticated, couponController.postCouponMake)
 
 
 

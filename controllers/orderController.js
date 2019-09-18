@@ -5,6 +5,7 @@ const Product = db.Product;
 const User = db.User;
 const Order = db.Order;
 const OrderItem = db.Order_item;
+const Order_status = db.Order_status
 /*---------------------處理payment跟shipment------------------------------*/
 const Payment = db.Payment;
 const Shipment = db.Shipment;
@@ -101,7 +102,8 @@ const orderController = {
         name: req.body.name,
         address: req.body.address,
         phone: req.body.phone,
-        amount: subtotal
+        amount: subtotal,
+        OrderStatusId: 1
         //還要處理payment跟shipment
       })
         .then(order => {
@@ -173,12 +175,14 @@ const orderController = {
         { model: PaymentType, as: "PaymentType" },
         { model: ShipmentStatus, as: "ShipmentStatus" },
         { model: PaymentStatus, as: "PaymentStatus" },
-        { model: Shipment_convenienceStore, as: "ShipmentConvenienceStore" }
+        { model: Shipment_convenienceStore, as: "ShipmentConvenienceStore" },
+        { model: Order_status }
+
       ]
     }).then(order => {
       //取得為折抵的總價
       let originAmount = order.items.length > 0 ? order.items.map(d => d.price * d.Order_item.quantity).reduce((a, b) => a + b) : 0;
-
+      console.log(order.Order_status.orderStatus)
       return res.render('orderSuccess', { order, originAmount })
     })
   },
@@ -194,12 +198,11 @@ const orderController = {
         let lastOne = order.ShipmentStatus.length - 1;
         //限定shipmentStatus為 未出貨 ，才能取消
         //取得order的shipmentStatus的最後一個
-        if (order.ShipmentStatus[lastOne].shipmentStatus === "未出貨") {
-          Shipment.create({
-            OrderId: req.params.id,
-            ShipmentStatusId: 3, // 取消為3
-            ShipmentTypeId: order.ShipmentType[0].id
-          });
+        if (order.ShipmentStatus[lastOne].shipmentStatus === "備貨中") {
+
+          order.update({
+            OrderStatusId: 4
+          })
         }
         return order;
       })
