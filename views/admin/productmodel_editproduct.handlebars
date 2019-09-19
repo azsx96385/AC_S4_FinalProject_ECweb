@@ -28,21 +28,37 @@
                     <div id="productImg" class="tab-pane fade show active" role="tabpanel">
                         <p class="text-primary">商品主要圖片</p>
                         <hr>
-                        {{#if product}}
-                        <img class="w-25 p-3" src="{{product.image}}" alt="產品圖片">
-                        {{/if}}
-                        <hr>
-                        <div class="img_upload text-center   border-secondary p-3" style="border-style: dotted;">
-                            <p>拖放圖片到這裡</p>
-                            <input type="file" name="image" class="btn btn-primary btn-sm" id="image">
+
+
+                        <div class="row">
+
+                            <div class="col p-5">
+                                {{#if product.image}}
+                                <img class="w-100 p-3" src="{{product.image}}" alt="產品圖片">
+                                {{else}}
+                                <input type="file" name="images" class="col y-5" id="image">
+                                {{/if}}
+                            </div>
+
+                            <div class="col  p-5">
+                                {{#if product.imageI}}
+                                <img class="w-100 p-3" src="{{product.imageI}}" alt="產品圖片">
+                                {{else}}
+                                <input type="file" name="images" class="col y-5" id="image">
+                                {{/if}}
+                            </div>
+
+                            <div class="col  p-5">
+                                {{#if product.imageII}}
+                                <img class="w-100 p-3" src="{{product.imageII}}" alt="產品圖片">
+                                {{else}}
+                                <input type="file" name="images" class="col y-5" id="image">
+                                {{/if}}
+                            </div>
                         </div>
+                        <hr>
                         {{!-- 照片預覽區 --}}
                         <div class="img_preview">
-                            {{!-- 照片預覽項目 --}}
-                            {{!-- <div class="img_item">
-                    <img src="" alt="">
-                    <a href="">delete</a>
-                </div> --}}
                         </div>
                     </div>
 
@@ -50,7 +66,7 @@
                     <div id="productDetail" class="tab-pane fade" role="tabpanel">
                         <p class="text-primary">商品資訊</p>
                         <hr>
-                        <input type="hidden" name="StoreId" value="1" id="name">
+                        <input type="hidden" name="StoreId" value={{storeId}} id="name">
                         <div class="product_title form-group">
                             <label for="product_name">商品狀態</label>
                             {{#if product}}
@@ -124,3 +140,35 @@
         </form>
 
 </div>
+
+{{!-- 
+
+<div class="row">
+                            
+<div class="col">
+    {{#if product.image}}
+    <img class="w-100 p-3" src="{{product.image}}" alt="產品圖片">
+    {{/if}}
+    <input type="file" name="image" class="col y-5" id="image">
+</div>
+ 
+<div class="col">
+    {{#if product.imageI}}
+    <img class="w-100 p-3" src="{{product.imageI}}" alt="產品圖片">
+    {{/if}}
+    {{#if product.image}}
+    <input type="file" name="imageI" class="col y-5" id="image">
+    {{/if}}
+</div>
+ 
+<div class="col">
+    {{#if product.imageII}}
+    <img class="w-100 p-3" src="{{product.imageII}}" alt="產品圖片">
+    {{/if}}
+    {{#if product.imageI}}
+    <input type="file" name="imageII" class="col y-5" id="image">
+    {{/if}}
+</div>
+</div> 
+
+--}}

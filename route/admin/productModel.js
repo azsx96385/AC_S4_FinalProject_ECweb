@@ -2,19 +2,20 @@
 const express = require("express");
 let router = express.Router();
 const multer = require("multer");
-const upload = multer({ dest: "temp/" });
+const upload = multer({ dest: "temp/" }).array("images");
 //引入需要的Controller
 const productController = require("../../controllers/admin/productController");
 const orderController = require("../../controllers/admin/orderController");
 
 //路由設定
+
 //[產品管理]==================================================
 // 顯示產品管理頁面
 router.get("/product_mange", productController.getProductManagePage);
 // 單一 | 顯示新增單一商品頁面
 router.get("/create", productController.getProductCreatePage);
 // 單一 | 新增產品
-router.post("/create", upload.single("image"), productController.postProduct);
+router.post("/create", upload, productController.postProduct);
 // 單一 | 刪除單一商品
 router.delete("/delete/:productId", productController.deleteProduct);
 // 單一 | 更改商品狀態-下架/上架
@@ -22,11 +23,7 @@ router.put("/update", productController.putProductLauched);
 // 單一 | 顯示單一產品編輯頁面
 router.get("/update/:productId", productController.getProduct);
 // 單一 | 編輯單一產品
-router.put(
-  "/update/:productId",
-  upload.single("image"),
-  productController.putProduct
-);
+router.put("/update/:productId", upload, productController.putProduct);
 
 // 批次 | 變更產品狀態-上架
 // 批次 | 變更產品狀態-下架

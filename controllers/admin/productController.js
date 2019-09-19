@@ -3,15 +3,19 @@ const fs = require("fs");
 const productCategoryModel = db.Product_category;
 const productModel = db.Product;
 const imgur = require("imgur-node-api");
+const multer = require("multer");
+const upload = multer({ dest: "temp/" }).array("images");
 
 const productController = {
   //  顯示產品管理頁面
   getProductManagePage: (req, res) => {
     //從登入之使用者-調出所屬商店資料
+    const storeId = req.user.StoreId;
+
     //設定預設值|offset limit wherequery--> 商店id / 上下架與否
     let offset = 0;
     let pageLimit = 5;
-    let whereQuery = { StoreId: 1 };
+    let whereQuery = { StoreId: storeId };
     if (req.query.launched) {
       whereQuery["launched"] = req.query.launched;
     }
@@ -51,25 +55,59 @@ const productController = {
   //   單一 | 顯示新增單一商品頁面
   getProductCreatePage: (req, res) => {
     //預設參數
-    let StoreId = 1;
+    const storeId = req.user.StoreId;
     //調出所有類別資料
-    productCategoryModel.findAll().then(categories => {
-      return res.render("admin/productmodel_editproduct", {
-        categories: categories,
-        layout: "admin_main"
+    productCategoryModel
+      .findAll({ where: { StoreId: storeId } })
+      .then(categories => {
+        return res.render("admin/productmodel_editproduct", {
+          categories: categories,
+          storeId: storeId,
+          layout: "admin_main"
+        });
       });
-    });
   },
   //   單一 | 新增產品
   postProduct: (req, res) => {
-    //加入防呆
+    //1. 防呆 -欄位漏填回傳
     console.log(req.body);
-    //檢查產品的新增是否有圖片
-    const { file } = req;
-    if (file) {
-      imgur.setClientID(process.env.IMGUR_CLIENT_ID);
-      imgur.upload(file.path, (err, img) => {
-        if (err) console.log(err);
+    const { StoreId, launched, count, name, description, price } = req.body;
+    if (!StoreId || !launched || !count || !name || !description || !price) {
+      req.flash("error_messages", "錯誤訊息|資料漏填");
+      return res.redirect("back");
+    }
+    const { files } = req;
+    //包裹圖片上傳
+    let ImgsUrl = new Promise((resolve, reject) => {
+      let count = 0;
+      let images = [];
+      files.forEach(file => {
+        imgur.setClientID(process.env.IMGUR_CLIENT_ID);
+        imgur.upload(file.path, (err, img) => {
+          if (err) console.log(err);
+
+          images.push(img.data.link);
+          count++;
+          console.log(count);
+          if (count == files.length) {
+            console.log(images);
+            return resolve(images);
+          }
+        });
+      });
+    });
+
+    //2.檢查產品的新增是否有圖片
+
+    if (files.length > 0) {
+      console.log("偵測到圖片");
+      //先做圖片上傳-上傳完畢後-回傳儲存網址的陣列
+      ImgsUrl.then(images => {
+        console.log(
+          images,
+          "----------------------------------------------------------"
+        );
+        //3.新增資料
         return productModel
           .create({
             ProductCategoryId: req.body.ProductCategoryId,
@@ -79,14 +117,18 @@ const productController = {
             description: req.body.description,
             launched: req.body.launched,
             price: req.body.price,
-            image: file ? img.data.link : null
+            image: images ? images[0] : null,
+            imageI: images ? images[1] : null,
+            imageII: images ? images[2] : null
           })
           .then(data => {
             console.log("成功訊息|產品已經成功新增");
+            req.flash("success_messages", "成功訊息|產品已經成功新增");
             return res.redirect("/admin/productmodel/product_mange");
           });
       });
     } else {
+      console.log("沒偵測到圖片");
       return productModel
         .create({
           ProductCategoryId: req.body.ProductCategoryId,
@@ -100,9 +142,7 @@ const productController = {
         })
         .then(data => {
           console.log("成功訊息|產品已經成功新增");
-          return res.redirect("/admin/productmodel/product_mange", {
-            layout: "admin_main"
-          });
+          return res.redirect("/admin/productmodel/product_mange");
         });
     }
   },
@@ -133,6 +173,7 @@ const productController = {
           });
         } else {
           console.log("錯誤訊息|你沒有權限");
+          req.flash("error_messages", "錯誤訊息|你沒有權限");
         }
       });
     });
@@ -189,7 +230,8 @@ const productController = {
     return productModel.findByPk(productId).then(product => {
       //驗證storeID
       console.log("更動前", product.launched);
-      //驗證通過-修改上下架
+      //驗證通過
+      //修改上下架
       if (launched === "1") {
         product.update({ launched: true });
         console.log("系統通知｜產品已上架");
