@@ -292,4 +292,51 @@ describe('# Product Controller', () => {
       })
     })
   })
+
+  // describe('GET /admin/deliveryNotice', () => {
+
+  //   before(async () => {
+  //     // 在所有測試開始前會執行的程式碼區塊
+  //     await db.User.destroy({ where: {}, truncate: { cascade: true } })
+  //     await db.Product_category.destroy({ where: {}, truncate: { cascade: true } })
+  //     await db.Product.destroy({ where: {}, truncate: { cascade: true } })
+  //     await db.Delivery_notice.destroy({ where: {}, truncate: { cascade: true } })
+
+  //     const rootUser = await db.User.create({ name: 'root', role: 1 })
+  //     await db.Product_category.create({ id: 1, name: '麵包' })
+  //     await db.Product.create({ id: 1, ProductCategoryId: 1, name: '吐司' })
+  //     await db.Delivery_notice.create({ email: 'email', ProductId: 1 })
+
+  //     this.authenticate = sinon.stub(passport, "authenticate").callsFake((strategy, options, callback) => {
+  //       callback(null, { ...rootUser }, null);
+  //       return (req, res, next) => {
+  //         if (req.user.role === 1) {
+  //           req.user = rootUser;
+  //           return next();
+  //         }
+  //       }
+  //     })
+  //   })
+
+  //   after(async () => {
+  //     // 在所有測試結束後會執行的程式碼區塊
+  //     await db.User.destroy({ where: {}, truncate: { cascade: true } })
+  //     await db.Product_category.destroy({ where: {}, truncate: { cascade: true } })
+  //     await db.Product.destroy({ where: {}, truncate: { cascade: true } })
+  //     await db.Delivery_notice.destroy({ where: {}, truncate: { cascade: true } })
+  //     this.authenticate.restore()
+  //   })
+
+  //   it('(O) 取得管理貨到通知頁面', (done) => {
+  //     request(app)
+  //       .get('/admin/deliveryNotice')
+  //       .set('Accept', 'application/json')
+  //       .expect(200)
+  //       .end((err, res) => {
+  //         if (err) return done(err)
+  //         res.text.should.include('email')
+  //         return done()
+  //       })
+  //   })
+  // })
 })

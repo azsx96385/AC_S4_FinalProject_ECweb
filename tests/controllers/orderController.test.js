@@ -1,7 +1,5 @@
 process.env.NODE_ENV = 'test'
 
-const assert = require('assert')
-const moment = require('moment')
 const chai = require('chai')
 const request = require('supertest')
 const should = chai.should()

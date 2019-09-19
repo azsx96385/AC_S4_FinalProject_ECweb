@@ -15,18 +15,12 @@ const upload = multer({ dest: 'temp/' })
 
 
 //加入權限驗證
-function authenticate(req, res, next) {
-  passport.authenticate('jwt', { session: false }, (err, user, info) => {
-    if (!user) {
-      return res.redirect('/users/login')
-    }
-    req.user = user;
+const authenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
     return next();
-  })(req, res, next);
-}
-
-const authenticated = authenticate
-
+  }
+  res.redirect("/users/login");
+};
 
 //[使用者 登入 | 登出 | 註冊]==========================
 router.get("/users/signUp", userController.signUpPage);
