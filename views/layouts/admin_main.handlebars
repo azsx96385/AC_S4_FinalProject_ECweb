@@ -55,7 +55,7 @@
                     {{!-- 後台功能頁 | boostrapt 摺疊 --}}
                     <div class="w-100 store_nav d-flex flex-column flex-nowrap vh-100">
                         {{!-- 業績模組 --}}
-                        <button class="btn btn-dark  btn-block" data-toggle="collapse" type="button"
+                        {{!-- <button class="btn btn-dark  btn-block" data-toggle="collapse" type="button"
                             data-target="#saleModelNav">
                             <i class="fas fa-clone"></i> 業績模組
                         </button>
@@ -63,7 +63,7 @@
 
                             <a class="btn btn-secondary btn-block nav_item text-white">流量分析報表</a>
                             <a class="btn btn-secondary  btn-block nav_item text-white">商品分析報表</a>
-                        </div>
+                        </div> --}}
                         {{!-- 產品模組 --}}
                         <button class="btn btn-dark  btn-block" data-toggle="collapse" data-target="#productModelNav"><i
                                 class="fas fa-boxes"></i> 產品模組</button>
@@ -76,12 +76,12 @@
 
                         </div>
                         {{!-- 行銷模組 --}}
-                        <button class="btn btn-dark  btn-block" data-toggle="collapse" href="#marketingModelNav"><i
+                        {{!-- <button class="btn btn-dark  btn-block" data-toggle="collapse" href="#marketingModelNav"><i
                                 class="fas fa-bullhorn"></i> 行銷模組</button>
                         <div class="collapse  bg-secondary" id="marketingModelNav">
                             <a class="btn btn-secondary btn-block nav_item text-white">追蹤碼設定</a>
                             <a class="btn btn-secondary  btn-block nav_item text-white">行銷報告</a>
-                        </div>
+                        </div> --}}
 
 
                     </div>
@@ -92,8 +92,10 @@
 
                 {{> admin_message}}
                 {{> admin_bodynav}}
+                {{> message_reminder}}
                 {{!-- 功能變動區塊 --}}
                 <div class="row admin_fuctionBlock  vh-100">
+
                     {{{body}}}
                 </div>
 

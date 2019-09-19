@@ -77,6 +77,7 @@
       <h5>出貨狀況</h5>
 
       <ul class="list-group list-group-flush">
+        <li class="list-group-item">付款方式: {{order.Order_status.orderStatus}} </li>
         <li class="list-group-item">付款方式:{{#each order.PaymentType}}{{#if @last}}{{this.paymentType}}{{/if}}{{/each}}
         </li>
         <li class="list-group-item">

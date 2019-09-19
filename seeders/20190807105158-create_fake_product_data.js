@@ -6,7 +6,7 @@ module.exports = {
     // 產品分類 | 米國電子 |1-電視類 / 2-冰箱類 / 3-洗衣機類
     queryInterface.bulkInsert(
       "Product_categories",
-      ["南美原豆", "法國葡萄酒", "小農食材",].map((item, index) => ({
+      ["南美原豆", "法國葡萄酒", "小農食材"].map((item, index) => ({
         StoreId: 1,
         name: item,
         image: faker.image.imageUrl(),
@@ -22,7 +22,7 @@ module.exports = {
       ProductCategoryId: item,
       name: faker.commerce.productName(),
       count: 10,
-      launched: 0,
+      launched: false,
       price: 1000,
       description: faker.lorem.text().substring(0, 100),
       image: faker.image.imageUrl(),

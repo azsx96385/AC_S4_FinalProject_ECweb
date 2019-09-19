@@ -92,7 +92,7 @@ module.exports = (app, passport) => {
   // 單項產品頁面
   app.get("/product/:id", productController.getProduct);
   // 申請貨到通知
-  app.post('/product/:id/deliveryNotice', productController.postDeliveryNotice)
+  app.post("/product/:id/deliveryNotice", productController.postDeliveryNotice);
   // 評價功能
   app.post(
     "/product/:id/rate",
@@ -140,21 +140,21 @@ module.exports = (app, passport) => {
 
   //------------------------------------超商取貨---------------------------------------------
   //前往選取門市頁面
-  app.get("/order/:id/branchselection", authenticated, orderController.getBranchSelection);
-  //callback
-  app.post(
-    "/pickup/callback",
+  app.get(
+    "/order/:id/branchselection",
     authenticated,
-    orderController.pickupCallback
+    orderController.getBranchSelection
   );
+  //callback
+  app.post("/pickup/callback", authenticated, orderController.pickupCallback);
   //[Admin 後台管理介面]=========================================================================================
+
   //銷售模組router
   app.use("/admin/salemodel", authenticatedAdmin, saleModel);
   //產品模組router
   app.use("/admin/productmodel", authenticatedAdmin, productModel);
   //行銷模組router
   app.use("/admin/marketingmodel", authenticatedAdmin, marketingModel);
-
 
 
 
