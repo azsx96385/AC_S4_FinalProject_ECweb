@@ -82,7 +82,7 @@ module.exports = {
     //Order 記錄訂單-訂購人資訊 | 建立3筆訂單
     queryInterface.bulkInsert(
       "Order_statuses",
-      ["排程中", "處理中", "已完成"].map((item, index) => ({
+      ["排程中", "處理中", "已完成", '已取消'].map((item, index) => ({
         orderStatus: item,
         createdAt: new Date(),
         updatedAt: new Date()
