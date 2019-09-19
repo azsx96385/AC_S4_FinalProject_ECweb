@@ -26,7 +26,7 @@ module.exports = {
     queryInterface.bulkInsert(
       "Cart_items",
       [1, 1, 1, 2, 2, 2, 0, 0, 0].map((item, index) => ({
-        CartId: item,
+        CartId: 1,
         ProductId: Math.floor(Math.random() * 7) + 1,
         quantity: Math.floor(Math.random() * 3) + 1,
         createdAt: new Date(),
@@ -119,7 +119,7 @@ module.exports = {
     queryInterface.bulkInsert(
       "Shipments",
       [1, 2, 0].map((item, index) => ({
-        OrderId: item,
+        OrderId: 1,
         ShipmentStatusId: Math.floor(Math.random() * 7),
         ShipmentTypeId: 2,
         createdAt: new Date(),
