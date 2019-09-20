@@ -18,22 +18,53 @@ module.exports = (app, passport) => {
   app.use("/", routes);
   app.use("/api", apis);
 
-  //加入權限驗證
+  // 加入權限驗證
   const authenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
       return next();
     }
     res.redirect("/users/login");
-  };
+  }
 
+  // 後台權限驗證
   const authenticatedAdmin = (req, res, next) => {
     if (req.isAuthenticated()) {
       if (req.user.role === 1) {
-        return next();
+        return next()
       }
+      return res.redirect('/');
     }
-    res.redirect("/users/login");
-  };
+    res.redirect('/users/login')
+  }
+
+  // 測試用function
+  // function authenticate(req, res, next) {
+  //   passport.authenticate('jwt', { session: false }, (err, user, info) => {
+  //     if (!user) {
+  //       return res.redirect('/users/login')
+  //     }
+  //     req.user = user;
+  //     return next();
+  //   })(req, res, next);
+  // }
+
+  // function authenticateAdmin(req, res, next) {
+  //   passport.authenticate('jwt', { session: false }, (err, user, info) => {
+  //     if (!user) {
+  //       return res.redirect('/users/login')
+  //     }
+
+  //     if (user.role === 1) {
+  //       req.user = user;
+  //       return next();
+  //     }
+  //     req.user = user;
+  //     return res.redirect('/');
+  //   })(req, res, next);
+  // }
+
+  // const authenticated = authenticate
+  // const authenticatedAdmin = authenticateAdmin
 
   //[使用者 登入 | 登出 | 註冊]==========================
   app.get("/users/signUp", userController.signUpPage);
@@ -125,11 +156,10 @@ module.exports = (app, passport) => {
   //行銷模組router
   app.use("/admin/marketingmodel", authenticatedAdmin, marketingModel);
 
-  //管理貨到通知頁面
-  app.get("/admin/deliveryNotice", productController.getDeliveryNotice);
+
+
+  // 管理貨到通知頁面
+  app.get("/admin/deliveryNotice", authenticatedAdmin, productController.getDeliveryNotice)
   // 刪除貨到通知資料
-  app.delete(
-    "/admin/deliveryNotice/:id",
-    productController.deleteDeliveryNotice
-  );
+  app.delete('/admin/deliveryNotice/:id', authenticatedAdmin, productController.deleteDeliveryNotice)
 };

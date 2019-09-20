@@ -17,7 +17,7 @@ const upload = multer({ dest: 'temp/' })
 //加入權限驗證
 const authenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
-    return next()
+    return next();
   }
   res.redirect('/users/login')
 }

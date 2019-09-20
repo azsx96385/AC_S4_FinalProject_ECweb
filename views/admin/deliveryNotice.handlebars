@@ -5,16 +5,19 @@
 
 <div class="col-11 ml-5 mb-5">
   <table class="table">
-    <thead class="thead" style="background-color: gray">
+    <thead class="thead" style="background-color: #d2f0f5; color: #0085a5;">
       <tr>
         <th scope="col">#</th>
-        <th scope="col">E-mail</th>
-        <th scope="col">Product</th>
-        <th scope="col">Count</th>
+        <th scope="col">信箱</th>
+        <th scope="col">產品名稱</th>
+        <th scope="col">庫存數量</th>
         <th scope="col">#</th>
       </tr>
     </thead>
     <tbody>
+      {{#ifCond deliveryNotices.length 0}}
+      <h3 class="mt-2 mb-5 d-flex justify-content-center" style="color: red;">目前尚無客人申請</h3>
+      {{else}}
       {{#each deliveryNotices}}
       <tr>
         <th scope="row">{{this.id}}</th>
@@ -28,6 +31,7 @@
         </td>
       </tr>
       {{/each}}
+      {{/ifCond}}
     </tbody>
   </table>
 </div>
