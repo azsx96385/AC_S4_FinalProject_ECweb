@@ -1,5 +1,5 @@
 "use strict";
-
+const faker = require("faker");
 module.exports = {
   up: (queryInterface, Sequelize) => {
     //Orders OrderItems OrderStatus payment shipment
