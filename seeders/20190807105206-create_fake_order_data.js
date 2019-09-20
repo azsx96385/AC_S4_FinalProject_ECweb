@@ -108,7 +108,7 @@ module.exports = {
       "Order_items",
       [1, 2, 3].map((item, index) => ({
         ProductId: Math.floor(Math.random() * 7) + 1,
-        OrderId: Math.floor(Math.random() * 2) + 1,
+        OrderId: 1,
         quantity: Math.floor(Math.random() * 3),
         price: 2000,
         createdAt: new Date(),
