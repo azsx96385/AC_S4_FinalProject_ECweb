@@ -4,7 +4,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     //cart cartItems
     //三台購物車，隨機配3項商品，數量1-3隨機
-    queryInterface
+    return queryInterface
       .bulkInsert("Carts", [
         {
           createdAt: new Date(),
