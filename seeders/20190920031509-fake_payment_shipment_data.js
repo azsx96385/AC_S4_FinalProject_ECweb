@@ -7,7 +7,7 @@ module.exports = {
       "Shipments",
       [1, 2, 3].map((item, index) => ({
         OrderId: item,
-        ShipmentStatusId: Math.floor(Math.random() * 7),
+        ShipmentStatusId: 3,
         ShipmentTypeId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -18,7 +18,7 @@ module.exports = {
       "Payments",
       [1, 2, 3].map((item, index) => ({
         OrderId: item,
-        PaymentStatusId: Math.floor(Math.random() * 3) + 1,
+        PaymentStatusId: 2,
         PaymentTypeId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
