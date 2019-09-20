@@ -5,8 +5,8 @@ module.exports = {
     //shipment 紀錄訂單-送貨狀況
     queryInterface.bulkInsert(
       "Shipments",
-      [1, 2, 0].map((item, index) => ({
-        OrderId: 1,
+      [1, 2, 3].map((item, index) => ({
+        OrderId: item,
         ShipmentStatusId: Math.floor(Math.random() * 7),
         ShipmentTypeId: 2,
         createdAt: new Date(),
@@ -16,7 +16,7 @@ module.exports = {
     //payment 紀錄訂單-收款狀況
     return queryInterface.bulkInsert(
       "Payments",
-      [1, 2, 0].map((item, index) => ({
+      [1, 2, 3].map((item, index) => ({
         OrderId: item,
         PaymentStatusId: Math.floor(Math.random() * 3) + 1,
         PaymentTypeId: 1,
