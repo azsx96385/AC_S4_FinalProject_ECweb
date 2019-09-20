@@ -48,7 +48,7 @@ module.exports = {
     );
 
     //Order 記錄訂單-訂購人資訊 | 建立3筆訂單
-    queryInterface.bulkInsert(
+    return queryInterface.bulkInsert(
       "Order_statuses",
       ["排程中", "處理中", "已完成", "已取消"].map((item, index) => ({
         orderStatus: item,
@@ -59,12 +59,10 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkDelete('People', null, {});
-    */
+    queryInterface.bulkDelete("Order_statuses", null, {});
+    queryInterface.bulkDelete("Payment_statuses", null, {});
+    queryInterface.bulkDelete("Payment_types", null, {});
+    queryInterface.bulkDelete("Shipment_types", null, {});
+    return qqueryInterface.bulkDelete("Shipment_statuses", null, {});
   }
 };
