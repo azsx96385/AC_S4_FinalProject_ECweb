@@ -40,25 +40,25 @@
     </div>
 
     {{#if loginUser}}
-    <div class="user ml-4">
+    <div class="user ml-3">
       <a href="/user/{{loginUser.id}}/profile" style="color: #0085a5"><img class="navAvatar"
           style="width: 23px; border-radius: 50%;" src="{{loginUser.image}}"> 我的帳號
       </a>
     </div>
     {{else}}
-    <div class="ml-4">
+    <div class="ml-3">
       <a href="/users/logIn?redirect=/" style="color: #0085a5"><i class="fas fa-user"></i> 登入會員</a>
     </div>
     {{/if}}
 
     {{#ifCond loginUser.role 1}}
-    <div class="ml-4">
+    <div class="ml-3">
       <a href="/admin/productmodel/product_mange" style="color: #0085a5"><i class="fas fa-tasks"></i> 後台管理</a>
     </div>
     {{/ifCond}}
 
     {{#if loginUser}}
-    <div class="ml-4">
+    <div class="ml-3">
       <a href="/users/logOut"><button class="btn btn-outline-success my-2 my-sm-0">登出</button></a>
     </div>
     {{/if}}
