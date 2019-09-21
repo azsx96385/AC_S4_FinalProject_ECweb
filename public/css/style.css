@@ -8,8 +8,12 @@ body {
 }
 
 .navbar-title {
-  margin-left: 150px;
+  margin-left: 100px;
   font-size: 25px;
+}
+
+.nav-logo {
+  color: #0085a5;
 }
 
 .productName, .categoryName {
@@ -40,6 +44,11 @@ small {
 }
 
 /* ===== :hover ===== */
+.nav-logo:hover {
+  background-color: #3AC4E2;
+  color: white;
+}
+
 .card:hover {
   box-shadow: 0 16px 22px 0 rgba(90, 91, 95, 0.3);
   top: -5px;
