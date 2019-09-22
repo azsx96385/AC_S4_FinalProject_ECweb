@@ -1,4 +1,3 @@
-
 const express = require('express')
 const router = express.Router()
 //引用model套件
@@ -8,10 +7,13 @@ const cartController = require('../controllers/cartController')
 const orderController = require('../controllers/orderController')
 const couponController = require('../controllers/couponController')
 const passport = require('../config/passport')
+//Admin 後台 ==路由群組====================================================
+let saleModel = require("./admin/saleModel");
+let productModel = require("./admin/productModel");
+let marketingModel = require("./admin/marketingModel");
 //上傳圖片
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
-
 
 
 //加入權限驗證
@@ -22,15 +24,45 @@ const authenticated = (req, res, next) => {
   res.redirect('/users/login')
 }
 
+// 後台權限驗證
 const authenticatedAdmin = (req, res, next) => {
   if (req.isAuthenticated()) {
-    if (req.loginUser.role === 1) {
+    if (req.user.role === 1) {
       return next()
     }
-
+    return res.redirect('/');
   }
   res.redirect('/users/login')
 }
+
+// 測試用function
+// function authenticate(req, res, next) {
+//   passport.authenticate('jwt', { session: false }, (err, user, info) => {
+//     if (!user) {
+//       return res.redirect('/users/login')
+//     }
+//     req.user = user;
+//     return next();
+//   })(req, res, next);
+// }
+
+// function authenticateAdmin(req, res, next) {
+//   passport.authenticate('jwt', { session: false }, (err, user, info) => {
+//     if (!user) {
+//       return res.redirect('/users/login')
+//     }
+
+//     if (user.role === 1) {
+//       req.user = user;
+//       return next();
+//     }
+//     req.user = user;
+//     return res.redirect('/');
+//   })(req, res, next);
+// }
+
+// const authenticated = authenticate
+// const authenticatedAdmin = authenticateAdmin
 
 
 
@@ -72,11 +104,29 @@ router.get('/reset/:token', userController.getResetPage)
 router.post('/reset/:token', userController.postResetPassword)
 
 //-------------------商品瀏覽頁面-----------------------------------------
-router.get('/', (req, res) => res.redirect('/index'))
-router.get('/index', productController.getIndex)
-router.get('/ESHOP/search', productController.searchProduct)
-router.get('/Category/:category_id', productController.getCategoryProducts)
-router.get('/product/:id', productController.getProduct)
+router.get("/", (req, res) => res.redirect("/index"));
+// 首頁
+router.get("/index", productController.getIndex);
+// 搜尋功能
+router.get("/ESHOP/search", productController.searchProduct);
+// 分類產品頁面
+router.get("/Category/:category_id", productController.getCategoryProducts);
+// 單項產品頁面
+router.get("/product/:id", productController.getProduct);
+// 申請貨到通知
+router.post("/product/:id/deliveryNotice", productController.postDeliveryNotice);
+// 評價功能
+router.post(
+  "/product/:id/rate",
+  authenticated,
+  productController.postProductRate
+);
+// 刪除評價功能
+router.delete(
+  "/product/:id/rate/:id",
+  authenticated,
+  productController.deleteProductRate
+);
 
 //---------購物車-----------------------------------------------------------------------
 //購物車頁面
@@ -122,7 +172,39 @@ router.post('/admin/coupon/edit', authenticated, couponController.postCouponEdit
 router.get('/admin/coupon/makingPage', authenticated, couponController.getCouponMakePage)
 router.post('/admin/coupon/make', authenticated, couponController.postCouponMake)
 
+//------------------------------------付款---------------------------------------------
+//付款頁面
+router.get("/order/:id/payment", authenticated, orderController.getPayment);
+//callback
+router.post(
+  "/spgateway/callback",
+  authenticated,
+  orderController.spgatewayCallback
+);
 
+//------------------------------------超商取貨---------------------------------------------
+//前往選取門市頁面
+router.get(
+  "/order/:id/branchselection",
+  authenticated,
+  orderController.getBranchSelection
+);
+//callback
+router.post("/pickup/callback", authenticated, orderController.pickupCallback);
+//[Admin 後台管理介面]=========================================================================================
+
+//銷售模組router
+router.use("/admin/salemodel", authenticatedAdmin, saleModel);
+//產品模組router
+router.use("/admin/productmodel", authenticatedAdmin, productModel);
+//行銷模組router
+router.use("/admin/marketingmodel", authenticatedAdmin, marketingModel);
+
+
+// 管理貨到通知頁面
+router.get("/admin/deliveryNotice", authenticatedAdmin, productController.getDeliveryNotice)
+// 刪除貨到通知資料
+router.delete('/admin/deliveryNotice/:id', authenticatedAdmin, productController.deleteDeliveryNotice)
 
 
 
