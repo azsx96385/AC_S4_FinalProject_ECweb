@@ -63,6 +63,6 @@ module.exports = {
     queryInterface.bulkDelete("Payment_statuses", null, {});
     queryInterface.bulkDelete("Payment_types", null, {});
     queryInterface.bulkDelete("Shipment_types", null, {});
-    return qqueryInterface.bulkDelete("Shipment_statuses", null, {});
+    return queryInterface.bulkDelete("Shipment_statuses", null, {});
   }
 };
