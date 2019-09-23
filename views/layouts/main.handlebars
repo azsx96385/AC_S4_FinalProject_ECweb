@@ -32,7 +32,8 @@
     </form>
 
     <div class="cartIcon ml-4">
-      <a href="/cart" style="color: #0085a5"><i class="fa fa-shopping-cart" aria-hidden="true"></i> 購物車
+      <a href="/cart" class="nav-logo btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
+        購物車
         {{#if localcartItem }}
         <span class="bg-danger text-white rounded-circle h-5 p-1">{{localcartItem}}</span>
         {{/if}}
@@ -40,25 +41,26 @@
     </div>
 
     {{#if loginUser}}
-    <div class="user ml-4">
-      <a href="/user/{{loginUser.id}}/profile" style="color: #0085a5"><img class="navAvatar"
+    <div class="user">
+      <a href="/user/{{loginUser.id}}/profile" class="nav-logo btn"><img class="navAvatar"
           style="width: 23px; border-radius: 50%;" src="{{loginUser.image}}"> 我的帳號
       </a>
     </div>
     {{else}}
-    <div class="ml-4">
-      <a href="/users/logIn?redirect=/" style="color: #0085a5"><i class="fas fa-user"></i> 登入會員</a>
+    <div class="login">
+      <a href="/users/logIn?redirect=/" class="nav-logo btn"><i class="fas fa-user"></i> 登入會員</a>
     </div>
     {{/if}}
 
     {{#ifCond loginUser.role 1}}
-    <div class="ml-4">
-      <a href="/admin/productmodel/product_mange" style="color: #0085a5"><i class="fas fa-tasks"></i> 後台管理</a>
+    <div class="admin">
+      <a href="/admin/productmodel/product_mange" class="nav-logo btn"><i class="fas fa-tasks"></i>
+        後台管理</a>
     </div>
     {{/ifCond}}
 
     {{#if loginUser}}
-    <div class="ml-4">
+    <div class="logout">
       <a href="/users/logOut"><button class="btn btn-outline-success my-2 my-sm-0">登出</button></a>
     </div>
     {{/if}}
