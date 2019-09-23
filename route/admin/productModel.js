@@ -55,5 +55,11 @@ router.put(
 );
 // 單一 | 更改訂單訂購人資訊
 
+//[貨到通知管理]==================================================
+// 管理貨到通知頁面
+router.get("/deliveryNotice", productController.getDeliveryNotice);
+// 刪除貨到通知資料
+router.delete("/deliveryNotice/:id", productController.deleteDeliveryNotice);
+
 //匯出路由
 module.exports = router;

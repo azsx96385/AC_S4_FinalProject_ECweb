@@ -2,6 +2,8 @@ const db = require("../../models");
 const fs = require("fs");
 const productCategoryModel = db.Product_category;
 const productModel = db.Product;
+const { Delivery_notice } = db;
+
 const imgur = require("imgur-node-api");
 const multer = require("multer");
 const upload = multer({ dest: "temp/" }).array("images");
@@ -260,7 +262,7 @@ const productController = {
     res.render("admin/vproductmodel_orderdetail", {
       layout: "admin_main"
     });
-  }
+  },
 
   // 顯示訂單處理中頁面
   // 顯示未付款頁面
@@ -270,5 +272,25 @@ const productController = {
   // 單一 | 更改訂單付款狀態
   // 單一 | 更改訂單送貨狀態
   // 單一 | 更改訂單訂購人資訊
+
+  //-----------------------------
+  getDeliveryNotice: (req, res) => {
+    Delivery_notice.findAll({ include: [productModel] }).then(
+      deliveryNotices => {
+        res.render("admin/deliveryNotice", {
+          deliveryNotices,
+          layout: "admin_main"
+        });
+      }
+    );
+  },
+
+  deleteDeliveryNotice: (req, res) => {
+    Delivery_notice.findByPk(req.params.id).then(deliveryNotice => {
+      deliveryNotice.destroy().then(deliveryNotice => {
+        res.redirect(`/admin/deliveryNotice`);
+      });
+    });
+  }
 };
 module.exports = productController;
