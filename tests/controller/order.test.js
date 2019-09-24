@@ -19,7 +19,7 @@ describe('#order request', () => {
 
     before(async function () {
       const rootUser = await db.User.create({ name: 'root', address: '開山里' })
-      await db.Cart.create({})
+
       await db.Product.create({ name: "productName", price: 100 })
       await db.Cart_item.create({ CartId: 1, ProductId: 1, quantity: 2 })
 
@@ -79,12 +79,15 @@ describe('#order request', () => {
         });
 
         //建立order
-        await db.Order.create({ UserId: 1, name: 'userName' })
+
+        await db.Order.create({ id: 1, UserId: 1, name: 'userName', OrderStatusId: 1 })
         await db.Product.create({ id: 1, name: "產品1" })
         await db.Order_item.create({ OrderId: 1, ProductId: 1 })
         await db.Shipment_type.create({ shipmentType: '宅配' })
         await db.Shipment_status.create({ shipmentStatus: '未出貨' })
         await db.Shipment.create({ ShipmentTypeId: 1, OrderId: 1, ShipmentStatusId: 1 })
+        await db.Order_status.create({ id: 1, orderStatus: '排程中' })
+
       })
 
       it('can render orderSucess', (done) => {
@@ -97,6 +100,7 @@ describe('#order request', () => {
             res.text.should.include('userName')
             res.text.should.include('宅配')
             res.text.should.include('未出貨')
+            res.text.should.include('排程中')
             return done()
           });
       })
@@ -112,6 +116,7 @@ describe('#order request', () => {
         await db.Shipment_type.destroy({ where: {}, truncate: true })
         await db.Shipment_status.destroy({ where: {}, truncate: true })
         await db.Shipment.destroy({ where: {}, truncate: true })
+        await db.Order_status.destroy({ where: {}, truncate: true })
       });
 
     })
@@ -129,7 +134,7 @@ describe('#order request', () => {
 
 
         //建立order
-        await db.Order.create({ UserId: 1, name: 'userName2' })
+        await db.Order.create({ id: 1, UserId: 1, name: 'userName2' })
         await db.Product.create({ id: 1, name: "產品2" })
         await db.Order_item.create({ OrderId: 1, ProductId: 1 })
         await db.Shipment_type.create({ shipmentType: '超商取貨' })
@@ -183,9 +188,9 @@ describe('#order request', () => {
           return (req, res, next) => { };
         });
 
-
+        await db.Order.destroy({ where: {}, truncate: true })
         await db.Product.create({ id: 1, name: "產品1", price: 100 })
-        await db.Cart.create({})
+        await db.Cart.create({ id: 1 })
         await db.Cart_item.create({ ProductId: 1, CartId: 1, quantity: 1 })
       })
 
@@ -207,7 +212,7 @@ describe('#order request', () => {
       it('will redirect to orderSuccess', (done) => {
         request(app)
           .post('/order')
-          .send({ couponId: null, amount: 1000, CartId: 1, name: 'name', address: 'address' })
+          .send({ couponId: null, amount: 1000, cartId: 1, name: 'name', address: 'address' })
           .set('Accept', 'application/json')
           .expect(302)
           .end(function (err, res) {
@@ -216,7 +221,7 @@ describe('#order request', () => {
           });
       })
       it('order will build', (done) => {
-        db.Order.findOne({ where: { id: 1 } }).then(order => {
+        db.Order.findByPk(1).then(order => {
           expect(order.name).to.equal('name')
           expect(order.address).to.equal('address')
           done()
@@ -236,9 +241,9 @@ describe('#order request', () => {
           return (req, res, next) => { };
         });
         await db.Product.create({ id: 1, name: "產品1", price: 100 })
-        await db.Cart.create({})
+        await db.Cart.create({ id: 1 })
         await db.Cart_item.create({ ProductId: 1, CartId: 1, quantity: 1 })
-        await db.Coupon.create({ discount: 100 })
+        await db.Coupon.create({ id: 1, discount: 100 })
       })
 
       after(async function () {
@@ -249,13 +254,14 @@ describe('#order request', () => {
         await db.Cart.destroy({ where: {}, truncate: true })
         await db.Cart_item.destroy({ where: {}, truncate: true })
         await db.Product.destroy({ where: {}, truncate: true })
+        await db.Coupon.destroy({ where: {}, truncate: true })
 
       });
 
       it('will redirect to orderSuccess', (done) => {
         request(app)
           .post('/order')
-          .send({ couponId: 1, amount: 1000, CartId: 1, name: 'name', address: 'address' })
+          .send({ couponId: 1, amount: 1000, cartId: 1, name: 'name', address: 'address' })
           .set('Accept', 'application/json')
           .expect(302)
           .end(function (err, res) {
@@ -265,7 +271,7 @@ describe('#order request', () => {
           });
       })
       it('order的amount會被折抵', (done) => {
-        db.Order.findOne({ where: { id: 1 } }).then(order => {
+        db.Order.findByPk(1).then(order => {
 
           expect(order.amount).to.equal(900)
 
@@ -309,7 +315,7 @@ describe('#order request', () => {
       it('will redirect to branchSelection', (done) => {
         request(app)
           .post('/order')
-          .send({ couponId: null, amount: 1000, CartId: 1, name: 'name', address: 'address', shipmentType: '2' })
+          .send({ couponId: null, amount: 1000, cartId: 1, name: 'name', address: 'address', shipmentType: '2' })
           .set('Accept', 'application/json')
           .expect(302)
           .end(function (err, res) {
@@ -358,7 +364,7 @@ describe('#order request', () => {
       it('will redirect to branchSelection', (done) => {
         request(app)
           .post('/order')
-          .send({ couponId: null, amount: 1000, CartId: 1, name: 'name', address: 'address', paymentType: '1' })
+          .send({ couponId: null, amount: 1000, cartId: 1, name: 'name', address: 'address', paymentType: '1' })
           .set('Accept', 'application/json')
           .expect(302)
           .end(function (err, res) {
@@ -378,7 +384,7 @@ describe('#order request', () => {
 
   describe('cancelOrder', () => {
 
-    describe('Shipment_statuses為未出貨', () => {
+    describe('Shipment_statuses為備貨中"', () => {
       before(async function () {
 
         //模擬登入
@@ -391,9 +397,9 @@ describe('#order request', () => {
 
         await db.Order.create({})
         await db.Shipment.create({ OrderId: 1, ShipmentStatusId: 1, ShipmentTypeId: 1 })
-        await db.Shipment_status.create({ shipmentStatus: '未出貨' })
+        await db.Shipment_status.create({ shipmentStatus: "備貨中" })
         await db.Shipment_status.create({ shipmentStatus: '出貨中' })
-        await db.Shipment_status.create({ shipmentStatus: '已取消' })
+
         await db.Shipment_type.create({ shipmentType: '宅配' })
       })
 
@@ -404,6 +410,7 @@ describe('#order request', () => {
         await db.Shipment_status.destroy({ where: {}, truncate: true })
         await db.Shipment_type.destroy({ where: {}, truncate: true })
         await db.User.destroy({ where: {}, truncate: true })
+
       })
 
       it('redirect back', (done) => {
@@ -419,10 +426,8 @@ describe('#order request', () => {
           });
       })
       it('order的shipment status改成已取消', (done) => {
-        db.Shipment.findAll({
-          where: { OrderId: 1 }
-        }).then(shipment => {
-          expect(shipment[1].ShipmentStatusId).to.equal(3)
+        db.Order.findByPk(1).then(order => {
+          expect(order.OrderStatusId).to.equal(4)
           done()
         })
       })
@@ -439,11 +444,11 @@ describe('#order request', () => {
         });
 
 
-        await db.Order.create({})
+        await db.Order.create({ OrderStatusId: 1 })
         await db.Shipment.create({ OrderId: 1, ShipmentStatusId: 2, ShipmentTypeId: 1 })
-        await db.Shipment_status.create({ shipmentStatus: '未出貨' })
+        await db.Shipment_status.create({ shipmentStatus: "備貨中" })
         await db.Shipment_status.create({ shipmentStatus: '出貨中' })
-        await db.Shipment_status.create({ shipmentStatus: '已取消' })
+
         await db.Shipment_type.create({ shipmentType: '宅配' })
       })
 
@@ -467,11 +472,9 @@ describe('#order request', () => {
             done();
           });
       })
-      it('shipment不會產生紀錄cancel的table', (done) => {
-        db.Shipment.findAll({
-          where: { OrderId: 1 }
-        }).then(shipment => {
-          expect(shipment.length).to.equal(1)
+      it('order的狀態不會改變', (done) => {
+        db.Order.findByPk(1).then(order => {
+          expect(order.OrderStatusId).to.equal(1)
           done()
         })
       })

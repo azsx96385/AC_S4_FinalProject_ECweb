@@ -3,10 +3,31 @@ const passport = require("passport");
 const localStrategy = require("passport-local");
 const FacebookStrategy = require("passport-facebook");
 const bcrypt = require("bcryptjs");
-
+require('dotenv').config()
 //model
 const db = require("../models");
 const User = db.User;
+// JWT
+const jwt = require("jsonwebtoken");
+const passportJWT = require("passport-jwt");
+const ExtractJwt = passportJWT.ExtractJwt;
+const JwtStrategy = passportJWT.Strategy;
+//--------------JWT 策略-----------------------
+let jwtOptions = {};
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+jwtOptions.secretOrKey = process.env.JWT_SECRET;
+
+let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
+  User.findByPk(jwt_payload.id, {
+    include: [{ model: db.Comment }, { model: db.Order }]
+  }).then(user => {
+    if (!user) return next(null, false);
+    return next(null, user);
+  });
+});
+passport.use(strategy);
+
+
 
 
 
@@ -102,25 +123,6 @@ passport.deserializeUser((id, cb) => {
   });
 });
 
-// JWT
-const jwt = require("jsonwebtoken");
-const passportJWT = require("passport-jwt");
-const ExtractJwt = passportJWT.ExtractJwt;
-const JwtStrategy = passportJWT.Strategy;
-//--------------JWT 策略-----------------------
-let jwtOptions = {};
-jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-jwtOptions.secretOrKey = process.env.JWT_SECRET;
-
-let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
-  User.findByPk(jwt_payload.id, {
-    include: [{ model: db.Comment }, { model: db.Order }]
-  }).then(user => {
-    if (!user) return next(null, false);
-    return next(null, user);
-  });
-});
-passport.use(strategy);
 
 //匯出passport
 module.exports = passport;

@@ -273,7 +273,7 @@ describe('#coupon request', () => {
         .expect(302)
         .end(function (err, res) {
           agent
-            .get('/admin/couponOrder/1')
+            .get('/couponOrder/1')
             .set('Accept', 'application/json')
             .expect(200)
             .end(function (err, res) {
@@ -297,6 +297,8 @@ describe('#coupon request', () => {
       await db.Cart.destroy({ where: {}, truncate: true })
       await db.Product.destroy({ where: {}, truncate: true })
       await db.User.destroy({ where: {}, truncate: true })
+      await db.Coupon.destroy({ where: {}, truncate: true })
+
 
     });
 
@@ -311,7 +313,7 @@ describe('#coupon request', () => {
         callback(null, { ...rootUser }, null);
         return (req, res, next) => { };
       })
-      await db.Coupon.create({ couponCode: 'abcd1236', discount: 50, description: 'coupondescription' })
+      await db.Coupon.create({ id: 1, couponCode: 'abcd1236', discount: 50, description: 'coupondescription' })
     })
 
     after(async function () {

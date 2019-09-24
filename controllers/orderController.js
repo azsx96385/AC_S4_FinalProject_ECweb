@@ -60,11 +60,16 @@ const orderController = {
             .reduce((a, b) => a + b)
           : 0; //如果cart-item沒東西，則為0
 
+      //運費判斷
+      if (totalPrice < 999) {
+        var subtotal = totalPrice - 60
+      }
       return User.findByPk(req.user.id).then(user => {
         return res.render("orderEdit", {
           cart,
           totalPrice,
-          user
+          user, subtotal
+
         });
       });
     });
@@ -74,6 +79,10 @@ const orderController = {
     if (req.body.couponId) {
       let coupon = await Coupon.findByPk(req.body.couponId)
       var subtotal = req.body.amount - coupon.discount
+      //運費判斷
+      if (subtotal < 999) {
+        subtotal -= 60
+      }
       var discount = coupon.discount
       CouponsUsers.findOrCreate({
         where: {
@@ -88,6 +97,10 @@ const orderController = {
 
     } else {
       var subtotal = req.body.amount;
+      //運費判斷
+      if (subtotal < 999) {
+        subtotal -= 60
+      }
       var discount = 0
     }
 
@@ -138,7 +151,7 @@ const orderController = {
           //nodemail send mail
           var mailOptions = {
             from: "vuvu0130@gmail.com",
-            to: "vuvu0130@gmail.com",
+            to: req.user.email,
             subject: `${order.id} 訂單成立`,
             text: `${order.id} 訂單成立`
           };
@@ -146,7 +159,7 @@ const orderController = {
           smtpTransport.sendMail(mailOptions, (error, response) => {
             error ? console.log(error) : console.log(response);
             smtpTransport.close();
-          });;
+          });
           return order
 
         }).then(order => {
@@ -182,8 +195,11 @@ const orderController = {
     }).then(order => {
       //取得為折抵的總價
       let originAmount = order.items.length > 0 ? order.items.map(d => d.price * d.Order_item.quantity).reduce((a, b) => a + b) : 0;
-      console.log(order.Order_status.orderStatus)
-      return res.render('orderSuccess', { order, originAmount })
+      if (originAmount < 999) {
+        var shipmentfee = 60
+        var subtotal = originAmount - 60
+      }
+      return res.render('orderSuccess', { order, originAmount, shipmentfee, subtotal })
     })
   },
 
