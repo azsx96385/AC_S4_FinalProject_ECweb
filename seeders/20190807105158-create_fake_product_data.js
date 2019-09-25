@@ -31,26 +31,10 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     }));
-    queryInterface.bulkInsert("Products", products);
-
-    //評語
-    return queryInterface.bulkInsert(
-      "Comments",
-      [...Array(150)]
-        .map((item, index) => index)
-        .map(i => ({
-          UserId: Math.floor(Math.random() * 4) + 1,
-          ProductId: Math.floor(Math.random() * 4) + 1,
-          comment: faker.lorem.sentence(),
-          rating: Math.floor(Math.random() * 5) + 1,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }))
-    );
+    return queryInterface.bulkInsert("Products", products);
   },
 
   down: (queryInterface, Sequelize) => {
-    queryInterface.bulkDelete("Comments", null, {});
     queryInterface.bulkDelete("Products", null, {});
     return queryInterface.bulkDelete("Product_categories", null, {});
   }

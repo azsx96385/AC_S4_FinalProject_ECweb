@@ -29,7 +29,26 @@ passport.use(strategy);
 
 
 
+// JWT
+const jwt = require("jsonwebtoken");
+const passportJWT = require("passport-jwt");
+const ExtractJwt = passportJWT.ExtractJwt;
+const JwtStrategy = passportJWT.Strategy;
+//--------------JWT 策略-----------------------
+require('dotenv').config()
+let jwtOptions = {};
+jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+jwtOptions.secretOrKey = process.env.JWT_SECRET;
 
+let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
+  User.findByPk(jwt_payload.id, {
+    include: [{ model: db.Comment }, { model: db.Order }]
+  }).then(user => {
+    if (!user) return next(null, false);
+    return next(null, user);
+  });
+});
+passport.use(strategy);
 
 //passport-local 策略設定--------------------------------
 passport.use(
@@ -111,8 +130,6 @@ passport.use(
   )
 );
 
-
-
 //passport 正反序列---------------------------------------------------------
 passport.serializeUser((user, cb) => {
   cb(null, user.id); //驗證通過-接住user物件，取出user-id 存到session
@@ -122,7 +139,6 @@ passport.deserializeUser((id, cb) => {
     return cb(null, user);
   });
 });
-
 
 //匯出passport
 module.exports = passport;

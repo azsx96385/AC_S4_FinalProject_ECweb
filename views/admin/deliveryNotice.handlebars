@@ -1,33 +1,48 @@
-<h1 class="ml-5">貨到通知後台</h1>
+<div class="col-12 productmodel_orders px-5 ">
 
-<br />
-<br />
 
-<div class="col-11 ml-5 mb-5">
-  <table class="table">
-    <thead class="thead" style="background-color: gray">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">E-mail</th>
-        <th scope="col">Product</th>
-        <th scope="col">Count</th>
-        <th scope="col">#</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each deliveryNotices}}
-      <tr>
-        <th scope="row">{{this.id}}</th>
-        <td>{{this.email}}</td>
-        <td>{{this.Product.name}}</td>
-        <td>{{this.Product.count}}</td>
-        <td>
-          <form action="/admin/deliveryNotice/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
-            <button type="submit" class="btn btn-danger">Delete</button>
-          </form>
-        </td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
-</div>
+
+
+  {{!-- 貨到通知總攬 --}}
+  <div class="card my-3">
+    <p class="ml-2 mt-3 text-primary">貨到通知</p>
+    <hr>
+    <div class="ordersTable my-3 card-body">
+      {{!-- 產品清單 --}}
+      <div class="orders_table">
+        <table class="table">
+          {{#ifCond deliveryNotices.length 0}}
+          <div class="alert alert-dark" role="alert">
+            目前尚無客人申請
+          </div>
+          {{else}}
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">信箱</th>
+              <th scope="col">產品名稱</th>
+              <th scope="col">庫存數量</th>
+              <th scope="col">#</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each deliveryNotices}}
+            <tr>
+              <th scope="row">{{this.id}}</th>
+              <td>{{this.email}}</td>
+              <td>{{this.Product.name}}</td>
+              <td>{{this.Product.count}}</td>
+              <td>
+                <form action="/admin/deliveryNotice/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+              </td>
+            </tr>
+            {{/each}}
+            {{/ifCond}}
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

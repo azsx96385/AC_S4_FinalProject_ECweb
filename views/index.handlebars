@@ -26,9 +26,7 @@
   </div>
 
   <div class="index col-10 mb-5">
-    <img
-      src="https://pixabay.com/get/54e0d54a4f5bac14f6d1867dda6d3679143bd7e0514c704c732973d49448c150/platter-2009590_1920.jpg"
-      style="width:90%;" alt="image">
+    <img src="http://www.hollandi.com/food-bakery/images/bakery-supplies/bread.jpg" style="width:90%;" alt="image">
   </div>
 </div>
 
@@ -36,7 +34,7 @@
   <div class="col-2"></div>
 
   <div class="col-10">
-    <div class="row d-flex  justify-content-center mb-5  ">
+    <div class="row d-flex ml-1 mb-5  ">
       <p style='font-size:30px'>MuseClub是一間實體結合線上的餐酒館 <br>
         在線上，我們提供你 南美莊園原豆 法國酒莊葡萄酒 與台灣本地小農食材 <br>
         在實體概念店，我們用我們的食材做成精美的料理 並每周舉辦料理工作坊<br>
@@ -47,14 +45,15 @@
       {{#each categories}}
       <div class="col-5">
         <div class="mb-4 shadow-sm">
-          <a href="/Category/{{this.id}}">
-            <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="320px" height="250px">
+
+          <a href="/Category/{{this.id}}" style="text-decoration: none;">
+            <div class="card shadow-sm">
+              <img class="card-img-top mb-3" src="{{this.image}}" alt="Card image cap" width="320px" height="250px">
+              <h6 style="text-align: center; color:#0085a5; font-size: 25px;">
+                {{this.name}}</h6>
+            </div>
           </a>
         </div>
-
-        <p class="card-text mb-5" style="text-align:center;">
-          <a class="categoryName" style="text-decoration: none;" href="/Category/{{this.id}}">{{this.name}}</a>
-        </p>
       </div>
       {{/each}}
     </div>

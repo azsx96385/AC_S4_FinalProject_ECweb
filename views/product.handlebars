@@ -32,16 +32,22 @@
 
       <div class="row ml-1">
         {{#ifCond product.Comments.length 0}}
-        <div class="no-comment mb-2" style="text-align: center; color: red;">此商品尚未有人評價</div>
+        <div class="no-comment mb-2 mr-3" style="text-align: center; color: red;">此商品尚未有人評價</div>
         {{else}}
         <div class="star ml-5">
           <span class="stars d-flex align-items-center">
             <p class="mt-3" style="color: orange;">{{ratingAve}}</p> &nbsp; {{#star ratingAve}}{{/star}}
           </span>
         </div>
-        <a class="ml-5" href="#evaluation" style="text-decoration: none; color: black;"> | {{product.Comments.length}}
-          評價</a>
+        <a class="ml-5 mr-3" href="#evaluation" style="text-decoration: none; color: black;"> |
+          {{product.Comments.length}}
+          評價 </a>
         {{/ifCond}}
+        <iframe
+          src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fyoung-sands-92356.herokuapp.com%2Fproduct%2F{{product.id}}&layout=button&size=large&appId=437649723668901&width=65&height=28"
+          width="65" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+          allowTransparency="true" allow="encrypted-media">
+        </iframe>
       </div>
 
       <h3 class="price mt-3 mb-5" style="text-align: center; color:#0085a5">$ {{product.price}}</h3>
@@ -216,13 +222,13 @@
     </div>
 
     <p class="ml-5 mt-4">{{this.comment}}</p>
-    <small class="ml-5" style="color: gray;">{{moment this.createdAt}}</small>
+    <small class="ml-5">{{moment this.createdAt}}</small>
   </div>
   {{/each}}
 
   {{!-- 分頁 --}}
   <nav aria-label="Page navigation example">
-    <ul class="pagination mt-3 ml-5">
+    <ul class="pagination mt-3">
       <li class="page-item">
         <a class="page-link" href="/product/{{product.id}}?page={{prev}}#evaluation" aria-label="Previous"
           style="color: #0085a5;">
@@ -234,14 +240,14 @@
       <li class="page-item active"><a class="page-link" href="#"
           style="color:white; background-color: #0085a5">{{this}}</a></li>
       {{else}}
-      <li class=" page-item"><a class="page-link" href="/product/{{../product.id}}?page={{this}}#evaluation"
-          style="color: #0085a5;">{{this}}</a>
+      <li class="page-item"><a class="page-link" href="/product/{{../product.id}}?page={{this}}#evaluation">{{this}}</a>
       </li>
       {{/ifCond}}
       {{/each}}
-      <a class="page-link" href="/product/{{product.id}}?page={{next}}#evaluation" aria-label="Next">
-        <span aria-hidden="true" style="color: #0085a5">»</span>
-      </a>
+      <li class="page-item">
+        <a class="page-link" href="/product/{{product.id}}?page={{next}}#evaluation" aria-label="Next">
+          <span aria-hidden="true">»</span>
+        </a>
       </li>
     </ul>
   </nav>

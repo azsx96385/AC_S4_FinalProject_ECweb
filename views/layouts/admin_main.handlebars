@@ -32,8 +32,9 @@
                 <div class="store_setting">
                     <span class="mr-3"><a href=""><i class="fas fa-bell text-secondary"></i></a></span>
                     <span class="mr-3"><a href=""><i class="fas fa-flag-checkered text-secondary"></i></a></span>
-                    <span class="mr-3"><a class="text-dark text-decoration-none" href="">進入我的店面</a></span>
-                    <span class="mr-2"><a class="text-dark text-decoration-none" href="">你好,_____ V</a></span>
+                    <span class="mr-3"><a class="text-dark text-decoration-none" href="/index">進入我的店面</a></span>
+                    <span class="mr-2"><a class="text-dark text-decoration-none"
+                            href="">你好,{{loginUser.name}}</a></span>
                 </div>
             </div>
         </div>
@@ -43,12 +44,12 @@
             <div class=" col-2 d-flex flex-column  bg-dark ">
                 <div class="row">
                     {{!-- 店主頭貼 --}}
-                    <div class="col-12 store_logo p-auto">
-                        <a class="" href="">
-                            <img class="w-50"
+                    <div class="col-12 store_logo p-5 ">
+                        <a class="text-center" href="">
+                            <img class="w-100 rounded-pill "
                                 src="https://png.pngtree.com/element_our/png_detail/20181213/moustachehipstermovembermalemen-glyph-icon--vector-isola-png_268388.jpg"
                                 alt="" id="storelogo">
-                            <p class="text-white text-decoration-none" id="storename">螺絲瑪莉</p>
+                            <p class="text-white text-decoration-none mt-2" id="storename">螺絲瑪莉</p>
                         </a>
                     </div>
 
@@ -73,6 +74,8 @@
                                 href="/admin/productmodel/product_mange">產品管理</a>
                             <a class="btn btn-secondary  btn-block nav_item text-white"
                                 href="/admin/productmodel/order_mange">訂單管理</a>
+                            <a class="btn btn-secondary  btn-block nav_item text-white"
+                                href="/admin/productmodel/deliveryNotice">貨到通知管理</a>
 
                         </div>
                         {{!-- 行銷模組 --}}

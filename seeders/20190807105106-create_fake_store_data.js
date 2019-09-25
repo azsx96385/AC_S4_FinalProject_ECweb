@@ -4,11 +4,11 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     // Store_categories |3種類別3C類 / 服飾類 / 食品類
-    // queryInterface.bulkInsert("Store_categories", [
-    //   { name: "3C類", createdAt: new Date(), updatedAt: new Date() },
-    //   { name: "服飾類", createdAt: new Date(), updatedAt: new Date() },
-    //   { name: "食品類", createdAt: new Date(), updatedAt: new Date() }
-    // ]);
+    queryInterface.bulkInsert("Store_categories", [
+      { name: "3C類", createdAt: new Date(), updatedAt: new Date() },
+      { name: "服飾類", createdAt: new Date(), updatedAt: new Date() },
+      { name: "食品類", createdAt: new Date(), updatedAt: new Date() }
+    ]);
 
     // Stores
     // 3間店，各一個分類

@@ -8,8 +8,12 @@ body {
 }
 
 .navbar-title {
-  margin-left: 150px;
+  margin-left: 100px;
   font-size: 25px;
+}
+
+.nav-logo {
+  color: #0085a5;
 }
 
 .productName, .categoryName {
@@ -31,13 +35,44 @@ hr {
   border-top: 1px solid #0085a5;
 }
 
+small {
+  color: gray;
+}
+
 .card-title, .price, .help-block {
   font-family: 微軟正黑體, Arial;
+}
+
+/* ===== :hover ===== */
+.nav-logo:hover {
+  background-color: #3AC4E2;
+  color: white;
 }
 
 .card:hover {
   box-shadow: 0 16px 22px 0 rgba(90, 91, 95, 0.3);
   top: -5px;
+}
+
+.list-group-item:hover, .list-group-item:hover small {
+  color: white;
+  background-color: #0085a5;
+}
+
+/* ===== pagination ===== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.page-link, .page-link span {
+  color: #0085a5;
+}
+
+.page-link:hover, .page-link:hover span{
+  color: white;
+  background-color: #0085a5;
 }
 
 /* ===== a: active display===== */
