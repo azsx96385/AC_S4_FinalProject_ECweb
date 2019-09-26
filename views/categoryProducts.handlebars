@@ -22,6 +22,10 @@
   </div>
 </div>
 
+<section id="pagination">
+  <div>&nbsp;</div>
+</section>
+
 <div class="row ml-5 mt-5">
   <div class="col-9 ml-5">
     <h3 style="color:#0085a5">{{category.name}}</h3>
@@ -44,6 +48,7 @@
     </div>
   </div>
 </div>
+
 
 <div class="row mt-5 mb-5">
   <div class="col-2"></div>
@@ -73,5 +78,33 @@
       </div>
       {{/each}}
     </div>
+
+    {{!-- 分頁 --}}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination mt-5">
+        <li class="page-item">
+          <a class="page-link" href="/Category/{{category.id}}?page={{prev}}#pagination" aria-label="Previous"
+            style="color: #0085a5;">
+            <span aria-hidden="true">«</span>
+          </a>
+        </li>
+        {{#each totalPage}}
+        {{#ifCond this ../page}}
+        <li class="page-item active"><a class="page-link" href="#"
+            style="color:white; background-color: #0085a5">{{this}}</a></li>
+        {{else}}
+        <li class="page-item"><a class="page-link"
+            href="/Category/{{../category.id}}?page={{this}}#pagination">{{this}}</a>
+        </li>
+        {{/ifCond}}
+        {{/each}}
+        <li class="page-item">
+          <a class="page-link" href="/Category/{{category.id}}?page={{next}}#pagination" aria-label="Next">
+            <span aria-hidden="true">»</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
   </div>
 </div>
