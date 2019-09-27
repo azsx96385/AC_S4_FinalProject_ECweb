@@ -46,6 +46,11 @@ module.exports = {
       return a - b;
     }
     return '';
-  }
-
+  },
+  ifSort: function (a, b, c, d, options) {
+    if (a === b && c === d) {
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  },
 };

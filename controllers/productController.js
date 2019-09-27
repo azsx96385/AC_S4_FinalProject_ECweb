@@ -21,7 +21,6 @@ const productController = {
   getCategoryProducts: (req, res) => {
     let key = req.query.key;
     let value = req.query.value;
-    let sort = "";
 
     Product_category.findByPk(req.params.category_id, {
       include: [Product]
@@ -34,16 +33,12 @@ const productController = {
 
       if (key === "createdAt" && value === "desc") {
         products = products.sort((a, b) => b.createdAt - a.createdAt);
-        sort = "上架時間: 由新到舊";
       } else if (key === "createdAt" && value === "asc") {
         products = products.sort((a, b) => a.createdAt - b.createdAt);
-        sort = "上架時間: 由舊到新";
       } else if (key === "price" && value === "desc") {
         products = products.sort((a, b) => b.price - a.price);
-        sort = "價格: 由高至低";
       } else if (key === "price" && value === "asc") {
         products = products.sort((a, b) => a.price - b.price);
-        sort = "價格: 由低至高";
       }
 
       // 產品分頁
@@ -65,11 +60,13 @@ const productController = {
           categories,
           products: pageData,
           category,
-          sort,
           categoryId,
           totalPage,
           prev,
-          next
+          next,
+          page,
+          key,
+          value
         });
       });
     });
@@ -154,8 +151,47 @@ const productController = {
         name: r.name.substring(0, 30)
       }));
 
+      // 產品排序
+      let key = req.query.key;
+      let value = req.query.value;
+
+      if (key === "createdAt" && value === "desc") {
+        search = search.sort((a, b) => b.createdAt - a.createdAt);
+      } else if (key === "createdAt" && value === "asc") {
+        search = search.sort((a, b) => a.createdAt - b.createdAt);
+      } else if (key === "price" && value === "desc") {
+        search = search.sort((a, b) => b.price - a.price);
+      } else if (key === "price" && value === "asc") {
+        search = search.sort((a, b) => a.price - b.price);
+      }
+
+      // 產品分頁
+      const pageLimit = 16;
+      let page = Number(req.query.page) || 1;
+      let pages = Math.ceil(search.length / pageLimit);
+      let totalPage = Array.from({ length: pages }).map(
+        (item, index) => index + 1
+      );
+      let prev = page - 1 < 1 ? 1 : page - 1;
+      let next = page + 1 > pages ? pages : page + 1;
+      let paginationData = [];
+      paginationData = search || paginationData;
+      let offset = (page - 1) * pageLimit;
+      let pageData = paginationData.slice(offset, offset + pageLimit);
+
       Product_category.findAll().then(categories => {
-        res.render("search", { products: search, keyword, categories });
+        res.render("search", {
+          products: pageData,
+          keyword,
+          key,
+          value,
+          categories,
+          totalPage,
+          prev,
+          next,
+          pageData,
+          page
+        });
       });
     });
   },
