@@ -23,7 +23,7 @@ module.exports = {
       name: faker.commerce.productName(),
       count: 10,
       launched: false,
-      price: 1000,
+      price: 500,
       description: faker.lorem.text().substring(0, 100),
       image: faker.image.imageUrl(),
       imageI: faker.image.imageUrl(),

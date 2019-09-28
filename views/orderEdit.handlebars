@@ -74,7 +74,12 @@
       </div>
       <div class="row">
         <div class="col">運費:</div>
+        {{#if subtotal}}
+        <div class="col">60</div>
+        {{else}}
         <div class="col">0</div>
+        {{/if}}
+
       </div>
       <div class="row">
         <div class="col">coupon折抵</div>
@@ -84,9 +89,17 @@
         <div class="col">金額總計:</div>
         <div class="col">
           {{#if coupon.discount }}
+          {{#if subtotal}}
+          {{subtract subtotal coupon.discount}} 元
+          {{else}}
           {{subtract totalPrice coupon.discount}} 元
+          {{/if}}
+          {{else}}
+          {{#if subtotal}}
+          {{subtotal}} 元
           {{else}}
           {{totalPrice}} 元
+          {{/if}}
           {{/if}}
         </div>
       </div>

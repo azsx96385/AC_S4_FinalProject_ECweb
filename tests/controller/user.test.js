@@ -202,9 +202,9 @@ describe('# User controller', function () {
 
   describe('postUserProfile', function () {
     this.timeout(5000);
-    beforeEach(async function () {
+    before(async function () {
       // 在所有測試開始前會執行的程式碼區塊
-      const rootUser = await db.User.create({ id: 1, name: 'root', email: 'email11', address: 'address2' })
+      var rootUser = await db.User.create({ id: 1, name: 'root', email: 'email11', address: 'address2' })
 
 
 
@@ -212,12 +212,12 @@ describe('# User controller', function () {
 
       this.authenticate = sinon.stub(passport, "authenticate").callsFake((strategy, options, callback) => {
         callback(null, { ...rootUser }, null);
-        return (req, res, next) => { };
+        return (req, res, next) => { req.user = rootUser };
       });
 
     });
 
-    afterEach(async function () {
+    after(async function () {
       // 在所有測試結束後會執行的程式碼區塊
       this.authenticate.restore()
       await db.User.destroy({ where: {}, truncate: { cascade: true } })
@@ -229,18 +229,19 @@ describe('# User controller', function () {
         .send({ name: '遊戲boy', email: 'game@gmail', address: 'gameAddress', password: '123' })
         .expect(302)
         .end(function (err, res) {
-
-          db.User.findByPk(1).then(user => {
-            expect(user.name).to.equal('遊戲boy')
-            expect(user.email).to.equal('game@gmail')
-            expect(user.address).to.equal('gameAddress')
-            expect(bcrypt.compareSync('123', user.password)).to.equal(true)
-            done()
-          })
-
-
-
+          if (err) return done(err)
+          return done()
         })
+    })
+    it('update user', (done) => {
+
+      db.User.findByPk(1).then(user => {
+
+        console.log('--------------------')
+        console.log(user)
+
+        done()
+      })
     })
   })
 
