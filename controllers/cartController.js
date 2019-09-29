@@ -16,18 +16,29 @@ const cartController = {
 
         let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.Cart_item.quantity).reduce((a, b) => a + b) : 0//如果cart-item沒東西，則為0
 
+        //運費判斷
+        if (totalPrice < 999) {
+          var subtotal = totalPrice - 60
+        }
+
         return res.render('cart', {
           cart,
           totalPrice,
-          coupon
+          coupon,
+          subtotal
         })
       }
 
       let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.Cart_item.quantity).reduce((a, b) => a + b) : 0//如果cart-item沒東西，則為0
+      //運費判斷
+      if (totalPrice < 999) {
+        var subtotal = totalPrice - 60
+      }
 
       return res.render('cart', {
         cart,
-        totalPrice
+        totalPrice,
+        subtotal
 
       })
     })
