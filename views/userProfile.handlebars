@@ -11,17 +11,17 @@
       <div class="col ">
 
         <div class="row mt-3">
-          <div class="col"><span style='font-size:30px'>名字:{{user.name}}</span> </div>
+          <div class="col"><span style='font-size:30px'>名字: {{user.name}}</span> </div>
 
         </div>
         <div class="row mt-3">
           <div class="col">
-            <span style='font-size:30px'>email:{{user.email}}</span>
+            <span style='font-size:30px'>email: {{user.email}}</span>
           </div>
         </div>
         <div class="row mt-3">
           <div class="col">
-            <span style='font-size:30px'>地址:{{user.address}}</span></div>
+            <span style='font-size:30px'>地址: {{user.address}}</span></div>
 
         </div>
 
@@ -62,27 +62,28 @@
           <hr>
           <h2>運送資訊</h2>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">名字:{{this.name}}</li>
-            <li class="list-group-item">地址:{{this.address}}</li>
-            <li class="list-group-item">phone:{{this.phone}}</li>
+            <li class="list-group-item">名字: {{this.name}}</li>
+            <li class="list-group-item">地址: {{this.address}}</li>
+            <li class="list-group-item">phone: {{this.phone}}</li>
           </ul>
           <hr>
           <h2>出貨狀況</h2>
 
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
-              訂單狀態:{{this.Order_status.orderStatus}}</li>
-            <li class="list-group-item">付款方式:{{#each this.PaymentType}}{{#if @last}}{{this.paymentType}}{{/if}}{{/each}}
+              訂單狀態: {{this.Order_status.orderStatus}}</li>
+            <li class="list-group-item">付款方式:
+              {{#each this.PaymentType}}{{#if @last}}{{this.paymentType}}{{/if}}{{/each}}
             </li>
             <li class="list-group-item">
-              付款狀況:{{#each this.PaymentStatus}}{{#if @last}}{{this.paymentStatus}}{{/if}}{{/each}}</li>
+              付款狀況: {{#each this.PaymentStatus}}{{#if @last}}{{this.paymentStatus}}{{/if}}{{/each}}</li>
             <li class="list-group-item">
-              出貨方式:{{#each this.ShipmentType}}{{#if @last}}{{this.shipmentType}}{{/if}}{{/each}}
+              出貨方式: {{#each this.ShipmentType}}{{#if @last}}{{this.shipmentType}}{{/if}}{{/each}}
               {{#each this.ShipmentConvenienceStore}}{{#if @last}}[{{this.branch}}]{{/if}}{{/each}}
               {{#each this.ShipmentConvenienceStore}}{{#if @last}}- {{this.address}}{{/if}}{{/each}}
             </li>
             <li class="list-group-item">
-              出貨狀況:{{#each this.ShipmentStatus}}{{#if @last}}{{this.shipmentStatus}}{{/if}}{{/each}}</li>
+              出貨狀況: {{#each this.ShipmentStatus}}{{#if @last}}{{this.shipmentStatus}}{{/if}}{{/each}}</li>
 
           </ul>
           </ul>

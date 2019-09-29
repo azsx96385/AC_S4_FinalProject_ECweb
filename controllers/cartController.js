@@ -8,6 +8,8 @@ const cartController = {
     return Cart.findByPk(req.session.cartId, { include: [{ model: Product, as: 'items', include: [CartItem] }] }).then(async (cart) => {
 
       cart = cart || { items: [] }
+      let shippingFee = 60
+      let subtotal = 0
       //如果有使用coupon
       if (req.query.couponId) {
 
@@ -18,13 +20,17 @@ const cartController = {
 
         //運費判斷
         if (totalPrice < 999) {
-          var subtotal = totalPrice - 60
+          subtotal = totalPrice + shippingFee
+        } else {
+          subtotal = totalPrice
+          shippingFee = 0
         }
 
         return res.render('cart', {
           cart,
           totalPrice,
           coupon,
+          shippingFee,
           subtotal
         })
       }
@@ -32,14 +38,17 @@ const cartController = {
       let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.Cart_item.quantity).reduce((a, b) => a + b) : 0//如果cart-item沒東西，則為0
       //運費判斷
       if (totalPrice < 999) {
-        var subtotal = totalPrice - 60
+        subtotal = totalPrice + shippingFee
+      } else {
+        subtotal = totalPrice
+        shippingFee = 0
       }
 
       return res.render('cart', {
         cart,
         totalPrice,
+        shippingFee,
         subtotal
-
       })
     })
   },

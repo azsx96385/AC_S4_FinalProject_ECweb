@@ -21,7 +21,7 @@
 
   <div class="card mt-4">
     <div class="card-body">
-      <h2> 訂單{{order.id}}</h2>
+      <h2> 訂單 {{order.id}}</h2>
       <hr>
       <h5>商品詳情</h5>
       <ul class="list-group list-group-flush">
@@ -51,21 +51,11 @@
             </div>
             <div class="row">
               <div class="col">運費:</div>
-              {{#if shipmentfee}}
-              <div class="col">{{shipmentfee}}元</div>
-              {{else}}
-              <div class="col">0元</div>
-              {{/if}}
-
+              <div class="col">{{shippingFee}}元</div>
             </div>
             <div class="row">
-              <div class="col">coupon折抵</div>
-              {{#if shipmentfee}}
+              <div class="col">coupon折抵:</div>
               <div class="col">{{subtract subtotal order.amount }}元</div>
-              {{else}}
-              <div class="col">{{subtract originAmount order.amount }}元</div>
-              {{/if}}
-
             </div>
             <div class="row">
               <div class="col">金額總計:</div>
@@ -79,26 +69,26 @@
       <hr>
       <h5>運送資訊</h5>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item">名字:{{order.name}}</li>
-        <li class="list-group-item">地址:{{order.address}}</li>
-        <li class="list-group-item">phone:{{order.phone}}</li>
+        <li class="list-group-item">名字: {{order.name}}</li>
+        <li class="list-group-item">地址: {{order.address}}</li>
+        <li class="list-group-item">phone: {{order.phone}}</li>
       </ul>
       <hr>
       <h5>出貨狀況</h5>
 
       <ul class="list-group list-group-flush">
         <li class="list-group-item">訂單狀態: {{order.Order_status.orderStatus}} </li>
-        <li class="list-group-item">付款方式:{{#each order.PaymentType}}{{#if @last}}{{this.paymentType}}{{/if}}{{/each}}
+        <li class="list-group-item">付款方式: {{#each order.PaymentType}}{{#if @last}}{{this.paymentType}}{{/if}}{{/each}}
         </li>
         <li class="list-group-item">
-          付款狀況:{{#each order.PaymentStatus}}{{#if @last}}{{this.paymentStatus}}{{/if}}{{/each}}</li>
+          付款狀況: {{#each order.PaymentStatus}}{{#if @last}}{{this.paymentStatus}}{{/if}}{{/each}}</li>
         <li class="list-group-item">
-          出貨方式:{{#each order.ShipmentType}}{{#if @last}}{{this.shipmentType}}{{/if}}{{/each}}
+          出貨方式: {{#each order.ShipmentType}}{{#if @last}}{{this.shipmentType}}{{/if}}{{/each}}
           {{#each order.ShipmentConvenienceStore}}{{#if @last}}[{{this.branch}}]{{/if}}{{/each}}
           {{#each order.ShipmentConvenienceStore}}{{#if @last}}- {{this.address}}{{/if}}{{/each}}
         </li>
         <li class="list-group-item">
-          出貨狀況:{{#each order.ShipmentStatus}}{{#if @last}}{{this.shipmentStatus}}{{/if}}{{/each}}</li>
+          出貨狀況: {{#each order.ShipmentStatus}}{{#if @last}}{{this.shipmentStatus}}{{/if}}{{/each}}</li>
       </ul>
       </ul>
 
