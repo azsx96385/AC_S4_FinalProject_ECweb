@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container mb-4">
   <div class="shopFlow d-flex  justify-content-center">
     <div class="step1">
       <span class='bg-dark text-white rounded-circle p-1'>1</span>
@@ -91,32 +91,23 @@
     </div>
     <div class="row">
       <div class="col">運費:</div>
-      {{#if subtotal}}
-      <div class="col">60</div>
-      {{else}}
-      <div class="col">0</div>
-      {{/if}}
-
+      <div class="col">{{shippingFee}} 元</div>
     </div>
     <div class="row">
-      <div class="col">coupon折抵</div>
-      <div class="col">{{coupon.discount}}</div>
+      <div class="col">coupon折抵:</div>
+      {{#if coupon.discount}}
+      <div class="col">{{coupon.discount}} 元</div>
+      {{else}}
+      <div class="col">0 元</div>
+      {{/if}}
     </div>
     <div class="row">
       <div class="col">金額總計:</div>
       <div class="col">
         {{#if coupon.discount }}
-        {{#if subtotal}}
         {{subtract subtotal coupon.discount}} 元
         {{else}}
-        {{subtract totalPrice coupon.discount}} 元
-        {{/if}}
-        {{else}}
-        {{#if subtotal}}
         {{subtotal}} 元
-        {{else}}
-        {{totalPrice}} 元
-        {{/if}}
         {{/if}}
       </div>
     </div>
@@ -127,7 +118,7 @@
 
     {{#if loginUser}}
     {{#if coupon}}
-    <a class="btn btn-warning" href="/couponOrder/{{coupon.id}}?totalamount={{totalPrice}}">去買單coupon</a>
+    <a class="btn btn-warning" href="/couponOrder/{{coupon.id}}?totalamount={{subtotal}}">去買單coupon</a>
 
     {{else}}
     <a href="/orderEdit" class="btn btn-warning">
@@ -136,7 +127,7 @@
     {{/if}}
     {{else}}
     {{#if coupon}}
-    <a href="/users/login?redirect=/couponOrder/{{coupon.id}}?totalamount={{totalPrice}}" class="btn btn-warning">
+    <a href="/users/login?redirect=/couponOrder/{{coupon.id}}?totalamount={{subtotal}}" class="btn btn-warning">
       去買單coupon
     </a>
     {{else}}
@@ -158,3 +149,4 @@
 
 
   </div>
+</div>

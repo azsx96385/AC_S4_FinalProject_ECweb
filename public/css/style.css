@@ -257,7 +257,7 @@ footer {
   margin-right: 15px;
 }
 
-/* ====comments user image */
+/* ====comments user image==== */
 .avatar {
   position: absolute;
   top: 0px;
@@ -266,4 +266,38 @@ footer {
   height: 50px;
   display: block;
   border-radius: 50%;
+}
+
+/* ==== search sort ====  */
+.search-sort {
+  font-weight: 400;
+  background: rgba(0,0,0,.05);
+  padding: .8125rem 1.25rem;
+  border-radius: 2px;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -moz-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.search {
+  background-color: white;
+  color: #0085a5;
+}
+
+.search:hover {
+  background-color: #0085a5;
+  color: white;
+}
+
+.search-select, .search-select:hover {
+  background-color: #0085a5;
+  color: white;
 }

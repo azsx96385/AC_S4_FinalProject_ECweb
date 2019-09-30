@@ -27,29 +27,6 @@ let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
 });
 passport.use(strategy);
 
-
-
-// JWT
-const jwt = require("jsonwebtoken");
-const passportJWT = require("passport-jwt");
-const ExtractJwt = passportJWT.ExtractJwt;
-const JwtStrategy = passportJWT.Strategy;
-//--------------JWT 策略-----------------------
-require('dotenv').config()
-let jwtOptions = {};
-jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-jwtOptions.secretOrKey = process.env.JWT_SECRET;
-
-let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
-  User.findByPk(jwt_payload.id, {
-    include: [{ model: db.Comment }, { model: db.Order }]
-  }).then(user => {
-    if (!user) return next(null, false);
-    return next(null, user);
-  });
-});
-passport.use(strategy);
-
 //passport-local 策略設定--------------------------------
 passport.use(
   new localStrategy(

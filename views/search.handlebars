@@ -23,8 +23,44 @@
     </div>
     {{else}}
     <div class="row ml-5">
+
+      {{!-- 排序 --}}
+      <div class="search-sort col-12 mt-2">
+        <div class="row">
+          <span class="mt-2 ml-2 mr-2">排序</span>
+          {{!-- 由新到舊 --}}
+          {{#ifSort key "createdAt" value "desc"}}
+          <a class="search-select btn ml-2" href="/ESHOP/search?keyword={{keyword}}&key=createdAt&value=desc">由新到舊</a>
+          {{else}}
+          <a class="search btn ml-2" href="/ESHOP/search?keyword={{keyword}}&key=createdAt&value=desc">由新到舊</a>
+          {{/ifSort}}
+
+          {{!-- 由舊到新 --}}
+          {{#ifSort key "createdAt" value "asc"}}
+          <a class="search-select btn ml-2" href="/ESHOP/search?keyword={{keyword}}&key=createdAt&value=asc">由舊到新</a>
+          {{else}}
+          <a class="search btn ml-2" href="/ESHOP/search?keyword={{keyword}}&key=createdAt&value=asc">由舊到新</a>
+          {{/ifSort}}
+
+          {{!-- 由高到低 --}}
+          {{#ifSort key "price" value "desc"}}
+          <a class="search-select btn ml-2" href="/ESHOP/search?keyword={{keyword}}&key=price&value=desc">價格: 由高至低</a>
+          {{else}}
+          <a class="search btn ml-2" href="/ESHOP/search?keyword={{keyword}}&key=price&value=desc">價格: 由高至低</a>
+          {{/ifSort}}
+
+          {{!-- 由低到高 --}}
+          {{#ifSort key "price" value "asc"}}
+          <a class="search-select btn ml-2" href="/ESHOP/search?keyword={{keyword}}&key=price&value=asc">價格: 由低至高</a>
+          {{else}}
+          <a class="search btn ml-2" href="/ESHOP/search?keyword={{keyword}}&key=price&value=asc">價格: 由低至高</a>
+          {{/ifSort}}
+        </div>
+      </div>
+
+
       {{#each products}}
-      <div class="col-md-3 mt-2">
+      <div class="col-md-3 mt-3">
         <a href="/product/{{this.id}}" style="text-decoration: none;">
           <div class="card shadow-sm" style="height: 300px;">
             <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="320px" height="150px">
@@ -46,6 +82,35 @@
       </div>
       {{/each}}
     </div>
+
+    {{!-- 分頁 --}}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination mt-5">
+        <li class="page-item">
+          <a class="page-link" href="/ESHOP/search?keyword={{keyword}}&key={{key}}&value={{value}}&page={{prev}}"
+            aria-label="Previous" style="color: #0085a5;">
+            <span aria-hidden="true">«</span>
+          </a>
+        </li>
+        {{#each totalPage}}
+        {{#ifCond this ../page}}
+        <li class="page-item active"><a class="page-link" href="#"
+            style="color:white; background-color: #0085a5">{{this}}</a></li>
+        {{else}}
+        <li class="page-item"><a class="page-link"
+            href="/ESHOP/search?keyword={{../keyword}}&key={{../key}}&value={{../value}}&page={{this}}">{{this}}</a>
+        </li>
+        {{/ifCond}}
+        {{/each}}
+        <li class="page-item">
+          <a class="page-link" href="/ESHOP/search?keyword={{keyword}}&key={{key}}&value={{value}}&page={{next}}"
+            aria-label="Next">
+            <span aria-hidden="true">»</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
     {{/ifCond}}
   </div>
 </div>
