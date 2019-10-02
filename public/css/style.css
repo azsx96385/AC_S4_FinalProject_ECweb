@@ -20,10 +20,6 @@ body {
   color: black;
 }
 
-.no-comment {
-  margin-left: 180px;
-}
-
 .shop-setting {
   height: 40px;
 }
@@ -300,4 +296,86 @@ footer {
 .search-select, .search-select:hover {
   background-color: #0085a5;
   color: white;
+}
+
+/* ==== nav @media(992px) ==== */
+.menu-button {
+  display: none;
+}
+
+.menu-button-checkbox {
+  display: none;
+}
+
+.logo {
+  display: none;
+}
+
+.searchKeyword {
+  width: 400px;
+}
+
+.content {
+  font-size: 30px;  
+}
+
+
+@media screen and (max-width: 992px) {
+  .cartIcon, .user, .login, .admin, .logout {
+    display: none;
+  }
+
+  .menu-button {
+    display: block;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 25px;
+    line-height: 40px;
+    color: white;
+    background: #3AC4E2;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 5px;
+  }
+
+  .menu-button-checkbox {
+    display: block;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 52px;
+    height: 40px;
+    margin: 0 -15px 0 0;
+    opacity: 0;
+  }
+
+  .menu-button-checkbox:checked ~ .logo {
+    display: block;
+  }
+
+  .logo {
+    position: fixed;
+    border: 1px solid rgb(190, 188, 188);
+    top: 80px;
+    right: 0;
+    width: 20%;
+    background-color: white;
+  }
+
+  .logo li {
+    list-style-type: none;
+  }
+
+  .navbar-title {
+    font-size: 20px;
+  }
+
+  .searchKeyword {
+    width: 50%;
+  }
+
+  .searchBtn, .content, .list-group, #logo {
+    font-size: 15px;
+  }
 }
