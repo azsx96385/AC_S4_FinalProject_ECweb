@@ -29,6 +29,7 @@ app.set("view engine", "handlebars");
 //bodyparser
 const bdParser = require("body-parser");
 app.use(bdParser.urlencoded({ extended: true }));
+app.use(bdParser.json())
 
 // 靜態檔案設定
 app.use(express.static("public")); //如果要請求靜態檔案-直接到 public找
@@ -42,7 +43,7 @@ app.use(
   session({
     secret: "ac",
     name: "ac",
-    cookie: { maxAge: 80000 },
+    cookie: { maxAge: 160000 },
     resave: false,
     saveUninitialized: true
   })
@@ -70,5 +71,4 @@ app.use((req, res, next) => {
 });
 
 require("./route")(app, passport);
-
-module.exports = app;
+module.exports = app

@@ -16,22 +16,63 @@
 </head>
 
 <body>
+
   <nav class="navbar navbar-expand-lg fixed-top navbar-light" style="background-color: #d2f0f5; padding: 20px;">
-    <a class="navbar-title mr-4" style="color: #0085a5;" href="/">MuseClub</a>
+    <a class="navbar-title mr-5" style="color: #0085a5;" href="/">MuseClub</a>
 
     {{!-- 搜尋 --}}
     <form action="/ESHOP/search">
-      <div class="row ml-2 mr-5">
-        <div class="growing-search">
-          <input type="text" name="keyword" value="{{keyword}}" placeholder="請輸入 商品 關鍵字" style="width: 473px;">
-          <button class="searchBtn" type="submit">
-            &nbsp;<span class="fa fa-search"> 搜尋商品 &nbsp;</span>
-          </button>
-        </div>
-      </div>
+      <input class="searchKeyword" type="text" name="keyword" value="{{keyword}}" placeholder="請輸入 商品 關鍵字">
+      <button class="searchBtn mr-5" type="submit">
+        &nbsp;<span class="fa fa-search"> 搜尋商品 &nbsp;</span>
+      </button>
     </form>
 
-    <div class="cartIcon ml-4">
+    {{!-- menu-button --}}
+    <button type="button" class="menu-button btn">&#9776;</button>
+    <input type="checkbox" class="menu-button-checkbox">
+
+    <ul class="logo">
+
+      {{!-- cart --}}
+      <li>
+        <a href="/cart" class="nav-logo btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
+          購物車
+          {{#if localcartItem }}
+          <span class="bg-danger text-white rounded-circle h-5 p-1">{{localcartItem}}</span>
+          {{/if}}
+        </a>
+      </li>
+
+      {{!-- profile --}}
+      <li>
+        {{#if loginUser}}
+        <a href="/user/{{loginUser.id}}/profile" class="nav-logo btn"><img class="navAvatar"
+            style="width: 23px; border-radius: 50%;" src="{{loginUser.image}}"> 我的帳號
+        </a>
+        {{else}}
+        <a href="/users/logIn?redirect=/" class="nav-logo btn"><i class="fas fa-user"></i> 登入會員</a>
+        {{/if}}
+      </li>
+
+      {{!-- admin --}}
+      <li>
+        {{#ifCond loginUser.role 1}}
+        <a href="/admin/productmodel/product_mange" class="nav-logo btn"><i class="fas fa-tasks"></i>
+          後台管理</a>
+        {{/ifCond}}
+      </li>
+
+      {{!-- logout --}}
+      <li>
+        {{#if loginUser}}
+        <a href="/users/logOut" class="nav-logo btn"><i class="fas fa-sign-out-alt"></i> 登出</a>
+        {{/if}}
+      </li>
+    </ul>
+
+    {{!-- cart --}}
+    <div class="cartIcon ml-2">
       <a href="/cart" class="nav-logo btn"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
         購物車
         {{#if localcartItem }}
@@ -40,6 +81,7 @@
       </a>
     </div>
 
+    {{!-- profile --}}
     {{#if loginUser}}
     <div class="user">
       <a href="/user/{{loginUser.id}}/profile" class="nav-logo btn"><img class="navAvatar"
@@ -52,6 +94,7 @@
     </div>
     {{/if}}
 
+    {{!-- admin --}}
     {{#ifCond loginUser.role 1}}
     <div class="admin">
       <a href="/admin/productmodel/product_mange" class="nav-logo btn"><i class="fas fa-tasks"></i>
@@ -59,6 +102,7 @@
     </div>
     {{/ifCond}}
 
+    {{!-- logout --}}
     {{#if loginUser}}
     <div class="logout">
       <a href="/users/logOut"><button class="btn btn-outline-success my-2 my-sm-0">登出</button></a>
@@ -111,6 +155,7 @@
       </div>
     </div>
   </footer>
+
 </body>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

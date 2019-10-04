@@ -16,7 +16,7 @@ describe('#cart request', function () {
       await db.Product.create({ CartId: 1, name: "productName", price: 100 })
     })
 
-    afterEach(async function () {
+    after(async function () {
       await db.Cart.destroy({ where: {}, truncate: true })
       await db.Cart_item.destroy({ where: {}, truncate: true })
       await db.Product.destroy({ where: {}, truncate: true })
@@ -46,7 +46,7 @@ describe('#cart request', function () {
     })
 
     it('（x）購物車是空的', done => {
-      //產生req.session
+
       request(app)
         .get('/cart')
         .set('Accept', 'application/json')

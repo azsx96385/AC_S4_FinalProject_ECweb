@@ -1,4 +1,4 @@
-<div class="row ml-5 mt-5">
+<div class="row col-auto ml-5 mt-5">
   <div class="col-2">
     <div class="nav flex-column">
       <div class="list-group">
@@ -17,33 +17,57 @@
     </div>
   </div>
 
-  <div class="index col-10 mb-5">
-    <img src="{{category.image}}" style="width: 1000px; height: 500px;" alt="image">
+  <div class="index col-10 mb-3">
+    <img src="{{category.image}}" style="width: 80%; height: 80%;" alt="image">
   </div>
 </div>
 
-<div class="row ml-5 mt-5">
-  <div class="col-9 ml-5">
+<section id="pagination">
+  <div>&nbsp;</div>
+</section>
+
+<div class="row col-auto ml-5 mt-5">
+  <div class="col-2 ml-5">
     <h3 style="color:#0085a5">{{category.name}}</h3>
   </div>
 
-  <div class="col-2">
-    <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      {{#if sort}}
-      {{sort}}
-      {{else}}
-      商品排序
-      {{/if}}
-    </a>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-      <a class="dropdown-item" href="/Category/{{category.id}}/?key=createdAt&value=desc">上架時間: 由新到舊</a>
-      <a class="dropdown-item" href="/Category/{{category.id}}/?key=createdAt&value=asc">上架時間: 由舊到新</a>
-      <a class="dropdown-item" href="/Category/{{category.id}}/?key=price&value=desc">價格: 由高至低</a>
-      <a class="dropdown-item" href="/Category/{{category.id}}/?key=price&value=asc">價格: 由低至高</a>
+  <div class="col-7">
+    {{!-- 排序 --}}
+    <div class="search-sort col-12 mt-2">
+      <div class="row">
+        <span class="mt-2 ml-2 mr-2">排序</span>
+        {{!-- 由新到舊 --}}
+        {{#ifSort key "createdAt" value "desc"}}
+        <a class="search-select btn ml-2" href="/Category/{{category.id}}?key=createdAt&value=desc#pagination">由新到舊</a>
+        {{else}}
+        <a class="search btn ml-2" href="/Category/{{category.id}}?key=createdAt&value=desc#pagination">由新到舊</a>
+        {{/ifSort}}
+
+        {{!-- 由舊到新 --}}
+        {{#ifSort key "createdAt" value "asc"}}
+        <a class="search-select btn ml-2" href="/Category/{{category.id}}?key=createdAt&value=asc#pagination">由舊到新</a>
+        {{else}}
+        <a class="search btn ml-2" href="/Category/{{category.id}}?key=createdAt&value=asc#pagination">由舊到新</a>
+        {{/ifSort}}
+
+        {{!-- 由高到低 --}}
+        {{#ifSort key "price" value "desc"}}
+        <a class="search-select btn ml-2" href="/Category/{{category.id}}?key=price&value=desc#pagination">價格: 由高至低</a>
+        {{else}}
+        <a class="search btn ml-2" href="/Category/{{category.id}}?key=price&value=desc#pagination">價格: 由高至低</a>
+        {{/ifSort}}
+
+        {{!-- 由低到高 --}}
+        {{#ifSort key "price" value "asc"}}
+        <a class="search-select btn ml-2" href="/Category/{{category.id}}?key=price&value=asc#pagination">價格: 由低至高</a>
+        {{else}}
+        <a class="search btn ml-2" href="/Category/{{category.id}}?key=price&value=asc#pagination">價格: 由低至高</a>
+        {{/ifSort}}
+      </div>
     </div>
   </div>
 </div>
+
 
 <div class="row mt-5 mb-5">
   <div class="col-2"></div>
@@ -53,8 +77,8 @@
       {{#each products}}
       <div class="col-md-3 mt-2">
         <a href="/product/{{this.id}}" style="text-decoration: none;">
-          <div class="card shadow-sm" style="height: 300px;">
-            <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="320px" height="150px">
+          <div class="card shadow-sm">
+            <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="100%" height="100%">
             <div class="card-body">
               <h6 class="card-text">
                 <p class="productName" style="font-size: 18px;">
@@ -73,5 +97,34 @@
       </div>
       {{/each}}
     </div>
+
+    {{!-- 分頁 --}}
+    <nav aria-label="Page navigation example">
+      <ul class="pagination mt-5">
+        <li class="page-item">
+          <a class="page-link" href="/Category/{{category.id}}?key={{key}}&value={{value}}&page={{prev}}#pagination"
+            aria-label="Previous" style="color: #0085a5;">
+            <span aria-hidden="true">«</span>
+          </a>
+        </li>
+        {{#each totalPage}}
+        {{#ifCond this ../page}}
+        <li class="page-item active"><a class="page-link" href="#pagination"
+            style="color:white; background-color: #0085a5">{{this}}</a></li>
+        {{else}}
+        <li class="page-item"><a class="page-link"
+            href="/Category/{{../category.id}}?key={{../key}}&value={{../value}}&page={{this}}#pagination">{{this}}</a>
+        </li>
+        {{/ifCond}}
+        {{/each}}
+        <li class="page-item">
+          <a class="page-link" href="/Category/{{category.id}}?key={{key}}&value={{value}}&page={{next}}#pagination"
+            aria-label="Next">
+            <span aria-hidden="true">»</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
   </div>
 </div>

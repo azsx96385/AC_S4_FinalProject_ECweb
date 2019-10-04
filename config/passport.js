@@ -3,18 +3,16 @@ const passport = require("passport");
 const localStrategy = require("passport-local");
 const FacebookStrategy = require("passport-facebook");
 const bcrypt = require("bcryptjs");
-
+require('dotenv').config()
 //model
 const db = require("../models");
 const User = db.User;
-
 // JWT
 const jwt = require("jsonwebtoken");
 const passportJWT = require("passport-jwt");
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
 //--------------JWT 策略-----------------------
-require('dotenv').config()
 let jwtOptions = {};
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 jwtOptions.secretOrKey = process.env.JWT_SECRET;

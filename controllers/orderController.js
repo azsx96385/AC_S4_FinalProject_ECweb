@@ -53,6 +53,7 @@ const orderController = {
       include: [{ model: Product, as: "items", include: [CartItem] }]
     }).then(cart => {
       cart = cart || { items: [] };
+
       let totalPrice =
         cart.items.length > 0
           ? cart.items
@@ -60,11 +61,23 @@ const orderController = {
             .reduce((a, b) => a + b)
           : 0; //如果cart-item沒東西，則為0
 
+      //運費判斷
+      let shippingFee = 60
+      let subtotal = 0
+      if (totalPrice < 999) {
+        subtotal = totalPrice + shippingFee
+      } else {
+        subtotal = totalPrice
+        shippingFee = 0
+      }
+
       return User.findByPk(req.user.id).then(user => {
         return res.render("orderEdit", {
           cart,
           totalPrice,
-          user
+          user,
+          subtotal,
+          shippingFee
         });
       });
     });
@@ -73,8 +86,14 @@ const orderController = {
     //COUPON
     if (req.body.couponId) {
       let coupon = await Coupon.findByPk(req.body.couponId)
-      var subtotal = req.body.amount - coupon.discount
+      let totalPrice = Number(req.body.amount)
+      let discountTotalPrice = Number(req.body.amount - coupon.discount)
+      //運費判斷
+      if (totalPrice < 999) {
+        discountTotalPrice += 60
+      }
       var discount = coupon.discount
+      var subtotal = discountTotalPrice
       CouponsUsers.findOrCreate({
         where: {
           UserId: req.user.id,
@@ -87,14 +106,18 @@ const orderController = {
       })
 
     } else {
-      var subtotal = req.body.amount;
+      let totalPrice = Number(req.body.amount);
+      //運費判斷
+      if (totalPrice < 999) {
+        totalPrice += 60
+      }
       var discount = 0
+      var subtotal = totalPrice
     }
 
     return Cart.findByPk(req.body.cartId, {
       include: [{ model: Product, as: "items", include: [CartItem] }]
     }).then(cart => {
-      let totalPrice = cart.items.length > 0 ? cart.items.map(d => d.price * d.Cart_item.quantity).reduce((a, b) => a + b) : 0;
       //建立order
 
       return Order.create({
@@ -129,7 +152,7 @@ const orderController = {
             OrderId: order.id,
             PaymentStatusId: 1, //預設為1 未匯款
             PaymentTypeId: req.body.paymentType,
-            amount: totalPrice
+            amount: subtotal
           });
 
           return order;
@@ -138,7 +161,7 @@ const orderController = {
           //nodemail send mail
           var mailOptions = {
             from: "vuvu0130@gmail.com",
-            to: "vuvu0130@gmail.com",
+            to: req.user.email,
             subject: `${order.id} 訂單成立`,
             text: `${order.id} 訂單成立`
           };
@@ -146,7 +169,7 @@ const orderController = {
           smtpTransport.sendMail(mailOptions, (error, response) => {
             error ? console.log(error) : console.log(response);
             smtpTransport.close();
-          });;
+          });
           return order
 
         }).then(order => {
@@ -182,8 +205,17 @@ const orderController = {
     }).then(order => {
       //取得為折抵的總價
       let originAmount = order.items.length > 0 ? order.items.map(d => d.price * d.Order_item.quantity).reduce((a, b) => a + b) : 0;
-      console.log(order.Order_status.orderStatus)
-      return res.render('orderSuccess', { order, originAmount })
+      let shippingFee = 60
+      let subtotal = 0
+
+      if (originAmount < 999) {
+        subtotal = originAmount + shippingFee
+      } else {
+        shippingFee = 0
+        subtotal = originAmount
+      }
+
+      return res.render('orderSuccess', { order, originAmount, shippingFee, subtotal })
     })
   },
 
@@ -240,7 +272,7 @@ const orderController = {
     console.log(data);
 
     Order.findAll({
-      include: [Payment, User, { model: Payment_type, as: "PaymentType" }],
+      include: [Payment, User, { model: PaymentType, as: "PaymentType" }],
       where: { memo: data["Result"]["MerchantOrderNo"] }
     }).then(orders => {
 
