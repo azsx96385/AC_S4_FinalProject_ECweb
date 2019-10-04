@@ -231,7 +231,7 @@ router.post("/pickup/callback", authenticated, orderController.pickupCallback);
 //銷售模組router
 router.use("/admin/salemodel", authenticatedAdmin, saleModel);
 //產品模組router
-router.use("/admin/productmodel", authenticatedAdmin, productModel);
+router.use("/admin/productmodel", productModel);
 //行銷模組router
 router.use("/admin/marketingmodel", authenticatedAdmin, marketingModel);
 
