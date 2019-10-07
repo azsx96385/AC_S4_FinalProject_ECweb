@@ -20,6 +20,7 @@ describe('#coupon request', () => {
 
       let rootUser = await db.User.create({ name: 'root' })
       //模擬登入
+      await db.Coupon.destroy({ where: {}, truncate: true })
       this.authenticate = sinon.stub(passport, "authenticate").callsFake((strategy, options, callback) => {
         callback(null, { ...rootUser }, null);
         return (req, res, next) => { };
@@ -226,7 +227,7 @@ describe('#coupon request', () => {
         callback(null, { ...rootUser }, null);
         return (req, res, next) => { };
       })
-      await db.Coupon.create({ couponCode: 'abcd1236', discount: 50, description: 'coupondescription' })
+      await db.Coupon.create({ id: 1, couponCode: 'abcd1236', discount: 50, description: 'coupondescription' })
     })
 
     after(async function () {
@@ -313,12 +314,13 @@ describe('#coupon request', () => {
         callback(null, { ...rootUser }, null);
         return (req, res, next) => { };
       })
+      await db.Coupon.destroy({ where: {}, truncate: true })
       await db.Coupon.create({ id: 1, couponCode: 'abcd1236', discount: 50, description: 'coupondescription' })
     })
 
     after(async function () {
-      await db.Coupon.destroy({ where: {}, truncate: true })
 
+      await db.Coupon.destroy({ where: {}, truncate: true })
       this.authenticate.restore()
     })
     it('redirect to coupon managePage', (done) => {
@@ -335,8 +337,10 @@ describe('#coupon request', () => {
     })
     it('coupon資料會被修改', (done) => {
       db.Coupon.findByPk(1).then(coupon => {
+
         expect(coupon.discount).to.equal(100)
         expect(coupon.description).to.equal('newDescription')
+
         done()
       })
 

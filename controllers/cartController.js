@@ -55,7 +55,7 @@ const cartController = {
   postCart: async (req, res) => {
     return Cart.findOrCreate({//找到或創造visitor的cart
       where: {
-        id: req.session.cartId || 0,//沒有，則預設為0
+        id: req.session.cartId || 1,//沒有，則預設為1
       }
     }).spread((cart, created) => {
 
@@ -99,25 +99,26 @@ const cartController = {
   },
   subCartItem: (req, res) => {
     return CartItem.findByPk(req.params.id).then(cartItem => {
-      cartItem.update({
+      let promise = []
+
+      let upadte = cartItem.update({
         quantity: cartItem.quantity - 1
 
       })
+      promise.push(upadte)
       if (cartItem.quantity === 0) {
-        return CartItem.destroy({
+        let destroy = CartItem.destroy({
           where: {
             id: req.params.id
           }
-        }).then(
-          () => {
-            req.session.cartItemNum = Number((req.session.cartItemNum || 0)) - 1
-            res.redirect('back')
-          }
-        )
+        })
+        promise.push(destroy)
       }
+      Promise.all(promise).then(() => {
 
-    }).then(() => {
-      return res.redirect('back')
+        req.session.cartItemNum = Number((req.session.cartItemNum || 0)) - 1
+        return res.redirect('back')
+      })
     })
   },
   deleteCartItem: (req, res) => {

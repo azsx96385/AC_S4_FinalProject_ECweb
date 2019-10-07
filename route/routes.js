@@ -16,7 +16,7 @@ const multer = require("multer");
 const upload = multer({ dest: "temp/" });
 
 //加入權限驗證
-const authenticated = (req, res, next) => {
+/*const authenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   }
@@ -33,17 +33,17 @@ const authenticatedAdmin = (req, res, next) => {
   }
   res.redirect("/users/login");
 };
-
+*/
 // 測試用function
-// function authenticate(req, res, next) {
-//   passport.authenticate('jwt', { session: false }, (err, user, info) => {
-//     if (!user) {
-//       return res.redirect('/users/login')
-//     }
-//     req.user = user;
-//     return next();
-//   })(req, res, next);
-// }
+function authenticate(req, res, next) {
+  passport.authenticate('jwt', { session: false }, (err, user, info) => {
+    if (!user) {
+      return res.redirect('/users/login')
+    }
+    req.user = user;
+    return next();
+  })(req, res, next);
+}
 
 // function authenticateAdmin(req, res, next) {
 //   passport.authenticate('jwt', { session: false }, (err, user, info) => {
@@ -60,7 +60,7 @@ const authenticatedAdmin = (req, res, next) => {
 //   })(req, res, next);
 // }
 
-// const authenticated = authenticate
+const authenticated = authenticate
 // const authenticatedAdmin = authenticateAdmin
 
 //[使用者 登入 | 登出 | 註冊]==========================
@@ -216,7 +216,7 @@ router.post(
   authenticated,
   orderController.spgatewayCallback
 );
-
+/*
 //------------------------------------超商取貨---------------------------------------------
 //前往選取門市頁面
 router.get(
@@ -234,5 +234,5 @@ router.use("/admin/salemodel", authenticatedAdmin, saleModel);
 router.use("/admin/productmodel", authenticatedAdmin, productModel);
 //行銷模組router
 router.use("/admin/marketingmodel", authenticatedAdmin, marketingModel);
-
+*/
 module.exports = router;
