@@ -216,7 +216,7 @@ router.post(
   authenticated,
   orderController.spgatewayCallback
 );
-/*
+
 //------------------------------------超商取貨---------------------------------------------
 //前往選取門市頁面
 router.get(
@@ -234,5 +234,5 @@ router.use("/admin/salemodel", authenticatedAdmin, saleModel);
 router.use("/admin/productmodel", authenticatedAdmin, productModel);
 //行銷模組router
 router.use("/admin/marketingmodel", authenticatedAdmin, marketingModel);
-*/
+
 module.exports = router;
