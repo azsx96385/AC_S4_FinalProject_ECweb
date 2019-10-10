@@ -70,5 +70,5 @@ app.use((req, res, next) => {
   next();
 });
 
-require("./route")(app, passport);
+require("./route")(app);
 module.exports = app
