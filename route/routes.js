@@ -25,7 +25,7 @@ const authenticated = (req, res, next) => {
 
 // 後台權限驗證
 const authenticatedAdmin = (req, res, next) => {
-  if (req.isAuthenticated()) {
+  if (req.user) {
     if (req.user.role === 1) {
       return next();
     }
@@ -45,23 +45,7 @@ const authenticatedAdmin = (req, res, next) => {
 //   })(req, res, next);
 // }
 
-// function authenticateAdmin(req, res, next) {
-//   passport.authenticate('jwt', { session: false }, (err, user, info) => {
-//     if (!user) {
-//       return res.redirect('/users/login')
-//     }
-
-//     if (user.role === 1) {
-//       req.user = user;
-//       return next();
-//     }
-//     req.user = user;
-//     return res.redirect('/');
-//   })(req, res, next);
-// }
-
 // const authenticated = authenticate
-// const authenticatedAdmin = authenticateAdmin
 
 //[使用者 登入 | 登出 | 註冊]==========================
 router.get("/users/signUp", userController.signUpPage);

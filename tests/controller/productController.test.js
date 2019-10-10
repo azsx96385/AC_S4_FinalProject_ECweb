@@ -182,9 +182,10 @@ describe('# Product Controller', () => {
           if (err) return done(err)
           return done()
         })
+
     })
 
-    it('(O) 登入狀態，確認是否有新增評價', (done) => {
+    it('(O) 確認是否有新增評價', (done) => {
       request(app)
         .get('/product/1')
         .set('Accept', 'application/json')
@@ -309,12 +310,7 @@ describe('# Product Controller', () => {
 
   //     this.authenticate = sinon.stub(passport, "authenticate").callsFake((strategy, options, callback) => {
   //       callback(null, { ...rootUser }, null);
-  //       return (req, res, next) => {
-  //         if (req.user.role === 1) {
-  //           req.user = rootUser;
-  //           return next();
-  //         }
-  //       }
+  //       return (req, res, next) => { req.user = rootUser }
   //     })
   //   })
 
@@ -329,12 +325,12 @@ describe('# Product Controller', () => {
 
   //   it('(O) 取得管理貨到通知頁面', (done) => {
   //     request(app)
-  //       .get('/admin/deliveryNotice')
+  //       .get('/admin/productmodel/deliveryNotice')
   //       .set('Accept', 'application/json')
   //       .expect(200)
   //       .end((err, res) => {
   //         if (err) return done(err)
-  //         res.text.should.include('email')
+  //         res.text.should.include('貨到通知')
   //         return done()
   //       })
   //   })
