@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 //引用model套件
-const productController = require("../controllers/productController");
+const productController = require("../controllers/api/productController");
 const userController = require("../controllers/userController");
 const cartController = require("../controllers/cartController");
 const orderController = require("../controllers/orderController");
@@ -159,10 +159,10 @@ router.post("/pickup/callback", authenticated, orderController.pickupCallback);
 //[Admin 後台管理介面]=========================================================================================
 
 //銷售模組router
-router.use("/admin/salemodel", authenticatedAdmin, saleModel);
+router.use("/admin/salemodel", authenticated, authenticatedAdmin, saleModel);
 //產品模組router
-router.use("/admin/productmodel", authenticatedAdmin, productModel);
+router.use("/admin/productmodel", authenticated, authenticatedAdmin, productModel);
 //行銷模組router
-router.use("/admin/marketingmodel", authenticatedAdmin, marketingModel);
+router.use("/admin/marketingmodel", authenticated, authenticatedAdmin, marketingModel);
 
 module.exports = router
