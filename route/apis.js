@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 //引用model套件
 const productController = require("../controllers/api/productController");
-const userController = require("../controllers/userController");
+const userController = require("../controllers/api/userController");
 const cartController = require("../controllers/cartController");
 const orderController = require("../controllers/orderController");
 const couponController = require("../controllers/couponController");
@@ -20,7 +20,7 @@ const authenticated = passport.authenticate('jwt', { session: false })
 
 const authenticatedAdmin = (req, res, next) => {
   if (req.user) {
-    if (req.user.isAdmin) { return next() }
+    if (req.user.role === 1) return next()
     return res.json({ status: 'error', message: 'permission denied' })
   } else {
     return res.json({ status: 'error', message: 'permission denied' })
@@ -28,7 +28,7 @@ const authenticatedAdmin = (req, res, next) => {
 }
 
 //-------jwt登入------------------------------//
-router.post('/users/logIn', userController.logIn)
+router.post("/users/logIn", userController.logIn)
 
 //-------------------商品瀏覽頁面-----------------------------------------
 router.get("/", (req, res) => res.redirect("/index"));
@@ -85,20 +85,20 @@ router.get(
 router.post("/order/:id", authenticated, orderController.cancelOrder);
 //--------userprofile-----------------------------
 //個人資料頁面與訂單詳情
-router.get("/user/:id/profile", authenticated, userController.getUserProfile);
+// router.get("/user/:id/profile", authenticated, userController.getUserProfile);
 
-router.get(
-  "/user/:id/editProfile",
-  authenticated,
-  userController.getUserProfileEdit
-);
-//編輯個人資料頁面
-router.post(
-  "/user/:id/edit",
-  authenticated,
-  upload.single("image"),
-  userController.postUserProfile
-);
+// router.get(
+//   "/user/:id/editProfile",
+//   authenticated,
+//   userController.getUserProfileEdit
+// );
+// //編輯個人資料頁面
+// router.post(
+//   "/user/:id/edit",
+//   authenticated,
+//   upload.single("image"),
+//   userController.postUserProfile
+// );
 
 //-------------coupon----------------------------
 

@@ -26,22 +26,15 @@ const productController = {
   },
 
   postProductRate: (req, res) => {
-    Comment.create({
-      comment: req.body.comment,
-      rating: req.body.rating,
-      ProductId: req.body.ProductId,
-      UserId: req.user.id
-    }).then(() => {
-      res.redirect(`/product/${req.body.ProductId}`);
-    });
+    productService.postProductRate(req, res, (data) => {
+      res.json(data)
+    })
   },
 
   deleteProductRate: (req, res) => {
-    Comment.findByPk(req.params.id).then(comment => {
-      comment.destroy().then(comment => {
-        res.redirect(`/product/${comment.ProductId}`);
-      });
-    });
+    productService.deleteProductRate(req, res, (data) => {
+      res.json(data)
+    })
   },
 
   postDeliveryNotice: (req, res) => {

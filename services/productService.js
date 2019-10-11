@@ -196,21 +196,21 @@ const productService = {
     });
   },
 
-  postProductRate: (req, res) => {
+  postProductRate: (req, res, callback) => {
     Comment.create({
       comment: req.body.comment,
       rating: req.body.rating,
       ProductId: req.body.ProductId,
       UserId: req.user.id
     }).then(() => {
-      res.redirect(`/product/${req.body.ProductId}`);
+      callback({ status: 'success', message: "已成功新增評價" });
     });
   },
 
-  deleteProductRate: (req, res) => {
+  deleteProductRate: (req, res, callback) => {
     Comment.findByPk(req.params.id).then(comment => {
       comment.destroy().then(comment => {
-        res.redirect(`/product/${comment.ProductId}`);
+        callback({ status: 'success', message: "已成功刪除評價", comment });
       });
     });
   },
