@@ -41,7 +41,7 @@ const productController = {
         //[定義上下頁頁碼]---------------- //使用三元運算子
         let prePage = page - 1 < 1 ? 1 : page - 1;
         let nextPage = page + 1 > pages ? pages : page + 1;
-
+        req.flash("success_message", "Y");
         res.render("admin/productmodel_products", {
           shopProductsCount: shopProducts.count,
           shopProducts: shopProducts.rows,

@@ -5,32 +5,82 @@
     <div class="card my-3">
         <p class="ml-2 mt-3 text-primary"> 訂單</p>
         <hr>
-        {{!-- 訂單分頁 --}}
-        <div class="card-header order_nav">
-            <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item"><a href="" class="nav-link active" role="tab">全部</a></li>
-                <li class="nav-item"><a href="" class="nav-link active" role="tab">訂單處理中</a></li>
-                <li class="nav-item"><a href="" class="nav-link active" role="tab">未付款</a></li>
-                <li class="nav-item"><a href="" class="nav-link active" role="tab">備貨中</a></li>
-            </ul>
 
-        </div>
-        {{!-- 訂單搜尋列 --}}
         <div class="filiterBar input-group p-3">
-            <div class="input-group-prepend">
-                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                    data-toggle="dropdown">搜尋關鍵字</button>
+            {{!-- 訂單分頁 --}}
+
+            <div class="dropdown mb-3">
+                <a class="btn btn-primary mx-3 dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                    data-toggle="dropdown">選擇篩選器</a>
                 <div class="dropdown-menu">
-                    <a href="#" class="dropdown-item">搜尋關鍵字</a>
-                    <a href="#" class="dropdown-item">搜尋電話號碼</a>
-                    <a href="#" class="dropdown-item">搜尋多筆訂單</a>
+                    {{!-- <a href="/admin/productmodel/order_mange?launched=0" class="dropdown-item">訂購人</a> --}}
+                    <a id="btn_orderer" onclick="displayFilter('btn_orderer')" class="dropdown-item">訂購人</a>
+                    <a id="btn_orderstatus" onclick="displayFilter('btn_orderstatus')" class="dropdown-item">訂單狀態</a>
+                    <a id="btn_paymentstatus" onclick="displayFilter('btn_paymentstatus')"
+                        class="dropdown-item">付款狀態</a>
+                    <a id="btn_shipmentstatus" onclick="displayFilter('btn_shipmentstatus')"
+                        class="dropdown-item">送貨狀態</a>
+
                 </div>
             </div>
-            <input type="text" class="form-control">
-            <div class="input-group-append">
-                <button class="btn btn-sm btn-sm btn-outline-secondary"><i class="fas fa-search"></i></button>
+
+            {{!-- 訂購人-訂單搜尋列 --}}
+            <div id="orderer_search_bar" class="input-group   d-none">
+
+                <form action="/admin/productmodel/order_mange " method="get" class="w-100">
+                    <div class="input-group">
+                        <input type="text" name='orderer' class="form-control wr-3" placeholder="輸入訂購人名字">
+                        <div class="input-group-append">
+                            <button class="btn btn-sm btn-sm btn-outline-secondary"><i
+                                    class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+
             </div>
+            {{!-- 訂單狀態- --}}
+            <div id="orderstatus_navbar" class="orderStatus d-none">
+                <ul class="nav nav-pills nav-fill">
+                    <li class="nav-item"><a class="nav-link"
+                            href="/admin/productmodel/order_mange?orderstatusid=1">排程中</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                            href="/admin/productmodel/order_mange?orderstatusid=2">處理中</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                            href="/admin/productmodel/order_mange?orderstatusid=3">已完成</a></li>
+                </ul>
+            </div>
+            {{!-- 付款狀態- --}}
+            <div id="paymentstatus_navbar" class="orderStatus  d-none">
+                <ul class="nav nav-pills nav-fill">
+                    <li class="nav-item"><a class="nav-link"
+                            href="/admin/productmodel/order_mange?paymentstatusid=1">未付款</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                            href="/admin/productmodel/order_mange?paymentstatusid=2">已付款</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                            href="/admin/productmodel/order_mange?paymentstatusid=3">退款中</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                            href="/admin/productmodel/order_mange?paymentstatusid=4">已退款</a></li>
+                </ul>
+            </div>
+            {{!-- 送貨狀態- --}}
+            <div id="shipmentstatus_navbar" class="orderStatus d-none">
+                <ul class="nav nav-pills nav-fill">
+                    <li class="nav-item"><a class="nav-link"
+                            href="/admin/productmodel/order_mange?shipmentstatusid=1">備貨中</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                            href="/admin/productmodel/order_mange?shipmentstatusid=2">發貨中</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                            href="/admin/productmodel/order_mange?shipmentstatusid=3">已發貨</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                            href="/admin/productmodel/order_mange?shipmentstatusid=5">已到貨</a></li>
+                    <li class="nav-item"><a class="nav-link"
+                            href="/admin/productmodel/order_mange?shipmentstatusid=6">已退貨</a></li>
+                </ul>
+            </div>
+
+
         </div>
+
         {{!-- 訂單清單 --}}
         <div class="ordersTable my-3 card-body">
             {{!-- 產品清單 --}}
@@ -49,22 +99,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row"><input type="checkbox" name="" id=""></th>
-                            <td><a href="#">123456</a></td>
-                            <td>2019-08-01 2:10pm</td>
-                            <td>
-                                <h5><span class="badge badge-warning">處理中</span></h5>
-                            </td>
-                            <td>
-                                <h5><span class="badge badge-warning">處理中</span></h5>
-                            </td>
-                            <td>
-                                <h5><span class="badge badge-warning">處理中</span></h5>
-                            </td>
-                            <td>王曉明(azc@gmail.com)</td>
-                            <td>NT$250</td>
-                        </tr>
+
                         {{#each orders}}
                         <tr>
                             <th scope="row"><input type="checkbox" name="" id=""></th>

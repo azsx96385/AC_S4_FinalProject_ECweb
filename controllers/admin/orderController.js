@@ -22,6 +22,9 @@ const orderController = {
     if (req.query.page) {
       offset = (req.query.page - 1) * pageLimit;
     }
+    if (req.query.orderstatusid) {
+      whereQuery["OrderStatusId"] = req.query.orderstatusid;
+    }
 
     orderModel
       .findAndCountAll({
@@ -48,7 +51,7 @@ const orderController = {
         ]
       })
       .then(orders => {
-        // let t = orders[0].dataValues.Order_status.orderStatus;
+        // let t = orders.rows[0].Shipments[0].dataValues.ShipmentStatusId;
         // console.log(t);
         //頁碼
         let page = Number(req.query.page) || 1;
@@ -64,7 +67,10 @@ const orderController = {
           orderDate: moment(item.dataValues.createdAt).format(
             "YYYY-MM-DD HH:mm"
           ),
+          orderer: item.User.name,
           orderStatus: item.dataValues.Order_status.orderStatus,
+          paymentStatusId: item.Payments[0].dataValues.PaymentStatusId,
+          shipmentStatusId: item.Shipments[0].dataValues.ShipmentStatusId,
           paymentStatus:
             item.dataValues.Payments[item.dataValues.Payments.length - 1]
               .dataValues.Payment_status.paymentStatus,
@@ -72,6 +78,27 @@ const orderController = {
             item.dataValues.Shipments[item.dataValues.Shipments.length - 1]
               .dataValues.Shipment_status.shipmentStatus
         }));
+        console.log(order_format[0].orderer);
+        if (req.query.shipmentstatusid) {
+          console.log(order_format[0]);
+          order_format = order_format.filter(shipmentFilter);
+        } else if (req.query.paymentstatusid) {
+          order_format = order_format.filter(paymentFilter);
+        } else if (req.query.orderer) {
+          order_format = order_format.filter(ordererFilter);
+        }
+
+        // //建立shipmentStatus 篩選器
+        function paymentFilter(order) {
+          return order.paymentStatusId == req.query.paymentstatusid;
+        }
+        function shipmentFilter(order) {
+          return order.shipmentStatusId == req.query.shipmentstatusid;
+        }
+        function ordererFilter(order) {
+          return order.orderer == req.query.orderer;
+        }
+
         res.render("admin/productmodel_orders", {
           page,
           totalPage,
