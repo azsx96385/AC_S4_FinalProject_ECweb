@@ -47,8 +47,8 @@ describe('# Product Controller', () => {
       await db.Product.destroy({ where: {}, truncate: { cascade: true } })
 
       await db.Product_category.create({ id: 1, StoreId: 1, name: '麵包' })
-      await db.Product.create({ StoreId: 1, ProductCategoryId: 1, name: '吐司' })
-      await db.Product.create({ StoreId: 1, ProductCategoryId: 1, name: '肉鬆麵包' })
+      await db.Product.create({ StoreId: 1, ProductCategoryId: 1, name: '吐司', launched: true })
+      await db.Product.create({ StoreId: 1, ProductCategoryId: 1, name: '肉鬆麵包', launched: true })
     })
 
     after(async () => {
@@ -93,7 +93,7 @@ describe('# Product Controller', () => {
       await db.Comment.destroy({ where: {}, truncate: { cascade: true } })
 
       await db.Product_category.create({ id: 1, StoreId: 1, name: '麵包' })
-      await db.Product.create({ id: 1, StoreId: 1, ProductCategoryId: 1, name: '吐司' })
+      await db.Product.create({ id: 1, StoreId: 1, ProductCategoryId: 1, name: '吐司', launched: true })
       await db.Comment.create({ ProductId: 1, comment: '123' })
     })
 
@@ -124,7 +124,7 @@ describe('# Product Controller', () => {
       // 在所有測試開始前會執行的程式碼區塊
       await db.Product.destroy({ where: {}, truncate: { cascade: true } })
 
-      await db.Product.create({ name: 'ABC' })
+      await db.Product.create({ name: 'ABC', launched: true })
     })
 
     after(async () => {
@@ -155,7 +155,7 @@ describe('# Product Controller', () => {
 
       const rootUser = await db.User.create({ name: 'root', email: 'root@gmail.com', password: 'password' })
       await db.Product_category.create({ id: 1, name: '麵包' })
-      await db.Product.create({ id: 1, ProductCategoryId: 1, name: '吐司' })
+      await db.Product.create({ id: 1, ProductCategoryId: 1, name: '吐司', launched: true })
 
       this.authenticate = sinon.stub(passport, "authenticate").callsFake((strategy, options, callback) => {
         callback(null, { ...rootUser }, null);
@@ -209,7 +209,7 @@ describe('# Product Controller', () => {
 
       const rootUser = await db.User.create({ name: 'root', email: 'root@gmail.com', password: 'password' })
       await db.Product_category.create({ id: 1, name: '麵包' })
-      await db.Product.create({ id: 1, ProductCategoryId: 1, name: '吐司' })
+      await db.Product.create({ id: 1, ProductCategoryId: 1, name: '吐司', launched: true })
       await db.Comment.create({ id: 1, comment: '123' })
 
       this.authenticate = sinon.stub(passport, "authenticate").callsFake((strategy, options, callback) => {
@@ -250,7 +250,7 @@ describe('# Product Controller', () => {
       await db.Delivery_notice.destroy({ where: {}, truncate: { cascade: true } })
 
       await db.Product_category.create({ id: 1, name: '麵包' })
-      await db.Product.create({ id: 1, ProductCategoryId: 1, name: '吐司' })
+      await db.Product.create({ id: 1, ProductCategoryId: 1, name: '吐司', launched: true })
     })
 
     after(async () => {

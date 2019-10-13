@@ -31,6 +31,10 @@ const productService = {
         name: r.dataValues.name.substring(0, 20)
       }));
 
+      // 上架才顯示
+      products = products.filter(d => d.launched === true)
+
+      // 產品排序
       if (key === "createdAt" && value === "desc") {
         products = products.sort((a, b) => b.createdAt - a.createdAt);
       } else if (key === "createdAt" && value === "asc") {
@@ -108,7 +112,10 @@ const productService = {
       const category = product.Product_category;
       const categoryId = category.id;
       const categoryProducts = category.Products;
-      const products = categoryProducts.filter(d => d.id != req.params.id);
+      let products = categoryProducts.filter(d => d.id != req.params.id);
+
+      // 上架才顯示
+      products = products.filter(d => d.launched === true)
       let productsFilter = products.slice(0, 6);
       productsFilter = productsFilter.map(r => ({
         ...r.dataValues,
@@ -150,6 +157,9 @@ const productService = {
         ...r.dataValues,
         name: r.name.substring(0, 30)
       }));
+
+      // 上架才顯示
+      search = search.filter(d => d.launched === true)
 
       // 產品排序
       let key = req.query.key;
