@@ -43,6 +43,7 @@ describe('#order request', () => {
             .set('Accept', 'application/json')
             .expect(200)
             .end(function (err, res) {
+
               res.text.should.include('root')
               res.text.should.include('開山里')
               res.text.should.include("productName")
@@ -83,9 +84,9 @@ describe('#order request', () => {
         await db.Order.create({ id: 1, UserId: 1, name: 'userName', OrderStatusId: 1 })
         await db.Product.create({ id: 1, name: "產品1" })
         await db.Order_item.create({ OrderId: 1, ProductId: 1 })
-        await db.Shipment_type.create({ shipmentType: '宅配' })
-        await db.Shipment_status.create({ shipmentStatus: '未出貨' })
-        await db.Shipment.create({ ShipmentTypeId: 1, OrderId: 1, ShipmentStatusId: 1 })
+        await db.Shipment_type.create({ id: 1, shipmentType: '宅配' })
+        await db.Shipment_status.create({ id: 1, shipmentStatus: '未出貨' })
+        await db.Shipment.create({ id: 1, ShipmentTypeId: 1, OrderId: 1, ShipmentStatusId: 1 })
         await db.Order_status.create({ id: 1, orderStatus: '排程中' })
 
       })
@@ -96,6 +97,7 @@ describe('#order request', () => {
           .set('Accept', 'application/json')
           .expect(200)
           .end(function (err, res) {
+
             res.text.should.include('產品1')
             res.text.should.include('userName')
             res.text.should.include('宅配')
@@ -137,11 +139,11 @@ describe('#order request', () => {
         await db.Order.create({ id: 1, UserId: 1, name: 'userName2' })
         await db.Product.create({ id: 1, name: "產品2" })
         await db.Order_item.create({ OrderId: 1, ProductId: 1 })
-        await db.Shipment_type.create({ shipmentType: '超商取貨' })
-        await db.Shipment_convenienceStore.create({ branch: '發大財門市' })
+        await db.Shipment_type.create({ id: 1, shipmentType: '超商取貨' })
+        await db.Shipment_convenienceStore.create({ id: 1, branch: '發大財門市' })
 
-        await db.Shipment_status.create({ shipmentStatus: '未出貨' })
-        await db.Shipment.create({ ShipmentTypeId: 1, OrderId: 1, ShipmentStatusId: 1, ShipmentConvenienceStoreId: 1 })
+        await db.Shipment_status.create({ id: 1, shipmentStatus: '未出貨' })
+        await db.Shipment.create({ id: 1, ShipmentTypeId: 1, OrderId: 1, ShipmentStatusId: 1, ShipmentConvenienceStoreId: 1 })
 
       })
 
@@ -240,6 +242,8 @@ describe('#order request', () => {
           callback(null, { ...rootUser }, null);
           return (req, res, next) => { };
         });
+        await db.Coupon.destroy({ where: {}, truncate: true })
+
         await db.Product.create({ id: 1, name: "產品1", price: 100 })
         await db.Cart.create({ id: 1 })
         await db.Cart_item.create({ ProductId: 1, CartId: 1, quantity: 1 })
@@ -395,7 +399,7 @@ describe('#order request', () => {
         });
 
 
-        await db.Order.create({})
+        await db.Order.create({ id: 1, OrderStatusId: 1 })
         await db.Shipment.create({ OrderId: 1, ShipmentStatusId: 1, ShipmentTypeId: 1 })
         await db.Shipment_status.create({ shipmentStatus: "備貨中" })
         await db.Shipment_status.create({ shipmentStatus: '出貨中' })
@@ -425,7 +429,7 @@ describe('#order request', () => {
             done();
           });
       })
-      it('order的shipment status改成已取消', (done) => {
+      it('order的OrderStatus改成已取消', (done) => {
         db.Order.findByPk(1).then(order => {
           expect(order.OrderStatusId).to.equal(4)
           done()
