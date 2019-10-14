@@ -144,9 +144,9 @@ const couponController = {
     )
   },
   postCouponEdit: (req, res) => {
-    Coupon.findByPk(req.body.couponId).then(
+    return Coupon.findByPk(req.body.couponId).then(
       coupon => {
-        coupon.update({
+        return coupon.update({
           StoreId: req.body.StoreId,
           CouponTypeId: req.body.couponTypeId,
           discount: req.body.CouponDiscount,

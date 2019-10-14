@@ -13,7 +13,10 @@ describe('#cart request', function () {
   describe('getCart', () => {
 
     before(async function () {
-      await db.Product.create({ CartId: 1, name: "productName", price: 100 })
+      await db.Cart.destroy({ where: {}, truncate: true })
+      await db.Cart_item.destroy({ where: {}, truncate: true })
+      await db.Product.destroy({ where: {}, truncate: true })
+      await db.Product.create({ id: 1, name: "productName", price: 100 })
     })
 
     after(async function () {
@@ -28,7 +31,7 @@ describe('#cart request', function () {
       var agent = request.agent(app)
       agent
         .post('/cart')
-        .send('productId=1&quantity=1')
+        .send({ productId: 1, quantity: 1 })
         .set('Accept', 'application/json')
         .expect(302)
         .end(function (err, res) {
@@ -39,6 +42,7 @@ describe('#cart request', function () {
             .expect(200)
             .end(function (err, res) {
               if (err) return done(err)
+
               res.text.should.include('productName')
               done()
             })
@@ -64,6 +68,8 @@ describe('#cart request', function () {
 
     before(async () => {
       await db.Product.create({ CartId: 1, name: "productName", price: 100 })
+      await db.Cart_item.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Cart.destroy({ where: {}, truncate: { cascade: true } })
     })
 
     it('建立cart並建立cartItem', (done) => {
@@ -128,6 +134,7 @@ describe('#cart request', function () {
 
     after(async function () {
       await db.Cart_item.destroy({ where: {}, truncate: { cascade: true } })
+      await db.Cart.destroy({ where: {}, truncate: { cascade: true } })
     })
   })
 
@@ -135,6 +142,7 @@ describe('#cart request', function () {
   describe('subCartItem', () => {
 
     before(async function () {
+      await db.Cart_item.destroy({ where: {}, truncate: { cascade: true } })
       await db.Cart_item.create({ id: 1, quantity: 2 })
       await db.Cart_item.create({ id: 2, quantity: 1 })
     });
@@ -144,7 +152,7 @@ describe('#cart request', function () {
         .post('/cartItem/1/sub')
         .expect(302)
         .end(function (err, res) {
-          db.Cart_item.findOne({ where: { id: 1 } }).then(cartItem => {
+          db.Cart_item.findByPk(1).then(cartItem => {
             expect(cartItem.quantity).to.equal(1)
             done()
           })
@@ -156,7 +164,7 @@ describe('#cart request', function () {
         .post('/cartItem/2/sub')
         .expect(302)
         .end(function (err, res) {
-          db.Cart_item.findOne({ where: { id: 2 } }).then(cartItem => {
+          db.Cart_item.findByPk(2).then(cartItem => {
             expect(cartItem).to.be.null
             done()
           })

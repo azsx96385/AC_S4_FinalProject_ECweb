@@ -300,6 +300,8 @@ describe('# User controller', function () {
         .expect(302)
         .end(function (err, res) {
           db.User.findOne({ where: { email: 'email' } }).then(user => {
+            console.log('-----------------------------')
+            console.log(user)
             expect(user.resetPasswordToken).to.not.be.null
 
             done()

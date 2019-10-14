@@ -186,9 +186,9 @@ const userController = {
       return res.redirect("/forget");
     }
     //生成token
-    let token = Math.random()
-      .toString(36)
-      .substring(7);
+
+    let token = await Math.random().toString(36).substring(7)
+
 
     //審核user是否存在
     let user = await User.findOne({ where: { email: req.body.email } });
@@ -196,16 +196,23 @@ const userController = {
       req.flash("error_messages", "你的信箱並不存在");
       return res.redirect("/forget");
     }
-    //在user上加入token
-    user.resetPasswordToken = token;
-    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-    user.save(function(err) {
+
+    await user.update({
+      //在user上加入token
+      resetPasswordToken: token,
+      resetPasswordExpires: Date.now() + 3600000 // 1 hour
+    })
+
+    user.save(function (err) {
+
       done(err, token, user);
     });
 
     var mailOptions = {
-      from: "vuvu0130@gmail.com",
-      to: "vuvu0130@gmail.com",
+
+      from: 'vuvu0130@gmail.com',
+      to: req.body.email,
+
       subject: `密碼重設`,
       text:
         "You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
@@ -246,10 +253,10 @@ const userController = {
     });
   },
   postResetPassword: (req, res) => {
-    User.findOne({
-      resetPasswordToken: req.params.token,
-      resetPasswordExpires: { $gt: Date.now() }
-    }).then(user => {
+
+
+    User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }).then(async user => {
+
       if (!user) {
         req.flash(
           "error_messages",
@@ -266,12 +273,15 @@ const userController = {
           null
         );
 
-        user.password = hashedPassword;
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpires = undefined;
-        console.log(user);
-        user.save(function(err) {
-          req.logIn(user, function(err) {
+        await user.update({
+          //在user上加入token
+          password: hashedPassword,
+          resetPasswordToken: undefined,
+          resetPasswordExpires: undefined
+        })
+        user.save(function (err) {
+          req.logIn(user, function (err) {
+
             done(err, user);
           });
         });
