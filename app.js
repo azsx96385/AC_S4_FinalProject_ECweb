@@ -1,7 +1,7 @@
 //[匯入套件 / lib設定]----------------------------------------------------------------------------
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 const db = require("./models");
 const flash = require("connect-flash");
 app.listen(port, () => {
@@ -29,7 +29,7 @@ app.set("view engine", "handlebars");
 //bodyparser
 const bdParser = require("body-parser");
 app.use(bdParser.urlencoded({ extended: true }));
-app.use(bdParser.json())
+app.use(bdParser.json());
 
 // 靜態檔案設定
 app.use(express.static("public")); //如果要請求靜態檔案-直接到 public找
@@ -66,9 +66,15 @@ app.use((req, res, next) => {
   res.locals.error_messages = req.flash("error_messages");
   res.locals.loginUser = req.user;
   res.locals.localcartItem = req.session.cartItemNum;
+  //GA追蹤碼
+  const db = require("./models");
+  const User = db.Store;
+  User.findByPk(1).then(storeData => {
+    res.locals.trackCodeGA = storeData.trackGA;
+  });
 
   next();
 });
 
 require("./route")(app, passport);
-module.exports = app
+module.exports = app;

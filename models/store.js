@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       StoreCategoryId: DataTypes.INTEGER,
       name: DataTypes.STRING,
-      description: DataTypes.STRING
+      description: DataTypes.STRING,
+      trackGA: DataTypes.STRING
     },
     {}
   );

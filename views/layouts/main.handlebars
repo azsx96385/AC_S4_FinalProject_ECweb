@@ -3,6 +3,19 @@
 <html>
 
 <head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  {{#if trackCodeGA }}
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-{{trackCodeGA}}-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-{{trackCodeGA}}-1');
+  </script>
+  {{/if}}
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>E-commerce website</title>
@@ -133,7 +146,8 @@
   <!-- footer -->
   <footer id="footer">
     <div class="container mt-5">
-      <p>YOUTUBE | 客服信箱 | 運費說明 | 常見QA | 隱私權及版權聲明</p>
+      {{trackCodeGA}}
+      <p>YOUTUBE| 客服信箱 | 運費說明 | 常見QA | 隱私權及版權聲明</p>
       <div class="footer-logistics">
         <p style="color: #0085a5;">物流合作</p>
         <img style="width: 100px;"
