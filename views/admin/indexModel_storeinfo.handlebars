@@ -1,0 +1,32 @@
+<div class="col-12 indexmodel_storeinfo px-5 ">
+
+    <form action="/admin/index?_method=PUT" method="post">
+        <div class="row storeinfo_form py-5 my-5 ">
+            {{!-- 商店logo --}}
+            <div class="col-6 form-group text-center">
+                <img class="w-25 rounded-pill border border-secondary "
+                    src="https://png.pngtree.com/element_our/png_detail/20181213/moustachehipstermovembermalemen-glyph-icon--vector-isola-png_268388.jpg"
+                    alt="">
+            </div>
+            {{!-- 商店類別&名稱 --}}
+            <div class="col-6  form-group">
+                <label for="storecategory">商店類別</label>
+                <input type="text" id="storecategory" class="form-control " value="{{storeData.Store_category.name}}"
+                    disabled>
+                <label for="storeName">商店名稱</label>
+                <input type="text" name="name" id="storeName" class="form-control" value="{{storeData.name}}" disabled>
+            </div>
+            {{!-- 商店描述 --}}
+            <div class="col-12  form-group">
+                <textarea id="storedescription" class="form-control" name="description" id="" cols="60" rows="10"
+                    disabled>{{storeData.description}}</textarea>
+                <a id="storeinfo_edit" class="btn btn-primary btn-block mt-5">編輯</a>
+                <button id="storeinfo_submit" class="btn btn-primary btn-block mt-5 d-none" type="submit">更新</button>
+            </div>
+
+        </div>
+    </form>
+
+
+
+</div>

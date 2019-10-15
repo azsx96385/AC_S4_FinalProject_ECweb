@@ -19,7 +19,7 @@
         {{!-- 主板上 --}}
         <div class="row">
             <div class="col-2 bg-dark">
-                <a href=""><img class="w-100 h-100"
+                <a href="/admin/index"><img class="w-100 h-100"
                         src="https://mitjobs.s3.amazonaws.com/uploads/organization/520/cover_photo/shopline-logo-white-on-blue.png"
                         alt=""></a>
             </div>
@@ -55,6 +55,16 @@
 
                     {{!-- 後台功能頁 | boostrapt 摺疊 --}}
                     <div class="w-100 store_nav d-flex flex-column flex-nowrap vh-100">
+                        {{!-- 首頁模組 --}}
+                        <button class="btn btn-dark  btn-block" data-toggle="collapse" type="button"
+                            data-target="#saleModelNav">
+                            <i class="fas fa-clone"></i> 商家資料
+                        </button>
+                        <div class="collapse  bg-secondary" id="saleModelNav">
+
+                            <a href="/admin/index" class="btn btn-secondary btn-block nav_item text-white">商店基本資料</a>
+
+                        </div>
                         {{!-- 業績模組 --}}
                         {{!-- <button class="btn btn-dark  btn-block" data-toggle="collapse" type="button"
                             data-target="#saleModelNav">
@@ -79,12 +89,13 @@
 
                         </div>
                         {{!-- 行銷模組 --}}
-                        {{!-- <button class="btn btn-dark  btn-block" data-toggle="collapse" href="#marketingModelNav"><i
+                        <button class="btn btn-dark  btn-block" data-toggle="collapse" href="#marketingModelNav"><i
                                 class="fas fa-bullhorn"></i> 行銷模組</button>
                         <div class="collapse  bg-secondary" id="marketingModelNav">
-                            <a class="btn btn-secondary btn-block nav_item text-white">追蹤碼設定</a>
-                            <a class="btn btn-secondary  btn-block nav_item text-white">行銷報告</a>
-                        </div> --}}
+                            <a href="/admin/marketingmodel/track_code"
+                                class="btn btn-secondary btn-block nav_item text-white">追蹤碼設定</a>
+                            {{!-- <a class="btn btn-secondary  btn-block nav_item text-white">行銷報告</a> --}}
+                        </div>
 
 
                     </div>
@@ -117,6 +128,7 @@
         crossorigin="anonymous"></script>
     <script src="/javascript/admin_orderedit.js"></script>
     <script src="/javascript/admin_orders.js"></script>
+    <script src="/javascript/admin_index.js"></script>
 </body>
 
 </html>
