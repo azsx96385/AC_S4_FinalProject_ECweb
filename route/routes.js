@@ -34,20 +34,6 @@ const authenticatedAdmin = (req, res, next) => {
   }
   res.redirect("/users/login");
 };
-<<<<<<< HEAD
-
-// 測試用function
-// function authenticate(req, res, next) {
-//   passport.authenticate('jwt', { session: false }, (err, user, info) => {
-//     if (!user) {
-//       return res.redirect('/users/login')
-//     }
-//     req.user = user;
-//     return next();
-//   })(req, res, next);
-// }
-=======
->>>>>>> cd4a1bf1976728f2bdb80d045bdaa3694d79cae7
 
 // 測試用function
 // function authenticate(req, res, next) {
@@ -61,10 +47,6 @@ const authenticatedAdmin = (req, res, next) => {
 // }
 
 // const authenticated = authenticate
-<<<<<<< HEAD
-// const authenticatedAdmin = authenticateAdmi
-=======
->>>>>>> cd4a1bf1976728f2bdb80d045bdaa3694d79cae7
 
 //[使用者 登入 | 登出 | 註冊]==========================
 router.get("/users/signUp", userController.signUpPage);
