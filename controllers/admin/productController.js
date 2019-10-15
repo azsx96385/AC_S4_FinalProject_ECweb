@@ -288,7 +288,7 @@ const productController = {
   deleteDeliveryNotice: (req, res) => {
     Delivery_notice.findByPk(req.params.id).then(deliveryNotice => {
       deliveryNotice.destroy().then(deliveryNotice => {
-        res.redirect(`/admin/deliveryNotice`);
+        res.redirect(`/admin/productmodel/deliveryNotice`);
       });
     });
   }
