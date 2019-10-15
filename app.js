@@ -43,7 +43,7 @@ app.use(
   session({
     secret: "ac",
     name: "ac",
-    cookie: { maxAge: 160000 },
+    cookie: { maxAge: 25952000000 },
     resave: false,
     saveUninitialized: true
   })
@@ -70,5 +70,5 @@ app.use((req, res, next) => {
   next();
 });
 
-require("./route")(app, passport);
+require("./route")(app);
 module.exports = app
