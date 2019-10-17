@@ -61,3 +61,47 @@
     </div>
   </div>
 </div>
+
+{{!-- 購物車通知 --}}
+<a href="/cart" style="text-decoration: none;">
+  <div class="cartNotice" style="display: block; top: 450px; right: 30px; opacity: 1;">
+    <table class="cartBG">
+      <tbody>
+        <tr>
+          <td class="cartImage">
+            <img src="https://trade.1111.com.tw/ProductImg/92/182392/182392_P_Pr9x5.jpg">
+            <br>
+
+            {{#if localcartItem}}
+            <small style="color: red;">{{localcartItem}}</small><small> 件商品</small>
+            {{else}}
+            <small style="color: red;">0</small><small> 件商品</small>
+            {{/if}}
+
+            <hr style="border-top: 1px solid gray;">
+            <small>結帳去</small>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</a>
+
+<script>
+
+  const cartNotice = document.querySelector('.cartNotice')
+
+
+  window.onscroll = () => {
+    if (document.body.scrollTop > 450 && document.body.scrollTop < 900 || document.documentElement.scrollTop > 450 && document.documentElement.scrollTop < 900) {
+      cartNotice.style.top = '900px'
+    } else if (document.body.scrollTop > 900 && document.body.scrollTop < 1350 || document.documentElement.scrollTop > 900 && document.documentElement.scrollTop < 1350) {
+      cartNotice.style.top = '1350px'
+    } else if (document.body.scrollTop > 1350 && document.body.scrollTop < 1800 || document.documentElement.scrollTop > 1350 && document.documentElement.scrollTop < 1800) {
+      cartNotice.style.top = '1800px'
+    } else {
+      cartNotice.style.top = '450px'
+    }
+  }
+
+</script>
