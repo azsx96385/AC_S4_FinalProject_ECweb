@@ -114,8 +114,10 @@ const orderController = {
   // 顯示備貨中頁面
   // 單一 | 顯示單筆訂單
   getOrder: (req, res) => {
+    let orderId = req.params.id
+
     orderModel
-      .findByPk(2, {
+      .findByPk(orderId, {
         include: [
           { model: userModel },
           { model: orderStatusModel },
@@ -136,6 +138,7 @@ const orderController = {
         ]
       })
       .then(order => {
+
         order.createdAt_format = moment(order.createdAt).format(
           "YYYY-MM-DD HH:mm"
         );
@@ -154,6 +157,7 @@ const orderController = {
           order.Shipments[order.Shipments.length - 1 || 0].Shipment_type
             .shipmentType;
         //console.log(order.Payments[order.Payments.length - 1]);
+
         res.render("admin/productmodel_orderdetail", {
           order,
           orderer,
