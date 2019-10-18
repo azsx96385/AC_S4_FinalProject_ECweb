@@ -122,6 +122,7 @@ const orderController = {
 
       return Order.create({
         UserId: req.user.id,
+        StoreId: req.body.StoreId,
         name: req.body.name,
         address: req.body.address,
         phone: req.body.phone,
