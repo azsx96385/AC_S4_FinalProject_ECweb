@@ -323,6 +323,31 @@
   </div>
 </div>
 
+{{!-- 購物車通知 --}}
+<a href="/cart" style="text-decoration: none;">
+  <div class="cartNotice" style="display: block; top: 450px; right: 30px; opacity: 1;">
+    <table class="cartBG">
+      <tbody>
+        <tr>
+          <td class="cartImage">
+            <img src="https://trade.1111.com.tw/ProductImg/92/182392/182392_P_Pr9x5.jpg">
+            <br>
+
+            {{#if localcartItem}}
+            <small style="color: red;">{{localcartItem}}</small><small> 件商品</small>
+            {{else}}
+            <small style="color: red;">0</small><small> 件商品</small>
+            {{/if}}
+
+            <hr style="border-top: 1px solid gray;">
+            <small>結帳去</small>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</a>
+
 <script>
 
   const qtyMinus = document.querySelector('.qtyMinus')
@@ -332,7 +357,8 @@
   const modal = document.querySelector('.modal')
   const btn = document.querySelector('.notice')
   const span = document.querySelector('.close')
-  const input = document.querySelector('input');
+  const input = document.querySelector('input')
+  const cartNotice = document.querySelector('.cartNotice')
 
   let value = Number(Inventory.textContent)
 
@@ -351,6 +377,34 @@
     if (qty.value >= value) return qty.value = value
     else if (qty.value < 0) return qty.value = 1
   })
+
+  window.onscroll = () => {
+    if (document.body.scrollTop > 450 && document.body.scrollTop < 900 || document.documentElement.scrollTop > 450 && document.documentElement.scrollTop < 900) {
+      cartNotice.style.top = '900px'
+    } else if (document.body.scrollTop > 900 && document.body.scrollTop < 1350 || document.documentElement.scrollTop > 900 && document.documentElement.scrollTop < 1350) {
+      cartNotice.style.top = '1350px'
+    } else if (document.body.scrollTop > 1350 && document.body.scrollTop < 1800 || document.documentElement.scrollTop > 1350 && document.documentElement.scrollTop < 1800) {
+      cartNotice.style.top = '1800px'
+    } else if (document.body.scrollTop > 1800 && document.body.scrollTop < 2250 || document.documentElement.scrollTop > 1800 && document.documentElement.scrollTop < 2250) {
+      cartNotice.style.top = '2250px'
+    } else if (document.body.scrollTop > 2250 && document.body.scrollTop < 2700 || document.documentElement.scrollTop > 2250 && document.documentElement.scrollTop < 2700) {
+      cartNotice.style.top = '2700px'
+    } else if (document.body.scrollTop > 2700 && document.body.scrollTop < 3150 || document.documentElement.scrollTop > 2700 && document.documentElement.scrollTop < 3150) {
+      cartNotice.style.top = '3150px'
+    } else if (document.body.scrollTop > 3150 && document.body.scrollTop < 3600 || document.documentElement.scrollTop > 3150 && document.documentElement.scrollTop < 3600) {
+      cartNotice.style.top = '3600px'
+    } else if (document.body.scrollTop > 3600 && document.body.scrollTop < 4050 || document.documentElement.scrollTop > 3600 && document.documentElement.scrollTop < 4050) {
+      cartNotice.style.top = '4050px'
+    } else if (document.body.scrollTop > 4050 && document.body.scrollTop < 4500 || document.documentElement.scrollTop > 4050 && document.documentElement.scrollTop < 4500) {
+      cartNotice.style.top = '4500px'
+    } else if (document.body.scrollTop > 4500 && document.body.scrollTop < 4950 || document.documentElement.scrollTop > 4500 && document.documentElement.scrollTop < 4950) {
+      cartNotice.style.top = '4950px'
+    } else if (document.body.scrollTop > 4950 && document.body.scrollTop < 5400 || document.documentElement.scrollTop > 4950 && document.documentElement.scrollTop < 5400) {
+      cartNotice.style.top = '5400px'
+    } else {
+      cartNotice.style.top = '450px'
+    }
+  }
 
   // When the user clicks the button, open the modal 
   btn.onclick = () => {
