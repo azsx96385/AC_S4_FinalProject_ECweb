@@ -27,7 +27,7 @@
   <div class="col-5 ml-5">
     <div class="card-body">
       <h5 class="card-title" style="text-align: center; color: gray;">【<a class="categoryName"
-          style="text-decoration: none; color: black;"
+          style="text-decoration: none; color: gray;"
           href="/Category/{{product.Product_category.id}}">{{product.Product_category.name}}</a>】{{product.name}}</h5>
 
       <div class="row" style="display:flex; justify-content: center;">
@@ -257,7 +257,7 @@
   {{#each orders}}
   {{#ifCond this.User.id ../loginUser.id}}
   {{#each this.PaymentStatus}}
-  {{#ifCond this.paymentStatus '已付款'}}
+  {{#ifCond this.paymentStatus "已付款"}}
   <div class="ml-4 mt-5">
     <h5 class="ml-5">留下您的評價：</h5>
   </div>
