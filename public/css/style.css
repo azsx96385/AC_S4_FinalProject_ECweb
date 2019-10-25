@@ -3,7 +3,7 @@
   color: black;
 }
 
-body {
+body, p, a, h5, small {
   font-family: 'DFKai-sb';
 }
 

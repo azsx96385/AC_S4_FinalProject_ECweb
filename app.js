@@ -15,6 +15,10 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config(); // 使用 dotenv 讀取 .env 檔案
 }
 
+// cors 的預設為全開放
+const cors = require('cors')
+app.use(cors())
+
 //handlebars |view
 const handlebars = require("express-handlebars");
 app.engine(

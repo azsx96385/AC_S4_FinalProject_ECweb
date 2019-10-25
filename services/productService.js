@@ -126,7 +126,10 @@ const productService = {
         // 評價平均分數
         const ratingAve = average(comment);
 
-        const orders = product.orders;
+        // 篩選 orders
+        let orders = product.orders.filter(d => d.memo !== null)
+        const set = new Set();
+        orders = orders.filter(item => !set.has(item.UserId) ? set.add(item.UserId) : false);
 
         callback({
           product,
