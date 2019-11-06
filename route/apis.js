@@ -3,7 +3,7 @@ const router = express.Router()
 //引用model套件
 const productController = require("../controllers/api/productController");
 const userController = require("../controllers/api/userController");
-const cartController = require("../controllers/cartController");
+const cartController = require("../controllers/api/cartController");
 const orderController = require("../controllers/orderController");
 const couponController = require("../controllers/couponController");
 const passport = require("../config/passport");
