@@ -5,23 +5,23 @@
     </div>
 
     <div class="row">
-      <div class="col">
-        <img src="{{user.image}}" alt="img">
+      <div class="col mt-5">
+        <img src="{{profile.image}}" alt="img" style="width: 250px;margin-bottom: 5px;">
       </div>
-      <div class="col ">
+      <div class="col">
 
-        <div class="row mt-3">
-          <div class="col"><span style='font-size:30px'>名字: {{user.name}}</span> </div>
+        <div class="row mt-5">
+          <div class="col"><span style='font-size:30px'>名字: {{profile.name}}</span> </div>
 
         </div>
         <div class="row mt-3">
           <div class="col">
-            <span style='font-size:30px'>email: {{user.email}}</span>
+            <span style='font-size:30px'>email: {{profile.email}}</span>
           </div>
         </div>
         <div class="row mt-3">
           <div class="col">
-            <span style='font-size:30px'>地址: {{user.address}}</span></div>
+            <span style='font-size:30px'>地址: {{profile.address}}</span></div>
 
         </div>
 
@@ -30,10 +30,9 @@
 
 
     <div class="form-group d-flex  justify-content-between mt-4">
-      <a href="/user/{{user.id}}/editProfile" class="btn btn-primary">編輯個人資料</a>
-
-      <a href='/users/logOut' class="btn btn-danger">登出</a>
-
+      {{#ifCond loginUser.id profile.id}}
+      <a href="/user/{{profile.id}}/editProfile" class="btn btn-primary">編輯個人資料</a>
+      {{/ifCond}}
     </div>
 
   </section>

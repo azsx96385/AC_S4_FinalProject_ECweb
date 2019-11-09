@@ -28,7 +28,17 @@ const authenticatedAdmin = (req, res, next) => {
 }
 
 //-------jwt登入------------------------------//
+router.get("/users/logIn", userController.logInPage);
 router.post("/users/logIn", userController.logIn)
+
+// 註冊
+router.post("/users/signUp", userController.signUp);
+
+//忘記密碼
+router.get("/forget", userController.getForgetPasswordPage);
+router.post("/forget", userController.postResetUrl);
+router.get("/reset/:token", userController.getResetPage);
+router.post("/reset/:token", userController.postResetPassword);
 
 //-------------------商品瀏覽頁面-----------------------------------------
 router.get("/", (req, res) => res.redirect("/index"));
@@ -85,20 +95,20 @@ router.get(
 router.post("/order/:id", authenticated, orderController.cancelOrder);
 //--------userprofile-----------------------------
 //個人資料頁面與訂單詳情
-// router.get("/user/:id/profile", authenticated, userController.getUserProfile);
+router.get("/user/:id/profile", authenticated, userController.getUserProfile);
 
-// router.get(
-//   "/user/:id/editProfile",
-//   authenticated,
-//   userController.getUserProfileEdit
-// );
-// //編輯個人資料頁面
-// router.post(
-//   "/user/:id/edit",
-//   authenticated,
-//   upload.single("image"),
-//   userController.postUserProfile
-// );
+router.get(
+  "/user/:id/editProfile",
+  authenticated,
+  userController.getUserProfileEdit
+);
+//編輯個人資料頁面
+router.post(
+  "/user/:id/edit",
+  authenticated,
+  upload.single("image"),
+  userController.postUserProfile
+);
 
 //-------------coupon----------------------------
 
