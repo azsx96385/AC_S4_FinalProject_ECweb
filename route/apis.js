@@ -5,7 +5,7 @@ const productController = require("../controllers/api/productController");
 const userController = require("../controllers/api/userController");
 const cartController = require("../controllers/api/cartController");
 const orderController = require("../controllers/api/orderController");
-const couponController = require("../controllers/couponController");
+const couponController = require("../controllers/api/couponController");
 const passport = require("../config/passport");
 //Admin 後台 ==路由群組====================================================
 let indexModel = require("./admin/indexModel");
