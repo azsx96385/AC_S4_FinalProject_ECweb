@@ -8,7 +8,7 @@ const orderController = require("../controllers/api/orderController");
 const couponController = require("../controllers/api/couponController");
 const passport = require("../config/passport");
 //Admin 後台 ==路由群組====================================================
-let indexModel = require("./admin/indexModel");
+let indexModel = require("./admin/api/indexModel");
 let saleModel = require("./admin/saleModel");
 let productModel = require("./admin/productModel");
 let marketingModel = require("./admin/marketingModel");
@@ -169,6 +169,8 @@ router.get(
 router.post("/pickup/callback", authenticated, orderController.pickupCallback);
 //[Admin 後台管理介面]=========================================================================================
 
+//首頁頁面
+router.use("/admin/index", authenticated, authenticatedAdmin, indexModel);
 //銷售模組router
 router.use("/admin/salemodel", authenticated, authenticatedAdmin, saleModel);
 //產品模組router

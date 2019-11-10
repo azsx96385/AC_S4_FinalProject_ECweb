@@ -20,7 +20,7 @@ const couponController = {
         return res.redirect('back')
       }
       req.flash('success_messages', data['message'])
-      return res.redirect(`/cart?couponId= ${data['couponId']}`)
+      return res.redirect(`/cart?couponId=${data['couponId']}`)
     })
   },
 
