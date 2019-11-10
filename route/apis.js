@@ -10,7 +10,7 @@ const passport = require("../config/passport");
 //Admin 後台 ==路由群組====================================================
 let indexModel = require("./admin/api/indexModel");
 let saleModel = require("./admin/saleModel");
-let productModel = require("./admin/productModel");
+let productModel = require("./admin/api/productModel");
 let marketingModel = require("./admin/marketingModel");
 //上傳圖片
 const multer = require("multer");
