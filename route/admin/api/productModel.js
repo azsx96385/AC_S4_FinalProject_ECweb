@@ -1,10 +1,11 @@
 //引入需要的套件
 const express = require("express");
 let router = express.Router();
-const multer = require("multer");
+//上傳圖片
+const multer = require('multer');
 const upload = multer({ dest: "temp/" }).array("images");
 //引入需要的Controller
-const productController = require("../../../controllers/admin/productController");
+const productController = require("../../../controllers/api/admin/prdductController");
 const orderController = require("../../../controllers/api/admin/orderController");
 
 //路由設定

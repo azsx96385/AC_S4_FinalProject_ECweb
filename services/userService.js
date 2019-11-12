@@ -101,11 +101,6 @@ const userService = {
             name: req.body.name,
             email: req.body.email,
             address: req.body.address,
-            password: bcrypt.hashSync(
-              req.body.password,
-              bcrypt.genSaltSync(10),
-              null
-            ),
             image: file ? img.data.link : user.image
           }).then(() => {
             return callback({ status: 'success', message: '個人資料已成功修改' })
@@ -118,11 +113,6 @@ const userService = {
           name: req.body.name,
           email: req.body.email,
           address: req.body.address,
-          password: bcrypt.hashSync(
-            req.body.password,
-            bcrypt.genSaltSync(10),
-            null
-          ),
           image: user.image
         }).then(() => {
           return callback({ status: 'success', message: '個人資料已成功修改' })

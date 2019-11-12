@@ -1,5 +1,8 @@
 const express = require('express')
 const router = express.Router()
+//上傳圖片
+const multer = require("multer");
+const upload = multer({ dest: "temp/" });
 //引用model套件
 const productController = require("../controllers/api/productController");
 const userController = require("../controllers/api/userController");
@@ -7,14 +10,13 @@ const cartController = require("../controllers/api/cartController");
 const orderController = require("../controllers/api/orderController");
 const couponController = require("../controllers/api/couponController");
 const passport = require("../config/passport");
+
 //Admin 後台 ==路由群組====================================================
 let indexModel = require("./admin/api/indexModel");
 let saleModel = require("./admin/saleModel");
 let productModel = require("./admin/api/productModel");
 let marketingModel = require("./admin/marketingModel");
-//上傳圖片
-const multer = require("multer");
-const upload = multer({ dest: "temp/" });
+
 
 //------------授權系統----------------
 const authenticated = passport.authenticate('jwt', { session: false })
