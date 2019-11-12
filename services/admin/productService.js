@@ -67,21 +67,6 @@ const productService = {
       });
   },
   //   單一 | 新增產品
-  getProductCreatePage: (req, res) => {
-    //預設參數
-    const storeId = req.user.StoreId;
-    //調出所有類別資料
-    productCategoryModel
-      .findAll({ where: { StoreId: storeId } })
-      .then(categories => {
-        return res.render("admin/productmodel_editproduct", {
-          categories: categories,
-          storeId: storeId,
-          layout: "admin_main"
-        });
-      });
-  },
-  //   單一 | 新增產品
   postProduct: (req, res, callback) => {
     //1. 防呆 -欄位漏填回傳
     console.log(req.body);

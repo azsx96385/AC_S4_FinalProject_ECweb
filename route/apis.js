@@ -15,7 +15,7 @@ const passport = require("../config/passport");
 let indexModel = require("./admin/api/indexModel");
 let saleModel = require("./admin/saleModel");
 let productModel = require("./admin/api/productModel");
-let marketingModel = require("./admin/marketingModel");
+let marketingModel = require("./admin/api/marketingModel");
 
 
 //------------授權系統----------------
