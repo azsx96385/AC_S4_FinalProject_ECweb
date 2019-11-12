@@ -1,19 +1,22 @@
 const express = require('express')
 const router = express.Router()
-//引用model套件
-const productController = require("../controllers/api/productController");
-const userController = require("../controllers/api/userController");
-const cartController = require("../controllers/cartController");
-const orderController = require("../controllers/orderController");
-const couponController = require("../controllers/couponController");
-const passport = require("../config/passport");
-//Admin 後台 ==路由群組====================================================
-let saleModel = require("./admin/saleModel");
-let productModel = require("./admin/productModel");
-let marketingModel = require("./admin/marketingModel");
 //上傳圖片
 const multer = require("multer");
 const upload = multer({ dest: "temp/" });
+//引用model套件
+const productController = require("../controllers/api/productController");
+const userController = require("../controllers/api/userController");
+const cartController = require("../controllers/api/cartController");
+const orderController = require("../controllers/api/orderController");
+const couponController = require("../controllers/api/couponController");
+const passport = require("../config/passport");
+
+//Admin 後台 ==路由群組====================================================
+let indexModel = require("./admin/api/indexModel");
+let saleModel = require("./admin/saleModel");
+let productModel = require("./admin/api/productModel");
+let marketingModel = require("./admin/api/marketingModel");
+
 
 //------------授權系統----------------
 const authenticated = passport.authenticate('jwt', { session: false })
@@ -28,7 +31,17 @@ const authenticatedAdmin = (req, res, next) => {
 }
 
 //-------jwt登入------------------------------//
+router.get("/users/logIn", userController.logInPage);
 router.post("/users/logIn", userController.logIn)
+
+// 註冊
+router.post("/users/signUp", userController.signUp);
+
+//忘記密碼
+router.get("/forget", userController.getForgetPasswordPage);
+router.post("/forget", userController.postResetUrl);
+router.get("/reset/:token", userController.getResetPage);
+router.post("/reset/:token", userController.postResetPassword);
 
 //-------------------商品瀏覽頁面-----------------------------------------
 router.get("/", (req, res) => res.redirect("/index"));
@@ -85,20 +98,20 @@ router.get(
 router.post("/order/:id", authenticated, orderController.cancelOrder);
 //--------userprofile-----------------------------
 //個人資料頁面與訂單詳情
-// router.get("/user/:id/profile", authenticated, userController.getUserProfile);
+router.get("/user/:id/profile", authenticated, userController.getUserProfile);
 
-// router.get(
-//   "/user/:id/editProfile",
-//   authenticated,
-//   userController.getUserProfileEdit
-// );
-// //編輯個人資料頁面
-// router.post(
-//   "/user/:id/edit",
-//   authenticated,
-//   upload.single("image"),
-//   userController.postUserProfile
-// );
+router.get(
+  "/user/:id/editProfile",
+  authenticated,
+  userController.getUserProfileEdit
+);
+//編輯個人資料頁面
+router.post(
+  "/user/:id/edit",
+  authenticated,
+  upload.single("image"),
+  userController.postUserProfile
+);
 
 //-------------coupon----------------------------
 
@@ -158,6 +171,8 @@ router.get(
 router.post("/pickup/callback", authenticated, orderController.pickupCallback);
 //[Admin 後台管理介面]=========================================================================================
 
+//首頁頁面
+router.use("/admin/index", authenticated, authenticatedAdmin, indexModel);
 //銷售模組router
 router.use("/admin/salemodel", authenticated, authenticatedAdmin, saleModel);
 //產品模組router

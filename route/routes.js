@@ -14,7 +14,7 @@ let productModel = require("./admin/productModel");
 let marketingModel = require("./admin/marketingModel");
 //上傳圖片
 const multer = require("multer");
-const upload = multer({ dest: "temp/" });
+const upload = multer({ dest: 'temp/' });
 
 //加入權限驗證
 const authenticated = (req, res, next) => {

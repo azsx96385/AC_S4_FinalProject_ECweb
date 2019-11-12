@@ -1,14 +1,14 @@
 <form action="/user/{{user.id}}/edit" method='POST' enctype="multipart/form-data">
 
-  <div class="row">
-    <div class="col">
-      <img src="{{user.image}}" alt="img">
+  <div class="row ml-5">
+    <div class="col-4 ml-5">
+      <img src="{{user.image}}" alt="img" style="width: 250px;margin-bottom: 5px;">
       <div class="form-group">
         <label for="image">Image</label>
         <input type="file" class="form-control-file" id="image" name="image">
       </div>
     </div>
-    <div class="col">
+    <div class="col-6">
       <div class="form_group row mt-4">
         <label class="col-2 ">名字:</label>
         <div class="col-10">
@@ -28,16 +28,10 @@
         </div>
       </div>
 
-      <div class="form-group row mt-4">
-        <label class="col-2 ">密碼:</label>
-        <div class="col-10">
-          <input type="password" class="form-control" name="apassword" value="{{user.password}}">
-        </div>
-      </div>
     </div>
   </div>
-  <div class="form-group d-flex  justify-content-between mt-4">
-    <button type="submit" class='btn btn-primary'>儲存</button>
-  </div>
 
+  <div class="form-group d-flex  justify-content-between mt-4 ml-5">
+    <button type="submit" class='btn btn-primary ml-5'>儲存</button>
+  </div>
 </form>

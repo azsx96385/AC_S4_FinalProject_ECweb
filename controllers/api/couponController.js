@@ -1,52 +1,45 @@
-const couponService = require("../services/couponService")
+const couponService = require("../../services/couponService")
 
 const couponController = {
   getCouponMakePage: (req, res) => {
     couponService.getCouponMakePage(req, res, (data) => {
-      res.render('couponMake', data)
+      res.json(data);
     })
   },
 
   postCouponMake: (req, res) => {
     couponService.postCouponMake(req, res, (data) => {
-      res.render('couponShow', data)
+      res.json(data);
     })
   },
 
   checkCoupon: async (req, res) => {
     couponService.checkCoupon(req, res, (data) => {
-      if (data['status'] === 'error') {
-        req.flash('error_messages', data['message'])
-        return res.redirect('back')
-      }
-      req.flash('success_messages', data['message'])
-      return res.redirect(`/cart?couponId=${data['couponId']}`)
+      res.json(data);
     })
   },
 
   getCouponOrderEdit: (req, res) => {
     couponService.getCouponOrderEdit(req, res, (data) => {
-      return res.render('orderEdit', data)
+      res.json(data);
     })
   },
 
-  //admin管理coupon
   getCouponManagePage: (req, res) => {
     couponService.getCouponManagePage(req, res, (data) => {
-      res.render('couponManagePage', data)
+      res.json(data);
     })
   },
 
   getCouponEditPage: (req, res) => {
     couponService.getCouponEditPage(req, res, (data) => {
-      res.render('couponEditPage', data)
+      res.json(data);
     })
   },
 
   postCouponEdit: (req, res) => {
     couponService.postCouponEdit(req, res, (data) => {
-      req.flash('success_messages', data['message'])
-      res.redirect('/admin/coupon/managePage')
+      res.json(data);
     })
   }
 }
